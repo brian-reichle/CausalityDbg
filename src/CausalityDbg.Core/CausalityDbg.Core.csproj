@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{82680D43-F86C-43F2-9748-DEE06B2DB23E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CausalityDbg.Core</RootNamespace>
+    <AssemblyName>CausalityDbg.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="CLSID.cs" />
+    <Compile Include="Config\ArgumentType.cs" />
+    <Compile Include="Config\ConfigClass.cs" />
+    <Compile Include="Config\ConfigHookType.cs" />
+    <Compile Include="Config\ConfigParser.cs" />
+    <Compile Include="Config\ConfigHook.cs" />
+    <Compile Include="Config\MethodRef.cs" />
+    <Compile Include="Native\CLRHostApi\ICLRMetaHost.cs" />
+    <Compile Include="Native\CLRHostApi\ICLRRuntimeInfo.cs" />
+    <Compile Include="Native\CLRHostApi\IEnumUnknown.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugAssemblyEnum.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugProcess2.cs" />
+    <Compile Include="Native\CorDebugApi\CORDB_ADDRESS.cs" />
+    <Compile Include="Exceptions\TypeResolutionException.cs" />
+    <Compile Include="Extensions\AppDomainExtensions.cs" />
+    <Compile Include="Extensions\AssemblyExtensions.cs" />
+    <Compile Include="Extensions\ClassExtensions.cs" />
+    <Compile Include="Extensions\ConfigExtensions.cs" />
+    <Compile Include="Extensions\ElementTypeExtensions.cs" />
+    <Compile Include="Extensions\FrameExtensions.cs" />
+    <Compile Include="Extensions\FunctionExtensions.cs" />
+    <Compile Include="Extensions\MetaDataExtensions.cs" />
+    <Compile Include="Extensions\MetaHostExtensions.cs" />
+    <Compile Include="Extensions\ModuleExtensions.cs" />
+    <Compile Include="Extensions\ProcessIOExtensions.cs" />
+    <Compile Include="Extensions\RuntimeExtensions.cs" />
+    <Compile Include="Extensions\StepperExtensions.cs" />
+    <Compile Include="Extensions\SymUnmanagedDocumentExtensions.cs" />
+    <Compile Include="Extensions\ThreadExtensions.cs" />
+    <Compile Include="Extensions\TypeAttributeExtensions.cs" />
+    <Compile Include="Extensions\ValueExtensions.cs" />
+    <Compile Include="Config\AssemblyRef.cs" />
+    <Compile Include="Config\AssemblyRefFlags.cs" />
+    <Compile Include="Config\Config.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Config\ConfigAssembly.cs" />
+    <Compile Include="Config\ConfigCategory.cs" />
+    <Compile Include="Config\ConfigCategoryType.cs" />
+    <Compile Include="Native\CorDebugApi\CorDebugHandleType.cs" />
+    <Compile Include="Native\CorDebugApi\CorDebugIntercept.cs" />
+    <Compile Include="Native\CorDebugApi\CorDebugJITCompilerFlags.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugHandleValue.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugHeapValue2.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugReferenceValue.cs" />
+    <Compile Include="Interfaces\TrackerNotificationLevel.cs" />
+    <Compile Include="BitnessHelper.cs" />
+    <Compile Include="Native\Win32\Enum\BinaryType.cs" />
+    <Compile Include="Extensions\NotifierExtensions.cs" />
+    <Compile Include="Native\Win32\NativeMethods.Advapi32.cs" />
+    <Compile Include="Native\Win32\NativeMethods.Kernel32.cs" />
+    <Compile Include="Native\Win32\SafeHandle\CryptContextHandle.cs" />
+    <Compile Include="Native\Win32\SafeHandle\CryptHashHandle.cs" />
+    <Compile Include="Native\Win32\Enum\ProcessCreationFlags.cs" />
+    <Compile Include="Native\Win32\Struct\PROCESS_INFORMATION.cs" />
+    <Compile Include="Native\Win32\Struct\STARTUPINFO.cs" />
+    <Compile Include="Exceptions\ConfigFormatException.cs" />
+    <Compile Include="Config\ConfigMethodRef.cs" />
+    <Compile Include="Native\CorDebugApi\CorDebugChainReason.cs" />
+    <Compile Include="Native\CorDebugApi\CorDebugExceptionCallbackType.cs" />
+    <Compile Include="Native\CorDebugApi\CorDebugExceptionFlags.cs" />
+    <Compile Include="HResults.cs" />
+    <Compile Include="Native\CorDebugApi\CorDebugInternalFrameType.cs" />
+    <Compile Include="Native\CorDebugApi\CorDebugMappingResult.cs" />
+    <Compile Include="Native\CorDebugApi\CorDebugStepReason .cs" />
+    <Compile Include="Native\CorDebugApi\CorDebugThreadState.cs" />
+    <Compile Include="Native\CorDebugApi\CorDebugVersion.cs" />
+    <Compile Include="Native\CorDebugApi\COR_DEBUG_STEP_RANGE.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebug.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugAppDomain.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugAssembly.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugBreakpoint.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugChain.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugClass.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugController.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugEnum.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugEval.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugEval2.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugFrame.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugFunction.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugHeapValue.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugFunctionBreakpoint.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugILFrame.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugILFrame2.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugInternalFrame.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugManagedCallback.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugManagedCallback2.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugModule.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugModule2.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugModuleEnum.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugProcess.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugStepper.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugStringValue.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugThread.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugType.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugTypeEnum.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugValue.cs" />
+    <Compile Include="Native\CorDebugApi\ICorDebugValue2.cs" />
+    <Compile Include="CorDebuggerHelper.cs" />
+    <Compile Include="CryptFunctions.cs" />
+    <Compile Include="DataStore\FrameILData.cs" />
+    <Compile Include="DataStore\FrameInternalData.cs" />
+    <Compile Include="DataStore\TraceDataItem.cs" />
+    <Compile Include="DataStore\DataItem.cs" />
+    <Compile Include="DataStore\ExceptionDataItem.cs" />
+    <Compile Include="DataStore\FrameDataFactory.cs" />
+    <Compile Include="DataStore\TraceData.cs" />
+    <Compile Include="Interfaces\ITrackerCallback.cs" />
+    <Compile Include="Exceptions\AttachErrorType.cs" />
+    <Compile Include="Exceptions\AttachException.cs" />
+    <Compile Include="DataStore\FrameData.cs" />
+    <Compile Include="MetaCache\IMetaCompoundVisitor.cs" />
+    <Compile Include="MetaCache\MetaCompound.cs" />
+    <Compile Include="MetaCache\MetaCompoundArray.cs" />
+    <Compile Include="MetaCache\MetaCompoundByRef.cs" />
+    <Compile Include="MetaCache\MetaCompoundClass.cs" />
+    <Compile Include="MetaCache\MetaCompoundGenArg.cs" />
+    <Compile Include="MetaCache\MetaCompoundPointer.cs" />
+    <Compile Include="MetaCache\MetaFormatter.cs" />
+    <Compile Include="MetaCache\MetaFrame.cs" />
+    <Compile Include="MetaCache\MetaFunction.cs" />
+    <Compile Include="MetaCache\MetaIDStringFormatter.cs" />
+    <Compile Include="MetaCache\MetaModule.cs" />
+    <Compile Include="MetaCache\MetaModuleFlags.cs" />
+    <Compile Include="MetaCache\MetaParameter.cs" />
+    <Compile Include="MetaCache\MetaProvider.cs" />
+    <Compile Include="MetaCache\MetaType.cs" />
+    <Compile Include="Native\MetaDataApi\CorOpenFlags.cs" />
+    <Compile Include="Native\MetaDataApi\IMetaDataDispenser.cs" />
+    <Compile Include="Native\MetaDataApi\ASSEMBLYMETADATA.cs" />
+    <Compile Include="Native\MetaDataApi\IMetaDataAssemblyImport.cs" />
+    <Compile Include="Native\MetaDataApi\IMetaDataImport.cs" />
+    <Compile Include="Native\MetaDataApi\IMetaDataImport2.cs" />
+    <Compile Include="Source\SourceProvider.cs" />
+    <Compile Include="Source\SourceSection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Native\SymbolStoreApi\ISymUnmanagedBinder.cs" />
+    <Compile Include="Native\SymbolStoreApi\ISymUnmanagedDispose.cs" />
+    <Compile Include="Native\SymbolStoreApi\ISymUnmanagedDocument.cs" />
+    <Compile Include="Native\SymbolStoreApi\ISymUnmanagedMethod.cs" />
+    <Compile Include="Native\SymbolStoreApi\ISymUnmanagedReader.cs" />
+    <Compile Include="Tracker\EventMapper.cs" />
+    <Compile Include="Interfaces\ITracker.cs" />
+    <Compile Include="Tracker\ScopeData.cs" />
+    <Compile Include="Tracker\Tracker.cs" />
+    <Compile Include="ManagedCallbackBase.cs" />
+    <Compile Include="Tracker\TrackerFactory.cs" />
+    <Compile Include="Tracker\ValueDictionary.cs" />
+    <Compile Include="Native\Win32\NativeMethods.MsCorEE.cs" />
+    <Compile Include="Native\Win32\Enum\ProcessAccessOptions.cs" />
+    <Compile Include="Native\Win32\SafeHandle\ProcessHandle.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Native\Win32\SafeHandle\UnmanagedBuffer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\Config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Config\Config.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CausalityDbg.IL\CausalityDbg.IL.csproj">
+      <Project>{4CA83BB9-BD59-4361-A972-E9E1E46720CF}</Project>
+      <Name>CausalityDbg.IL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers">
+      <Version>1.0.2</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="System.Collections.Immutable">
+      <Version>1.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="WTG.Analyzers">
+      <Version>2.0.6</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

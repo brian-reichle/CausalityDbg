@@ -1,0 +1,240 @@
+<!--Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:CausalityDbg.Main">
+
+	<Style x:Key="ToolTipBorderStyle" TargetType="{x:Type Border}">
+		<Setter Property="Background" Value="LightYellow" />
+		<Setter Property="BorderBrush" Value="Black" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Padding" Value="1" />
+	</Style>
+
+	<Style TargetType="{x:Type local:ProcessDragSelector}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:ProcessDragSelector}">
+					<Border
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}"
+						Padding="1"
+						>
+						<Grid>
+							<Image Source="Resources\Crosshair.ico" />
+							<Popup
+								x:Name="PART_Popup"
+								DataContext="{Binding CurrentProcess, RelativeSource={RelativeSource TemplatedParent}}"
+								IsOpen="True">
+								<Border Style="{StaticResource ToolTipBorderStyle}">
+									<StackPanel>
+										<TextBlock Text="{Binding PID}" />
+										<TextBlock Text="{Binding ProcessName}" />
+									</StackPanel>
+								</Border>
+							</Popup>
+						</Grid>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsDragging" Value="True">
+							<Setter Property="Cursor" Value="Resources\Crosshair.cur" />
+						</Trigger>
+						<Trigger Property="CurrentProcess" Value="{x:Null}">
+							<Setter TargetName="PART_Popup" Property="IsOpen" Value="False" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="{x:Type local:TimelineControl}">
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Visible" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:TimelineControl}">
+					<ControlTemplate.Resources>
+						<local:TimestampConverter x:Key="TimestampConverter" />
+					</ControlTemplate.Resources>
+
+					<Border
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}">
+
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="*" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+
+							<AdornerDecorator
+								x:Name="PART_Scale"
+								Grid.ColumnSpan="2"
+								/>
+
+							<local:WheelScrollViewer
+								Grid.Row="1"
+								Grid.ColumnSpan="2"
+								x:Name="PART_ScrollViewer"
+								Focusable="False"
+								HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+								VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+								/>
+
+							<Popup
+								x:Name="PART_ToolTip"
+								Grid.Row="1"
+								Grid.ColumnSpan="2"
+								>
+								<Popup.Resources>
+									<DataTemplate DataType="{x:Type local:Scope}">
+										<Grid>
+											<Grid.RowDefinitions>
+												<RowDefinition Height="Auto" />
+												<RowDefinition Height="Auto" />
+												<RowDefinition Height="Auto" />
+											</Grid.RowDefinitions>
+
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto" />
+												<ColumnDefinition Width="3" />
+												<ColumnDefinition Width="*" />
+											</Grid.ColumnDefinitions>
+
+											<TextBlock
+												Grid.ColumnSpan="3"
+												Text="{Binding Item.Category.Name}"
+												/>
+
+											<TextBlock
+												Grid.Row="1"
+												>
+												From:
+											</TextBlock>
+
+											<TextBlock
+												Grid.Row="2"
+												>
+												To:
+											</TextBlock>
+
+											<TextBlock
+												Grid.Row="1"
+												Grid.Column="2"
+												TextAlignment="Left"
+												>
+												<TextBlock.Text>
+													<MultiBinding Converter="{StaticResource TimestampConverter}">
+														<Binding Path="FromTimestamp" />
+														<Binding Path="Source" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type local:TimelineControl}}" />
+													</MultiBinding>
+												</TextBlock.Text>
+											</TextBlock>
+
+											<TextBlock
+												Grid.Row="2"
+												Grid.Column="2"
+												TextAlignment="Left"
+												>
+												<TextBlock.Text>
+													<MultiBinding Converter="{StaticResource TimestampConverter}">
+														<Binding Path="ToTimestamp" />
+														<Binding Path="Source" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type local:TimelineControl}}" />
+													</MultiBinding>
+												</TextBlock.Text>
+											</TextBlock>
+										</Grid>
+									</DataTemplate>
+
+									<DataTemplate DataType="{x:Type local:Event}">
+										<Grid>
+											<Grid.RowDefinitions>
+												<RowDefinition Height="Auto" />
+												<RowDefinition Height="Auto" />
+											</Grid.RowDefinitions>
+
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto" />
+												<ColumnDefinition Width="3" />
+												<ColumnDefinition Width="*" />
+											</Grid.ColumnDefinitions>
+
+											<TextBlock
+												Grid.ColumnSpan="3"
+												Text="{Binding Item.Category.Name}"
+												/>
+
+											<TextBlock
+												Grid.Row="1"
+												>
+												Timestamp:
+											</TextBlock>
+
+											<TextBlock
+												Grid.Row="1"
+												Grid.Column="2"
+												TextAlignment="Left"
+												>
+												<TextBlock.Text>
+													<MultiBinding Converter="{StaticResource TimestampConverter}">
+														<Binding Path="Timestamp" />
+														<Binding Path="Source" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type local:TimelineControl}}" />
+													</MultiBinding>
+												</TextBlock.Text>
+											</TextBlock>
+										</Grid>
+									</DataTemplate>
+								</Popup.Resources>
+
+								<Border Style="{StaticResource ToolTipBorderStyle}">
+									<ContentPresenter Content="{Binding}" />
+								</Border>
+							</Popup>
+
+							<StackPanel
+								Orientation="Horizontal"
+								Grid.Column="1"
+								Grid.Row="2"
+								>
+								<Label
+									Content="{Binding Scale, RelativeSource={RelativeSource TemplatedParent}}"
+									/>
+
+								<Slider
+									Value="{Binding Scale, RelativeSource={RelativeSource TemplatedParent}}"
+									Minimum="1"
+									Maximum="50"
+									Width="200"
+									Orientation="Horizontal"
+									Focusable="False"
+									Margin="5,0,5,0"
+									/>
+							</StackPanel>
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="EventGlyph">
+			<Setter.Value>
+				<PathGeometry>
+					<PathFigure StartPoint="0,5" IsClosed="True">
+						<LineSegment Point="3,8" />
+						<LineSegment Point="3,15" />
+						<LineSegment Point="-3,15" />
+						<LineSegment Point="-3,8" />
+					</PathFigure>
+				</PathGeometry>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

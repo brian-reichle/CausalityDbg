@@ -1,0 +1,15 @@
+﻿00 01 01 1F 49 02
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_VOID</Primitive>
+    </TypeRef>
+  </Return>
+  <Param>
+    <TypeRef>
+      <ModReq>01000012</ModReq>
+      <Primitive>ELEMENT_TYPE_BOOLEAN</Primitive>
+    </TypeRef>
+  </Param>
+</Method>

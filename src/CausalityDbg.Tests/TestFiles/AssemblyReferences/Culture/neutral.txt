@@ -1,0 +1,5 @@
+﻿CausalityDbg.Tests, Culture=neutral
+----
+Full Name:        CausalityDbg.Tests, Culture=neutral
+Name:             CausalityDbg.Tests
+Culture:          <null>

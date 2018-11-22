@@ -1,0 +1,9 @@
+﻿00 00 0E
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_STRING</Primitive>
+    </TypeRef>
+  </Return>
+</Method>

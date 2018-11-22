@@ -1,0 +1,9 @@
+﻿00 00 01
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_VOID</Primitive>
+    </TypeRef>
+  </Return>
+</Method>

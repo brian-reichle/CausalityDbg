@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	targetNamespace="CausalityDbg"
+	xmlns:c="CausalityDbg"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:simpleType name="categoryType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="ManagedThread" />
+			<xs:enumeration value="Exception" />
+			<xs:enumeration value="Break" />
+			<xs:enumeration value="Trace" />
+			<xs:enumeration value="Catch" />
+			<xs:enumeration value="Filter" />
+			<xs:enumeration value="Finally" />
+			<xs:enumeration value="Falt" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="colorCode">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="[0-9a-fA-F]{6}" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="methodTypeRef">
+		<xs:sequence>
+			<xs:element name="key" minOccurs="0" type="xs:token" />
+		</xs:sequence>
+		<xs:attribute name="class" type="xs:string" use="required" />
+		<xs:attribute name="method" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="customCategoryDef">
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="fgColor" type="c:colorCode" use="required" />
+		<xs:attribute name="bgColor" type="c:colorCode" use="required" />
+		<xs:attribute name="code" type="xs:ID" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="systemTriggerDef">
+		<xs:attribute name="type" type="xs:string" use="required" />
+		<xs:attribute name="category" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="eventType">
+		<xs:sequence>
+			<xs:element name="methodRef" type="c:methodTypeRef" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="category" type="xs:IDREF" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="scopeType">
+		<xs:sequence>
+			<xs:element name="methodRef" type="c:methodTypeRef" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="category" type="xs:IDREF" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="assemblyType">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="event" type="c:eventType" />
+				<xs:element name="scope" type="c:scopeType" />
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:element name="config">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="category" type="c:customCategoryDef" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="systemTrigger" type="c:systemTriggerDef" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="assembly" type="c:assemblyType" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

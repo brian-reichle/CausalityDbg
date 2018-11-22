@@ -1,0 +1,5 @@
+﻿CausalityDbg.Tests, Culture=en-AU
+----
+Full Name:        CausalityDbg.Tests, Culture=en-AU
+Name:             CausalityDbg.Tests
+Culture:          en-AU

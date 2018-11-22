@@ -1,0 +1,9 @@
+﻿00 00 0B
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_U8</Primitive>
+    </TypeRef>
+  </Return>
+</Method>

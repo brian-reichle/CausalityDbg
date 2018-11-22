@@ -1,0 +1,9 @@
+﻿00 00 0A
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_I8</Primitive>
+    </TypeRef>
+  </Return>
+</Method>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<c:config xmlns:c="CausalityDbg">
+	<c:category code="ManagedThread" name="Managed Thread" fgColor="000080" bgColor="8080FF" />
+	<c:category code="Exception" name="Exception" fgColor="FF0000" bgColor="FF9999" />
+	<c:category code="Break" name="Break" fgColor="778899" bgColor="DDEEFF" />
+	<c:category code="Trace" name="Trace" fgColor="000000" bgColor="FFFFCC" />
+	<c:category code="ThreadPool" name="Thread Pool" fgColor="4169E1" bgColor="B1D9FF" />
+	<c:category code="Dispatcher" name="Dispatcher" fgColor="8B008B" bgColor="DF60DF" />
+	<c:category code="DispatcherTask" name="Dispatcher Task" fgColor="8B008B" bgColor="FF80FF" />
+	<c:category code="TPLTask" name="TPL Task" fgColor="000000" bgColor="FF8888" />
+
+	<c:systemTrigger type="ManagedThread" category="ManagedThread" />
+	<c:systemTrigger type="Exception" category="Exception" />
+	<c:systemTrigger type="Break" category="Break" />
+	<c:systemTrigger type="Trace" category="Trace" />
+
+	<c:assembly id="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+		<c:event category="ManagedThread">
+			<c:methodRef class="System.Threading.Thread" method="Start">
+				<c:key>this</c:key>
+			</c:methodRef>
+		</c:event>
+		<c:event category="ThreadPool">
+			<c:methodRef class="System.Threading._ThreadPoolWaitCallback" method=".ctor">
+				<c:key>this</c:key>
+			</c:methodRef>
+		</c:event>
+		<c:scope category="ThreadPool">
+			<c:methodRef class="System.Threading._ThreadPoolWaitCallback" method="WaitCallback_Context">
+				<c:key>state</c:key>
+			</c:methodRef>
+		</c:scope>
+	</c:assembly>
+
+	<c:assembly id="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+		<c:event category="DispatcherTask">
+			<c:methodRef class="System.Windows.Threading.DispatcherOperation" method=".ctor">
+				<c:key>this</c:key>
+			</c:methodRef>
+		</c:event>
+		<c:scope category="DispatcherTask">
+			<c:methodRef class="System.Windows.Threading.DispatcherOperation" method="Invoke">
+				<c:key>this</c:key>
+			</c:methodRef>
+		</c:scope>
+		<c:scope category="Dispatcher">
+			<c:methodRef class="MS.Win32.HwndSubclass" method="DispatcherCallbackOperation"/>
+		</c:scope>
+	</c:assembly>
+
+	<c:assembly id="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+		<c:event category="ThreadPool">
+			<!--
+			The constructor is the better choice if zap modules are disabled as it grants access to the key, but
+			if zap modules are not disabled then it will be optomised out and should be replaced with
+			QueueUserWorkItem.
+			-->
+			<c:methodRef class="System.Threading.QueueUserWorkItemCallback" method=".ctor">
+				<c:key>this</c:key>
+			</c:methodRef>
+			<!--
+			<c:methodRef class="System.Threading.ThreadPool" method="QueueUserWorkItem" />
+			-->
+		</c:event>
+		<c:event category="TPLTask">
+			<c:methodRef class="System.Threading.Tasks.Task" method=".ctor">
+				<c:key>this</c:key>
+			</c:methodRef>
+		</c:event>
+		<c:event category="ManagedThread">
+			<c:methodRef class="System.Threading.Thread" method="Start(System.Threading.StackCrawlMark&amp;)">
+				<c:key>this</c:key>
+			</c:methodRef>
+		</c:event>
+		<c:scope category="ThreadPool">
+			<c:methodRef class="System.Threading.QueueUserWorkItemCallback" method="System.Threading.IThreadPoolWorkItem.ExecuteWorkItem">
+				<c:key>this</c:key>
+			</c:methodRef>
+		</c:scope>
+		<c:scope category="TPLTask">
+			<c:methodRef class="System.Threading.Tasks.Task" method="ExecuteEntry">
+				<c:key>this</c:key>
+			</c:methodRef>
+		</c:scope>
+	</c:assembly>
+
+	<c:assembly id="WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+		<c:event category="DispatcherTask">
+			<c:methodRef class="System.Windows.Threading.DispatcherOperation" method=".ctor">
+				<c:key>this</c:key>
+			</c:methodRef>
+		</c:event>
+		<c:scope category="DispatcherTask">
+			<c:methodRef class="System.Windows.Threading.DispatcherOperation" method="Invoke">
+				<c:key>this</c:key>
+			</c:methodRef>
+		</c:scope>
+		<c:scope category="Dispatcher">
+			<c:methodRef class="MS.Win32.HwndSubclass" method="DispatcherCallbackOperation"/>
+		</c:scope>
+	</c:assembly>
+</c:config>

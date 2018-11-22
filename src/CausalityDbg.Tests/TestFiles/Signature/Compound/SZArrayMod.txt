@@ -1,0 +1,13 @@
+﻿00 00 1D 1F 49 20 80 81 03
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <SZArray>
+        <ModReq>01000012</ModReq>
+        <ModOpt>01000020</ModOpt>
+        <Primitive>ELEMENT_TYPE_CHAR</Primitive>
+      </SZArray>
+    </TypeRef>
+  </Return>
+</Method>

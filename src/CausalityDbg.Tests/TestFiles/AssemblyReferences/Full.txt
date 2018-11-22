@@ -1,0 +1,8 @@
+﻿myTypes, Version=1.0.1234.0, Culture=en-US, PublicKeyToken=b77a5c561934e089, ProcessorArchitecture=msil
+----
+Full Name:        myTypes, Version=1.0.1234.0, Culture=en-US, PublicKeyToken=b77a5c561934e089, ProcessorArchitecture=msil
+Name:             myTypes
+Version:          1.0.1234.0
+Culture:          en-US
+Processor Arch:   MSIL
+Public Key Token: b77a5c561934e089

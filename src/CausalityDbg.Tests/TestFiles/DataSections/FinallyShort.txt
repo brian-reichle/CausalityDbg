@@ -1,0 +1,9 @@
+﻿01 10 00 00
+02 00 01 00 02 03 00 04 00 00 00 00
+----
+<Clauses>
+  <Finally>
+    <Try offset="1" length="2" />
+    <Handler offset="3" length="4" />
+  </Finally>
+</Clauses>

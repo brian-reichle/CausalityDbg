@@ -1,0 +1,11 @@
+﻿00 00 1D 03
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <SZArray>
+        <Primitive>ELEMENT_TYPE_CHAR</Primitive>
+      </SZArray>
+    </TypeRef>
+  </Return>
+</Method>

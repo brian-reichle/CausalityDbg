@@ -1,0 +1,86 @@
+<!-- Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Window
+	x:Class="CausalityDbg.Main.About"
+	x:ClassModifier="internal"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:CausalityDbg.Main"
+	Title="About"
+	SizeToContent="WidthAndHeight"
+	WindowStartupLocation="CenterOwner"
+	ResizeMode="NoResize"
+	>
+
+	<Window.Resources>
+		<local:AboutModel x:Key="Model" />
+	</Window.Resources>
+
+	<Window.CommandBindings>
+		<CommandBinding Command="ApplicationCommands.Close" Executed="Close_Executed" />
+	</Window.CommandBindings>
+
+	<Grid
+		DataContext="{StaticResource Model}"
+		Margin="5"
+		>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="20" />
+		</Grid.RowDefinitions>
+
+		<Label
+			Grid.Row="0"
+			Content="CausalityDbg"
+			FontSize="24"
+			HorizontalContentAlignment="Center"
+			/>
+
+		<Border
+			Grid.Row="1"
+			BorderBrush="Black"
+			BorderThickness="1"
+			Margin="0,0,0,5"
+			>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<Label Grid.Column="0" Grid.Row="0" Content="Product:" />
+				<Label Grid.Column="1" Grid.Row="0" Content="{Binding AssemblyProduct}" />
+
+				<Label Grid.Column="0" Grid.Row="1" Content="Version:" />
+				<Label Grid.Column="1" Grid.Row="1" Content="{Binding AssemblyVersion}" />
+
+				<Label Grid.Column="0" Grid.Row="2" Content="Build Date:" />
+				<Label Grid.Column="1" Grid.Row="2" Content="{Binding BuildDateFormatted}" />
+
+				<Label Grid.Column="0" Grid.Row="3" Content="Copyright:" />
+				<Label Grid.Column="1" Grid.Row="3" Content="{Binding AssemblyCopyright}" />
+			</Grid>
+		</Border>
+
+		<StackPanel
+			Grid.Row="2"
+			Orientation="Horizontal"
+			FlowDirection="RightToLeft">
+			<Button
+				IsCancel="True"
+				IsDefault="True"
+				Content="Close"
+				Command="ApplicationCommands.Close"
+				Width="75"
+				/>
+		</StackPanel>
+	</Grid>
+</Window>

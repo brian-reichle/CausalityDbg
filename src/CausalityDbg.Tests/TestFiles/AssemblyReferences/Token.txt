@@ -1,0 +1,5 @@
+﻿CausalityDbg.Tests, PublicKeyToken=7a1934e68905c5b7
+----
+Full Name:        CausalityDbg.Tests, PublicKeyToken=7a1934e68905c5b7
+Name:             CausalityDbg.Tests
+Public Key Token: 7a1934e68905c5b7

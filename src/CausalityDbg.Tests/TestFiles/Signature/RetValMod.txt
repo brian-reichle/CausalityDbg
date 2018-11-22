@@ -1,0 +1,10 @@
+﻿00 00 1F 49 02
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <ModReq>01000012</ModReq>
+      <Primitive>ELEMENT_TYPE_BOOLEAN</Primitive>
+    </TypeRef>
+  </Return>
+</Method>

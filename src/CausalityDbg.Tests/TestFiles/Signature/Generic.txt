@@ -1,0 +1,9 @@
+﻿10 02 00 01
+----
+<Method genericParameterCount="2">
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_VOID</Primitive>
+    </TypeRef>
+  </Return>
+</Method>

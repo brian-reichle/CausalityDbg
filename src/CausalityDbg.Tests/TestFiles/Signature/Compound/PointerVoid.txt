@@ -1,0 +1,12 @@
+﻿00 00 0F 1F 49 01
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Pointer>
+        <ModReq>01000012</ModReq>
+        <Primitive>ELEMENT_TYPE_VOID</Primitive>
+      </Pointer>
+    </TypeRef>
+  </Return>
+</Method>

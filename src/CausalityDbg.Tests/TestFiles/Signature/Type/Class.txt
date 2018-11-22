@@ -1,0 +1,9 @@
+﻿00 00 12 49
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Class>01000012</Class>
+    </TypeRef>
+  </Return>
+</Method>

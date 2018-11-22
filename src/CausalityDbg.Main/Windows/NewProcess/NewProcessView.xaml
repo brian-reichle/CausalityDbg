@@ -1,0 +1,155 @@
+<!-- Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Window
+	x:Class="CausalityDbg.Main.NewProcessView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:CausalityDbg.Main"
+	Title="Launch Process"
+	Height="180"
+	Width="300"
+	MinHeight="180"
+	MinWidth="300"
+	FocusManager.FocusedElement="{Binding ElementName=processTextBox}"
+	WindowStartupLocation="CenterOwner"
+	>
+
+	<Window.CommandBindings>
+		<CommandBinding Command="ApplicationCommands.Close" Executed="OnCloseExecuted" />
+		<CommandBinding Command="{x:Static local:NewProcessView.Launch}" Executed="OnLaunchExecuted" />
+		<CommandBinding Command="{x:Static local:NewProcessView.Find}" Executed="OnFindExecuted" />
+	</Window.CommandBindings>
+
+	<Window.InputBindings>
+		<KeyBinding Gesture="Ctrl+O" Command="{x:Static local:NewProcessView.Find}" CommandParameter="{Binding}" />
+	</Window.InputBindings>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="10" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="10" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="10" />
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="10" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="10" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="20" />
+			<ColumnDefinition Width="10" />
+		</Grid.ColumnDefinitions>
+
+		<Label
+			Grid.Row="1"
+			Grid.Column="1"
+			Content="Process"
+			/>
+
+		<Label
+			Grid.Row="2"
+			Grid.Column="1"
+			Content="Directory"
+			/>
+
+		<Label
+			Grid.Row="3"
+			Grid.Column="1"
+			Content="Arguments"
+			/>
+
+		<Label
+			Grid.Row="5"
+			Grid.Column="1"
+			Content="NGEN Mode"
+			/>
+
+		<TextBox
+			x:Name="processTextBox"
+			Grid.Row="1"
+			Grid.Column="3"
+			HorizontalAlignment="Stretch"
+			>
+			<TextBox.Text>
+				<Binding Path="Process">
+					<Binding.ValidationRules>
+						<local:ProcessPathValidationRule ValidatesOnTargetUpdated="True" />
+					</Binding.ValidationRules>
+				</Binding>
+			</TextBox.Text>
+		</TextBox>
+
+		<Button
+			Grid.Row="1"
+			Grid.Column="4"
+			HorizontalAlignment="Stretch"
+			Content="..."
+			Command="{x:Static local:NewProcessView.Find}"
+			CommandParameter="{Binding}"
+			Focusable="False"
+			/>
+
+		<TextBox
+			Name="directoryTextBox"
+			Grid.Row="2"
+			Grid.Column="3"
+			Grid.ColumnSpan="2"
+			HorizontalAlignment="Stretch"
+			>
+			<TextBox.Text>
+				<Binding Path="Directory">
+					<Binding.ValidationRules>
+						<local:DirectoryPathValidationRule ValidatesOnTargetUpdated="True" />
+					</Binding.ValidationRules>
+				</Binding>
+			</TextBox.Text>
+		</TextBox>
+
+		<TextBox
+			Grid.Row="3"
+			Grid.Column="3"
+			Grid.RowSpan="2"
+			Grid.ColumnSpan="2"
+			HorizontalAlignment="Stretch"
+			Text="{Binding Arguments}"
+			/>
+
+		<ComboBox
+			Grid.Row="5"
+			Grid.Column="3"
+			Grid.ColumnSpan="2"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Center"
+			Text="{Binding NGenMode}"
+			ItemsSource="{local:EnumValueList {x:Type local:NGenMode}}"
+			/>
+
+		<StackPanel
+			Grid.Row="7"
+			Grid.Column="3"
+			Grid.ColumnSpan="2"
+			Orientation="Horizontal"
+			FlowDirection="RightToLeft"
+			>
+			<Button
+				Content="Cancel"
+				MinWidth="75"
+				IsCancel="True"
+				Command="ApplicationCommands.Close"
+				/>
+
+			<Button
+				Content="Launch"
+				MinWidth="75"
+				IsDefault="True"
+				Command="{x:Static local:NewProcessView.Launch}"
+				CommandParameter="{Binding}"
+				/>
+		</StackPanel>
+	</Grid>
+</Window>

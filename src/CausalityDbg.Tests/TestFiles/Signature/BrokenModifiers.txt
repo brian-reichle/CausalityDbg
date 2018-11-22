@@ -1,0 +1,18 @@
+﻿00 01 20 49 20 8A 59 10 20 49 03 0E
+----
+<Method>
+  <Return>
+    <TypeRef byRef="True">
+      <ModOpt>01000012</ModOpt>
+      <ModOpt>01000296</ModOpt>
+      <!-- ByRef Marker -->
+      <ModOpt>01000012</ModOpt>
+      <Primitive>ELEMENT_TYPE_CHAR</Primitive>
+    </TypeRef>
+  </Return>
+  <Param>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_STRING</Primitive>
+    </TypeRef>
+  </Param>
+</Method>

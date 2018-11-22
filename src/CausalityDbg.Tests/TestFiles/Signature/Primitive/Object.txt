@@ -1,0 +1,9 @@
+﻿00 00 1C
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_OBJECT</Primitive>
+    </TypeRef>
+  </Return>
+</Method>

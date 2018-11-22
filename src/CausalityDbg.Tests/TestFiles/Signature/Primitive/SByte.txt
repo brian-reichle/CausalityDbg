@@ -1,0 +1,9 @@
+﻿00 00 04
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_I1</Primitive>
+    </TypeRef>
+  </Return>
+</Method>

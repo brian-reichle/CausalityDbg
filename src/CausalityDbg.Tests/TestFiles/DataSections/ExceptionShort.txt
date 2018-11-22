@@ -1,0 +1,10 @@
+﻿01 10 00 00
+00 00 01 00 02 03 00 04 EF CD AB 02
+----
+<Clauses>
+  <Clause>
+    <Try offset="1" length="2" />
+    <Handler offset="3" length="4" />
+    <Exception token="02ABCDEF" />
+  </Clause>
+</Clauses>

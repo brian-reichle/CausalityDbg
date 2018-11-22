@@ -1,0 +1,14 @@
+﻿00 01 01 02
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_VOID</Primitive>
+    </TypeRef>
+  </Return>
+  <Param>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_BOOLEAN</Primitive>
+    </TypeRef>
+  </Param>
+</Method>

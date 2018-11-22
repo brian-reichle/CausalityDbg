@@ -1,0 +1,5 @@
+﻿CausalityDbg.Tests, Version=2.1
+----
+Full Name:        CausalityDbg.Tests, Version=2.1
+Name:             CausalityDbg.Tests
+Version:          2.1

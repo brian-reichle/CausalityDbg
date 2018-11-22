@@ -1,0 +1,17 @@
+﻿00 00 1B 60 00 01
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <FNPtr>
+        <Method callingConvention="Standard, HasThis, ExplicitThis">
+          <Return>
+            <TypeRef>
+              <Primitive>ELEMENT_TYPE_VOID</Primitive>
+            </TypeRef>
+          </Return>
+        </Method>
+      </FNPtr>
+    </TypeRef>
+  </Return>
+</Method>

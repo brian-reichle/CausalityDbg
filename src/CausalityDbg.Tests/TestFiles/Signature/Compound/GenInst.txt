@@ -1,0 +1,19 @@
+﻿00 00 15 11 49 02 13 02 1E 03
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <GenericInst>
+        <Template>
+          <ValueType>01000012</ValueType>
+        </Template>
+        <TypeArg>
+          <TypeGenArg>2</TypeGenArg>
+        </TypeArg>
+        <TypeArg>
+          <MethodGenArg>3</MethodGenArg>
+        </TypeArg>
+      </GenericInst>
+    </TypeRef>
+  </Return>
+</Method>

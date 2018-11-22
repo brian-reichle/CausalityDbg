@@ -1,0 +1,9 @@
+﻿00 00 08
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_I4</Primitive>
+    </TypeRef>
+  </Return>
+</Method>

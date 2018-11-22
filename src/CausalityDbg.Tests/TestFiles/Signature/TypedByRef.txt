@@ -1,0 +1,14 @@
+﻿00 01 16 16
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_TYPEDBYREF</Primitive>
+    </TypeRef>
+  </Return>
+  <Param>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_TYPEDBYREF</Primitive>
+    </TypeRef>
+  </Param>
+</Method>

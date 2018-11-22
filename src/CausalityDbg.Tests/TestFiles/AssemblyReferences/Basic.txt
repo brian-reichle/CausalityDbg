@@ -1,0 +1,4 @@
+﻿CausalityDbg.Tests
+----
+Full Name:        CausalityDbg.Tests
+Name:             CausalityDbg.Tests

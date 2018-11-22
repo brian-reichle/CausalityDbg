@@ -1,0 +1,9 @@
+﻿00 00 13 01
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <TypeGenArg>1</TypeGenArg>
+    </TypeRef>
+  </Return>
+</Method>

@@ -1,0 +1,9 @@
+﻿00 00 02
+----
+<Method>
+  <Return>
+    <TypeRef>
+      <Primitive>ELEMENT_TYPE_BOOLEAN</Primitive>
+    </TypeRef>
+  </Return>
+</Method>

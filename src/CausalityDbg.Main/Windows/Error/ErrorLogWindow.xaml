@@ -1,0 +1,74 @@
+<!-- Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Window
+	x:Class="CausalityDbg.Main.ErrorLogWindow"
+	x:ClassModifier="internal"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:CausalityDbg.Main"
+	Title="Error Log"
+	Height="600"
+	Width="600"
+	>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="3" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<ListView
+			Grid.Row="0"
+			ItemsSource="{Binding}"
+			IsSynchronizedWithCurrentItem="True"
+			>
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Header="Seen">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate DataType="{x:Type local:ErrorItemModel}">
+								<CheckBox IsChecked="{Binding HasBeenSeen}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+
+					<GridViewColumn
+						Header="Summary"
+						Width="400"
+						DisplayMemberBinding="{Binding Path=SummaryText}"
+						/>
+				</GridView>
+			</ListView.View>
+		</ListView>
+
+		<GridSplitter
+			Grid.Row="1"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Stretch"
+			ResizeBehavior="PreviousAndNext"
+			ResizeDirection="Rows"
+			/>
+
+		<TextBox
+			Grid.Row="2"
+			Text="{Binding /DetailText, Mode=OneWay}"
+			IsReadOnly="True"
+			Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}"
+			ScrollViewer.HorizontalScrollBarVisibility="Auto"
+			ScrollViewer.VerticalScrollBarVisibility="Visible"
+			/>
+
+		<StackPanel
+			Grid.Row="3"
+			Orientation="Horizontal"
+			HorizontalAlignment="Right"
+			>
+			<Button
+				Content="Close"
+				Margin="3"
+				Width="75"
+				Command="Close"
+				/>
+		</StackPanel>
+	</Grid>
+</Window>

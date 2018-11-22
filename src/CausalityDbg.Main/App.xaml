@@ -1,0 +1,73 @@
+<!-- Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Application
+	x:Class="CausalityDbg.Main.App"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:CausalityDbg.Main"
+	StartupUri="Windows/Main/MainWindow.xaml"
+	>
+	<Application.Resources>
+		<local:FGColorConverter x:Key="FGColorConverter" />
+		<local:BGColorConverter x:Key="BGColorConverter" />
+		<local:NotificationColorConverter x:Key="NotificationColorConverter" />
+		<local:LabelAndCountConverter x:Key="LabelAndCountConverter" />
+
+		<local:EnumRadioConverter x:Key="TraceModeConverter" UnsetValue="{x:Static local:TraceMode.None}" />
+
+		<Style x:Key="ThinTabItemStyle" TargetType="{x:Type TabItem}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type TabItem}">
+						<Border
+							x:Name="Border"
+							BorderBrush="Black"
+							BorderThickness="0,0,1,0"
+							Padding="4,2"
+							Background="{TemplateBinding Background}"
+							>
+							<ContentPresenter
+								x:Name="ContentSite"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Center"
+								ContentSource="Header"
+								/>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsSelected" Value="True">
+								<Setter TargetName="Border" Property="Background" Value="{x:Static SystemColors.HighlightBrush}" />
+								<Setter TargetName="Border" Property="TextBlock.Foreground" Value="{x:Static SystemColors.HighlightTextBrush}" />
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<Style x:Key="ThinTabControlStyle" TargetType="{x:Type TabControl}">
+			<Setter Property="SnapsToDevicePixels" Value="True" />
+			<Setter Property="ItemContainerStyle" Value="{StaticResource ThinTabItemStyle}" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type TabControl}">
+						<Grid Background="{TemplateBinding Background}">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+
+							<TabPanel
+								Grid.Row="0"
+								IsItemsHost="True"
+								/>
+
+							<ContentPresenter
+								Grid.Row="1"
+								ContentSource="SelectedContent"
+								/>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Application.Resources>
+</Application>

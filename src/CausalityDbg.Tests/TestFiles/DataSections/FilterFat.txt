@@ -1,0 +1,10 @@
+﻿41 1C 00 00
+01 00 00 00 01 00 00 00 02 00 00 00 04 00 00 00 05 00 00 00 03 00 00 00
+----
+<Clauses>
+  <Filter>
+    <Try offset="1" length="2" />
+    <Handler offset="4" length="5" />
+    <Filter offset="3" />
+  </Filter>
+</Clauses>
