@@ -88,7 +88,10 @@ namespace CausalityDbg.Core
 			}
 			finally
 			{
-				import.CloseEnum(hEnum);
+				if (hEnum != IntPtr.Zero)
+				{
+					import.CloseEnum(hEnum);
+				}
 			}
 		}
 
@@ -152,7 +155,10 @@ namespace CausalityDbg.Core
 			}
 			finally
 			{
-				import.CloseEnum(hEnum);
+				if (hEnum != IntPtr.Zero)
+				{
+					import.CloseEnum(hEnum);
+				}
 			}
 
 			return null;
