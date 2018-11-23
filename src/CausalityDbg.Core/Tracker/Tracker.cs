@@ -528,7 +528,7 @@ namespace CausalityDbg.Core
 			var function = frame.GetFunction();
 			var clauses = function.GetExceptionClauses();
 			var eventId = GetEventId(_config.ExceptionCategory, exception);
-			var isFilter = reason == CorDebugStepReason.STEP_EXCEPTION_FILTER;
+			var isFilter = reason == CorDebugStepReason.STEP_EXCEPTION_FILTER || reason == CorDebugStepReason.STEP_INTERCEPT;
 			var isTerminal = false;
 
 			int start;
