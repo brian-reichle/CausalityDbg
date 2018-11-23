@@ -91,7 +91,9 @@ namespace CausalityDbg.Core
 
 			for (var i = 0; i < _list.Count; i++)
 			{
-				if (_list[i].Handle.GetValue() == targetAddress)
+				var handle = _list[i].Handle;
+
+				if (!handle.IsNullOrCollected() && handle.GetValue() == targetAddress)
 				{
 					return i;
 				}
