@@ -27,6 +27,12 @@ namespace CausalityDbg.Core
 			_stepperLookup.Add(stepper, action);
 		}
 
+		public void AbortStepper(ICorDebugStepper stepper)
+		{
+			_stepperLookup.Remove(stepper);
+			stepper.Deactivate();
+		}
+
 		public void RegisterEvalAction(ICorDebugEval eval, Action<ICorDebugEval, bool> action)
 		{
 			_evalLookup.Add(eval, action);

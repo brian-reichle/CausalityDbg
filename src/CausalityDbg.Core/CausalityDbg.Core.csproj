@@ -91,6 +91,7 @@
     <Compile Include="Native\CorDebugApi\ICorDebugReferenceValue.cs" />
     <Compile Include="Interfaces\TrackerNotificationLevel.cs" />
     <Compile Include="BitnessHelper.cs" />
+    <Compile Include="Tracker\ExceptionData.cs" />
     <Compile Include="Native\Win32\Enum\BinaryType.cs" />
     <Compile Include="Extensions\NotifierExtensions.cs" />
     <Compile Include="Native\Win32\NativeMethods.Advapi32.cs" />

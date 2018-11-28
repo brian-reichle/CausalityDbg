@@ -24,6 +24,7 @@ namespace CausalityDbg.Core
 			_cache = new MetaProvider();
 			_frameFactory = new FrameDataFactory(_cache);
 			_scopeIdLookup = new Dictionary<ICorDebugThread, ScopeData>();
+			_currentExceptionData = new Dictionary<ICorDebugThread, ExceptionData>();
 			_eventMapper = new EventMapper();
 		}
 
@@ -379,10 +380,21 @@ namespace CausalityDbg.Core
 			}
 		}
 
+		void AbortCurrentExceptionTrace(ICorDebugThread thread)
+		{
+			if (_currentExceptionData.TryGetValue(thread, out var data))
+			{
+				_callback.AbortStepper(data.CurrentStepper);
+				_currentExceptionData.Remove(thread);
+			}
+		}
+
 		void ReportException(ICorDebugThread thread, ICorDebugFrame topFrame)
 		{
 			if (_scopeIdLookup.TryGetValue(thread, out var scope))
 			{
+				AbortCurrentExceptionTrace(thread);
+
 				var exception = thread.GetCurrentException();
 				var exceptionType = ((ICorDebugValue2)exception).GetExactType();
 				var module = topFrame.GetFunction().GetModule();
@@ -425,6 +437,7 @@ namespace CausalityDbg.Core
 				stepper.SetInterceptMask(CorDebugIntercept.INTERCEPT_EXCEPTION_FILTER);
 				stepper.Step(true);
 
+				_currentExceptionData.Add(thread, new ExceptionData(stepper));
 				_callback.RegisterStepperAction(stepper, PushExceptionHandlerScopeAtEndOfBatch);
 			}
 		}
@@ -551,12 +564,9 @@ namespace CausalityDbg.Core
 				switch (clause.Flags)
 				{
 					case ExceptionHandlingClauseOptions.Clause:
-						category = _config.CatchCategory;
-						isTerminal = true;
-						break;
-
 					case ExceptionHandlingClauseOptions.Filter:
 						category = _config.CatchCategory;
+						isTerminal = true;
 						break;
 
 					case ExceptionHandlingClauseOptions.Fault:
@@ -586,10 +596,13 @@ namespace CausalityDbg.Core
 			{
 				_eventMapper.Remove(_config.ExceptionCategory, exception);
 				_callback.RegisterStepperAction(stepper, (t, r) => StepperExit(t, scope));
+				_currentExceptionData.Remove(thread);
 			}
 			else
 			{
 				_callback.RegisterStepperAction(stepper, (t, r) => StepperExitExceptionScope(t, scope, r));
+				var exData = _currentExceptionData[thread];
+				exData.CurrentStepper = stepper;
 			}
 		}
 
@@ -737,6 +750,7 @@ namespace CausalityDbg.Core
 		readonly MetaProvider _cache;
 		readonly FrameDataFactory _frameFactory;
 		readonly Dictionary<ICorDebugThread, ScopeData> _scopeIdLookup;
+		readonly Dictionary<ICorDebugThread, ExceptionData> _currentExceptionData;
 		readonly EventMapper _eventMapper;
 	}
 }
