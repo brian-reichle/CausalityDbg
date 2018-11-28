@@ -1,4 +1,4 @@
-﻿CausalityDbg.Tests, Version=2.1.421.500
+CausalityDbg.Tests, Version=2.1.421.500
 ----
 Full Name:        CausalityDbg.Tests, Version=2.1.421.500
 Name:             CausalityDbg.Tests

@@ -1,4 +1,4 @@
-﻿CausalityDbg.Tests, ProcessorArchitecture=msil
+CausalityDbg.Tests, ProcessorArchitecture=msil
 ----
 Full Name:        CausalityDbg.Tests, ProcessorArchitecture=msil
 Name:             CausalityDbg.Tests

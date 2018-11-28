@@ -1,4 +1,4 @@
-﻿10 02 00 01
+10 02 00 01
 ----
 <Method genericParameterCount="2">
   <Return>

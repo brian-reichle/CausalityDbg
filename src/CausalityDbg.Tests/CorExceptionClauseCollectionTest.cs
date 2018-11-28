@@ -1,6 +1,7 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 using CausalityDbg.IL;
 using NUnit.Framework;
@@ -74,8 +75,9 @@ namespace CausalityDbg.Tests
 
 		static string Format(CorExceptionClauseCollection clauses)
 		{
-			using (var writer = new StringWriter())
-			using (var xmlWriter = new XmlTextWriter(writer))
+			var builder = new StringBuilder();
+
+			using (var xmlWriter = new XmlTextWriter(new StringWriter(builder)))
 			{
 				xmlWriter.Formatting = Formatting.Indented;
 				xmlWriter.IndentChar = ' ';
@@ -115,9 +117,11 @@ namespace CausalityDbg.Tests
 				}
 
 				xmlWriter.WriteEndElement();
-
-				return writer.ToString();
+				xmlWriter.Flush();
 			}
+
+			builder.AppendLine();
+			return builder.ToString();
 		}
 
 		readonly byte[] _blob;

@@ -1,4 +1,4 @@
-﻿CausalityDbg.Tests, ProcessorArchitecture=x86
+CausalityDbg.Tests, ProcessorArchitecture=x86
 ----
 Full Name:        CausalityDbg.Tests, ProcessorArchitecture=x86
 Name:             CausalityDbg.Tests

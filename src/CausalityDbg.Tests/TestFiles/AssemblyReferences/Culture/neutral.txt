@@ -1,4 +1,4 @@
-﻿CausalityDbg.Tests, Culture=neutral
+CausalityDbg.Tests, Culture=neutral
 ----
 Full Name:        CausalityDbg.Tests, Culture=neutral
 Name:             CausalityDbg.Tests
