@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using CausalityDbg.Core;
 
 namespace CausalityDbg.Main
 {
@@ -51,6 +52,21 @@ namespace CausalityDbg.Main
 
 		public void Launch()
 		{
+			_tracker.Launch(CreteLaunchArguments());
+
+			var settings = SettingsStorage.Launch;
+
+			if (Process != settings.Process ||
+				Directory != settings.Directory ||
+				Arguments != settings.Arguments ||
+				NGenMode != settings.Mode)
+			{
+				SettingsStorage.Launch = new SettingsLaunch(Process, Directory, Arguments, NGenMode);
+			}
+		}
+
+		LaunchArguments CreteLaunchArguments()
+		{
 			var directory = Directory;
 			var process = Process;
 
@@ -64,17 +80,22 @@ namespace CausalityDbg.Main
 				process = Path.Combine(Environment.CurrentDirectory, process);
 			}
 
-			_tracker.Launch(process, Arguments, directory, NGenMode);
+			var args = new LaunchArguments(process, Arguments, directory);
 
-			var settings = SettingsStorage.Launch;
-
-			if (Process != settings.Process ||
-				Directory != settings.Directory ||
-				Arguments != settings.Arguments ||
-				NGenMode != settings.Mode)
+			switch (NGenMode)
 			{
-				SettingsStorage.Launch = new SettingsLaunch(Process, Directory, Arguments, NGenMode);
+				case NGenMode.Targeted:
+					args.UseDebugNGENImages = true;
+					break;
+
+				case NGenMode.Dissable:
+					var environment = Environment.GetEnvironmentVariables();
+					environment["COMPLUS_ZapDisable"] = "1";
+					args.Environment = environment;
+					break;
 			}
+
+			return args;
 		}
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]

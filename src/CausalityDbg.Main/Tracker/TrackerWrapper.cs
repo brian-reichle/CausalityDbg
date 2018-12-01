@@ -1,6 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Threading;
@@ -29,7 +28,7 @@ namespace CausalityDbg.Main
 
 		public ITrackerStatus Status { get; set; }
 
-		public void StartProcess(string process, string arguments, string directory, DataProvider store, NGenMode mode)
+		public void StartProcess(LaunchArguments args, DataProvider store)
 		{
 			lock (_queue)
 			{
@@ -42,16 +41,7 @@ namespace CausalityDbg.Main
 				{
 					Close(ref _tracker);
 					_tracker = TrackerFactory.New(_config);
-
-					IDictionary environment = null;
-
-					if (mode == NGenMode.Dissable)
-					{
-						environment = Environment.GetEnvironmentVariables();
-						environment["COMPLUS_ZapDisable"] = "1";
-					}
-
-					_tracker.Attach(process, arguments, directory, callback, environment, mode == NGenMode.Targeted);
+					_tracker.Attach(args, callback);
 				});
 
 				Monitor.Pulse(_queue);

@@ -54,9 +54,8 @@ namespace CausalityDbg.Core
 				_debugger.Terminate();
 				_debugger = null;
 
-				var comEx = ex as COMException;
-
-				if (comEx != null && comEx.ErrorCode == (int)HResults.CORDBG_E_DEBUGGER_ALREADY_ATTACHED)
+				if (ex is COMException comEx &&
+					comEx.ErrorCode == (int)HResults.CORDBG_E_DEBUGGER_ALREADY_ATTACHED)
 				{
 					throw new AttachException(AttachErrorType.AlreadyAttached, ex);
 				}
@@ -65,25 +64,23 @@ namespace CausalityDbg.Core
 			}
 		}
 
-		public void Attach(string process, string arguments, string directory, ITrackerCallback callback, IDictionary environment, bool useDebugNGENImages)
+		public void Attach(LaunchArguments launchArgs, ITrackerCallback callback)
 		{
-			if (process == null) throw new ArgumentNullException(nameof(process));
-			if (arguments == null) throw new ArgumentNullException(nameof(arguments));
-			if (directory == null) throw new ArgumentNullException(nameof(directory));
+			if (launchArgs == null) throw new ArgumentNullException(nameof(launchArgs));
 			if (callback == null) throw new ArgumentNullException(nameof(callback));
 
 			if (_trackerCallback != null) throw new InvalidOperationException("Tracker already in use.");
 			_trackerCallback = callback;
 
-			if (!File.Exists(process)) throw new AttachException(AttachErrorType.FileNotFound);
-			if (!Directory.Exists(directory)) throw new AttachException(AttachErrorType.DirectoryNotFound);
+			if (!File.Exists(launchArgs.Process)) throw new AttachException(AttachErrorType.FileNotFound);
+			if (!Directory.Exists(launchArgs.Directory)) throw new AttachException(AttachErrorType.DirectoryNotFound);
 
-			if (BitnessHelper.IsExecutable64Bit(process) != Environment.Is64BitProcess) throw new AttachException(AttachErrorType.IncompatiblePlatforms);
+			if (BitnessHelper.IsExecutable64Bit(launchArgs.Process) != Environment.Is64BitProcess) throw new AttachException(AttachErrorType.IncompatiblePlatforms);
 
 			_callback = new ManagedCallback(this);
-			_useDebugNGENImages = useDebugNGENImages;
+			_useDebugNGENImages = launchArgs.UseDebugNGENImages;
 
-			_debugger = CorDebuggerHelper.CreateDebuggingInterfaceForProcess(process);
+			_debugger = CorDebuggerHelper.CreateDebuggingInterfaceForProcess(launchArgs.Process);
 			_debugger.Initialize();
 			_debugger.SetManagedHandler(_callback);
 
@@ -100,9 +97,9 @@ namespace CausalityDbg.Core
 				var environmentBlock = IntPtr.Zero;
 				var flags = ProcessCreationFlags.None;
 
-				if (environment != null)
+				if (launchArgs.Environment != null)
 				{
-					var chars = ConstructEnvironmentBlock(environment);
+					var chars = ConstructEnvironmentBlock(launchArgs.Environment);
 					flags |= ProcessCreationFlags.CREATE_UNICODE_ENVIRONMENT;
 					environmentBlock = Marshal.AllocCoTaskMem(chars.Length << 1);
 					Marshal.Copy(chars, 0, environmentBlock, chars.Length);
@@ -111,14 +108,14 @@ namespace CausalityDbg.Core
 				try
 				{
 					_debugger.CreateProcess(
-						process,
-						ConstructCommandLine(process, arguments),
+						launchArgs.Process,
+						ConstructCommandLine(launchArgs.Process, launchArgs.Arguments),
 						IntPtr.Zero,
 						IntPtr.Zero,
 						true,
 						flags,
 						environmentBlock,
-						directory,
+						launchArgs.Directory,
 						info,
 						proc,
 						0,

@@ -88,11 +88,11 @@ namespace CausalityDbg.Main
 
 		public ObservableCollection<Notification> Notifications { get; }
 
-		public void Launch(string process, string arguments, string directory, NGenMode mode)
+		public void Launch(LaunchArguments args)
 		{
 			var provider = new DataProvider();
 			Notifications.Clear();
-			_tracker.StartProcess(process, arguments, directory, provider, mode);
+			_tracker.StartProcess(args, provider);
 			Source = provider;
 			Selected = null;
 		}

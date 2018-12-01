@@ -51,6 +51,7 @@
     <Compile Include="Config\ConfigParser.cs" />
     <Compile Include="Config\ConfigHook.cs" />
     <Compile Include="Config\MethodRef.cs" />
+    <Compile Include="Interfaces\LaunchArguments.cs" />
     <Compile Include="Native\CLRHostApi\ICLRMetaHost.cs" />
     <Compile Include="Native\CLRHostApi\ICLRRuntimeInfo.cs" />
     <Compile Include="Native\CLRHostApi\IEnumUnknown.cs" />
