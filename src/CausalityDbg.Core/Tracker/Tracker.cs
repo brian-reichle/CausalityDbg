@@ -80,7 +80,7 @@ namespace CausalityDbg.Core
 			_callback = new ManagedCallback(this);
 			_useDebugNGENImages = launchArgs.UseDebugNGENImages;
 
-			_debugger = CorDebuggerHelper.CreateDebuggingInterfaceForProcess(launchArgs.Process);
+			_debugger = CorDebuggerHelper.CreateDebuggingInterfaceForProcess(launchArgs.Process, launchArgs.RuntimeVersion);
 			_debugger.Initialize();
 			_debugger.SetManagedHandler(_callback);
 

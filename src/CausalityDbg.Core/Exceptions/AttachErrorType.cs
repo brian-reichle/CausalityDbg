@@ -8,6 +8,7 @@ namespace CausalityDbg.Core
 		FrameworkNotLoaded,
 		ProcessNotFound,
 		UnsupportedCLRVersion,
+		MissingCLRVersion,
 		FileNotFound,
 		DirectoryNotFound,
 		IncompatiblePlatforms,

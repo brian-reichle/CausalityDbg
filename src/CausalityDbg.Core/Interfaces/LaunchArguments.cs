@@ -22,5 +22,6 @@ namespace CausalityDbg.Core
 		public string Directory { get; }
 		public IDictionary Environment { get; set; }
 		public bool UseDebugNGENImages { get; set; }
+		public string RuntimeVersion { get; set; }
 	}
 }

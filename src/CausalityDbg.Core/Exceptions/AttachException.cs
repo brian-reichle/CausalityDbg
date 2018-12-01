@@ -60,6 +60,7 @@ namespace CausalityDbg.Core
 				case AttachErrorType.FrameworkNotLoaded: return "The target process has not loaded the CLR.";
 				case AttachErrorType.ProcessNotFound: return "Process not found.";
 				case AttachErrorType.UnsupportedCLRVersion: return "The target process has loaded an unsupported version of the CLR.";
+				case AttachErrorType.MissingCLRVersion: return "The selected version of the CLR isn't installed.";
 				case AttachErrorType.FileNotFound: return "The target process executable could not be found.";
 				case AttachErrorType.DirectoryNotFound: return "The target directory could not be found.";
 				case AttachErrorType.IncompatiblePlatforms: return "Cannot debug a process running on an incompatible platform.";

@@ -3,17 +3,19 @@ namespace CausalityDbg.Main
 {
 	sealed class SettingsLaunch
 	{
-		public SettingsLaunch(string process, string directory, string arguments, NGenMode mode)
+		public SettingsLaunch(string process, string directory, string arguments, string runtimeVersion, NGenMode mode)
 		{
 			Process = process;
 			Directory = directory;
 			Arguments = arguments;
+			RuntimeVersion = runtimeVersion;
 			Mode = mode;
 		}
 
 		public string Process { get; }
 		public string Directory { get; }
 		public string Arguments { get; }
+		public string RuntimeVersion { get; }
 		public NGenMode Mode { get; }
 	}
 }

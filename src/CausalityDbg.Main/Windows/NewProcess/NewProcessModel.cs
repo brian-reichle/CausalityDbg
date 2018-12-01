@@ -16,6 +16,7 @@ namespace CausalityDbg.Main
 			_process = settings.Process;
 			_directory = settings.Directory;
 			_arguments = settings.Arguments;
+			_rtVersion = settings.RuntimeVersion;
 		}
 
 		public string Process
@@ -39,6 +40,12 @@ namespace CausalityDbg.Main
 			set => SetField(ref _directory, value ?? string.Empty);
 		}
 
+		public string RTVersion
+		{
+			get => _rtVersion;
+			set => SetField(ref _rtVersion, value ?? string.Empty);
+		}
+
 		public NGenMode NGenMode
 		{
 			[DebuggerStepThrough]
@@ -59,9 +66,10 @@ namespace CausalityDbg.Main
 			if (Process != settings.Process ||
 				Directory != settings.Directory ||
 				Arguments != settings.Arguments ||
+				RTVersion != settings.RuntimeVersion ||
 				NGenMode != settings.Mode)
 			{
-				SettingsStorage.Launch = new SettingsLaunch(Process, Directory, Arguments, NGenMode);
+				SettingsStorage.Launch = new SettingsLaunch(Process, Directory, Arguments, RTVersion, NGenMode);
 			}
 		}
 
@@ -69,6 +77,7 @@ namespace CausalityDbg.Main
 		{
 			var directory = Directory;
 			var process = Process;
+			var version = RTVersion;
 
 			if (string.IsNullOrEmpty(directory))
 			{
@@ -81,6 +90,11 @@ namespace CausalityDbg.Main
 			}
 
 			var args = new LaunchArguments(process, Arguments, directory);
+
+			if (!string.IsNullOrEmpty(version))
+			{
+				args.RuntimeVersion = version;
+			}
 
 			switch (NGenMode)
 			{
@@ -104,6 +118,8 @@ namespace CausalityDbg.Main
 		string _arguments;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		string _directory;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		string _rtVersion;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		NGenMode _ngenMode;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]

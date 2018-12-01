@@ -75,6 +75,7 @@ namespace CausalityDbg.Main
 				launchRoot.SetValue("Process", model.Process ?? string.Empty, RegistryValueKind.String);
 				launchRoot.SetValue("Directory", model.Directory ?? string.Empty, RegistryValueKind.String);
 				launchRoot.SetValue("Arguments", model.Arguments ?? string.Empty, RegistryValueKind.String);
+				launchRoot.SetValue("RTVersion", model.RuntimeVersion ?? string.Empty, RegistryValueKind.String);
 				launchRoot.SetValue("ZapDisable", (int)model.Mode, RegistryValueKind.DWord);
 			}
 		}
@@ -92,14 +93,15 @@ namespace CausalityDbg.Main
 							var process = (string)launchRoot.GetValue("Process", string.Empty);
 							var directory = (string)launchRoot.GetValue("Directory", string.Empty);
 							var arguments = (string)launchRoot.GetValue("Arguments", string.Empty);
+							var version = (string)launchRoot.GetValue("RTVersion", string.Empty);
 							var mode = (NGenMode)launchRoot.GetValue("ZapDisable", (int)NGenMode.Standard);
-							return new SettingsLaunch(process, directory, arguments, mode);
+							return new SettingsLaunch(process, directory, arguments, version, mode);
 						}
 					}
 				}
 			}
 
-			return new SettingsLaunch(string.Empty, string.Empty, string.Empty, NGenMode.Standard);
+			return new SettingsLaunch(string.Empty, string.Empty, string.Empty, null, NGenMode.Standard);
 		}
 
 		static ImmutableArray<SettingsExternalTool> LoadTools(RegistryKey settingRoot)

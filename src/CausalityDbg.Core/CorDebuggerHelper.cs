@@ -41,11 +41,16 @@ namespace CausalityDbg.Core
 			}
 		}
 
-		public static ICorDebug CreateDebuggingInterfaceForProcess(string process)
+		public static ICorDebug CreateDebuggingInterfaceForProcess(string process, string version)
 		{
 			var host = CLRCreateMetaHost();
-			var runtime = host.GetRequiredRuntime(process);
-			return runtime.GetCorDebug();
+
+			if (version == null)
+			{
+				version = host.GetVersionFromFile(process);
+			}
+
+			return host.GetRuntime(version).GetCorDebug();
 		}
 
 		static ICLRMetaHost CLRCreateMetaHost()

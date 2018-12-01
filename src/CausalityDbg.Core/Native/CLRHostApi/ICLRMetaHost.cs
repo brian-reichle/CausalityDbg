@@ -14,10 +14,11 @@ namespace CausalityDbg.Core.CLRHostApi
 		//     [in, REFIID riid,
 		//     [out,iid_is(riid), retval] LPVOID *ppRuntime
 		// );
-		[return: MarshalAs(UnmanagedType.Interface)]
-		object GetRuntime(
+		[PreserveSig]
+		int GetRuntime(
 			[MarshalAs(UnmanagedType.LPWStr)] string pwzVersion,
-			[MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			[MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+			[MarshalAs(UnmanagedType.Interface)] out object ppRuntime);
 
 		// HRESULT GetVersionFromFile(
 		//     [in] LPCWSTR pwzFilePath,

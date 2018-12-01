@@ -6,7 +6,7 @@ namespace CausalityDbg.Core
 {
 	static class MetaHostExtensions
 	{
-		public static ICLRRuntimeInfo GetRequiredRuntime(this ICLRMetaHost host, string path)
+		public static string GetVersionFromFile(this ICLRMetaHost host, string path)
 		{
 			var size = 0u;
 			var hr = host.GetVersionFromFile(path, null, ref size);
@@ -28,9 +28,26 @@ namespace CausalityDbg.Core
 				throw Marshal.GetExceptionForHR(hr);
 			}
 
-			var version = new string(buffer, 0, (int)size);
+			return new string(buffer, 0, (int)size);
+		}
 
-			return (ICLRRuntimeInfo)host.GetRuntime(version, typeof(ICLRRuntimeInfo).GUID);
+		public static ICLRRuntimeInfo GetRuntime(this ICLRMetaHost host, string version)
+		{
+			var hr = host.GetRuntime(version, typeof(ICLRRuntimeInfo).GUID, out var result);
+
+			if (hr < 0)
+			{
+				var ex = Marshal.GetExceptionForHR(hr);
+
+				if (hr == (int)HResults.CLR_E_SHIM_RUNTIMELOAD)
+				{
+					throw new AttachException(AttachErrorType.MissingCLRVersion, ex);
+				}
+
+				throw ex;
+			}
+
+			return (ICLRRuntimeInfo)result;
 		}
 	}
 }

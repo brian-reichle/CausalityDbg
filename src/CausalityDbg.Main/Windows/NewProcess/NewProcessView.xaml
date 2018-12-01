@@ -5,9 +5,9 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:local="clr-namespace:CausalityDbg.Main"
 	Title="Launch Process"
-	Height="180"
+	Height="200"
 	Width="300"
-	MinHeight="180"
+	MinHeight="200"
 	MinWidth="300"
 	FocusManager.FocusedElement="{Binding ElementName=processTextBox}"
 	WindowStartupLocation="CenterOwner"
@@ -30,6 +30,7 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="10" />
 			<RowDefinition Height="Auto" />
@@ -65,6 +66,12 @@
 
 		<Label
 			Grid.Row="5"
+			Grid.Column="1"
+			Content="RT Version"
+			/>
+
+		<Label
+			Grid.Row="6"
 			Grid.Column="1"
 			Content="NGEN Mode"
 			/>
@@ -125,12 +132,25 @@
 			Grid.ColumnSpan="2"
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Center"
+			Text="{Binding RTVersion}"
+			>
+			<ComboBoxItem Content="" />
+			<ComboBoxItem Content="v4.0.30319" />
+			<ComboBoxItem Content="v2.0.50727" />
+		</ComboBox>
+
+		<ComboBox
+			Grid.Row="6"
+			Grid.Column="3"
+			Grid.ColumnSpan="2"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Center"
 			Text="{Binding NGenMode}"
 			ItemsSource="{local:EnumValueList {x:Type local:NGenMode}}"
 			/>
 
 		<StackPanel
-			Grid.Row="7"
+			Grid.Row="8"
 			Grid.Column="3"
 			Grid.ColumnSpan="2"
 			Orientation="Horizontal"
