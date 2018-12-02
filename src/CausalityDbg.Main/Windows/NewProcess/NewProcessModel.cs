@@ -17,6 +17,7 @@ namespace CausalityDbg.Main
 			_directory = settings.Directory;
 			_arguments = settings.Arguments;
 			_rtVersion = settings.RuntimeVersion;
+			_ngenMode = settings.Mode;
 		}
 
 		public string Process
