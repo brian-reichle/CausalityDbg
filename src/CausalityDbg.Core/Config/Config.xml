@@ -63,7 +63,7 @@
 			-->
 		</c:event>
 		<c:event category="TPLTask">
-			<c:methodRef class="System.Threading.Tasks.Task" method=".ctor">
+			<c:methodRef class="System.Threading.Tasks.Task" method="ScheduleAndStart">
 				<c:key>this</c:key>
 			</c:methodRef>
 		</c:event>
@@ -86,7 +86,7 @@
 
 	<c:assembly id="WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
 		<c:event category="DispatcherTask">
-			<c:methodRef class="System.Windows.Threading.DispatcherOperation" method=".ctor">
+			<c:methodRef class="System.Windows.Threading.DispatcherOperation" method=".ctor(System.Windows.Threading.Dispatcher, System.Delegate, System.Windows.Threading.DispatcherPriority, System.Object, System.Int32, System.Windows.Threading.DispatcherOperationTaskSource, System.Boolean)">
 				<c:key>this</c:key>
 			</c:methodRef>
 		</c:event>
