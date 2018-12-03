@@ -123,6 +123,7 @@ namespace CausalityDbg.Core
 			switch (reason)
 			{
 				case CorDebugChainReason.CHAIN_CLASS_INIT:
+				case CorDebugChainReason.CHAIN_EXCEPTION_FILTER:
 				case CorDebugChainReason.CHAIN_CONTEXT_POLICY:
 				case CorDebugChainReason.CHAIN_NONE:
 				case CorDebugChainReason.CHAIN_SECURITY:
