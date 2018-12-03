@@ -13,5 +13,6 @@ namespace CausalityDbg.Main
 
 		public int ID { get; }
 		public int MaxDepth { get; set; }
+		public long Available { get; set; }
 	}
 }

@@ -16,6 +16,7 @@ namespace CausalityDbg.Main
 			_closedBands = new List<Band>();
 			_scopes = new List<Scope>();
 			_events = new List<Event>();
+			_bandCoolDown = freq >> 3;
 		}
 
 		public int CountBands => _bands.Count;
@@ -62,7 +63,7 @@ namespace CausalityDbg.Main
 			}
 			else
 			{
-				scope = new Scope(GetAvailableBand(), trigger, item, scopeId, _mappings.Mark(fromTimestamp));
+				scope = new Scope(GetAvailableBand(fromTimestamp), trigger, item, scopeId, _mappings.Mark(fromTimestamp));
 			}
 
 			if (scope.Depth > scope.Band.MaxDepth)
@@ -90,6 +91,7 @@ namespace CausalityDbg.Main
 
 			if (scope.Host == null)
 			{
+				scope.Band.Available = toTimestamp + _bandCoolDown;
 				_closedBands.Add(scope.Band);
 			}
 
@@ -100,13 +102,13 @@ namespace CausalityDbg.Main
 
 		void OnDataChanged() => DataChanged?.Invoke(this, EventArgs.Empty);
 
-		Band GetAvailableBand()
+		Band GetAvailableBand(long start)
 		{
 			Band result = null;
 
 			foreach (var band in _closedBands)
 			{
-				if (result == null || band.ID < result.ID)
+				if (band.Available < start && (result == null || band.ID < result.ID))
 				{
 					result = band;
 				}
@@ -121,6 +123,7 @@ namespace CausalityDbg.Main
 				_closedBands.Remove(result);
 			}
 
+			result.Available = long.MaxValue;
 			return result;
 		}
 
@@ -129,5 +132,6 @@ namespace CausalityDbg.Main
 		readonly List<Band> _closedBands;
 		readonly List<Scope> _scopes;
 		readonly List<Event> _events;
+		readonly long _bandCoolDown;
 	}
 }
