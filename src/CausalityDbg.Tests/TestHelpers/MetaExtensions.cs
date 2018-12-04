@@ -48,6 +48,11 @@ namespace CausalityDbg.Tests
 			return new MetaFunction(declaringType.Module, declaringType, MetaDataToken.Nil, name, genTypeArgs, CallingConventions.Standard, ImmutableArray.Create(parameters));
 		}
 
+		public static MetaCompoundClass Init(this MetaType targetType, ImmutableArray<MetaCompound> typeParameters)
+		{
+			return new MetaCompoundClass(targetType, typeParameters);
+		}
+
 		public static MetaCompoundClass Init(this MetaType targetType, params MetaCompound[] typeParameters)
 		{
 			return new MetaCompoundClass(targetType, ImmutableArray.Create(typeParameters));
@@ -76,16 +81,6 @@ namespace CausalityDbg.Tests
 		public static MetaParameter ToParam(this MetaCompound paramType, string name)
 		{
 			return new MetaParameter(name, paramType);
-		}
-
-		public static MetaFrame ToFrame(this MetaFunction function, params MetaCompound[] typeParameters)
-		{
-			return function.ToFrame(null, typeParameters);
-		}
-
-		public static MetaFrame ToFrame(this MetaFunction function, int? ilOffset, params MetaCompound[] typeParameters)
-		{
-			return new MetaFrame(function, ilOffset, ImmutableArray.Create(typeParameters));
 		}
 	}
 }

@@ -102,6 +102,27 @@ namespace CausalityDbg.Core.MetaCache
 			}
 		}
 
+		public ImmutableArray<MetaCompound> GetCompounds(ICorDebugModule module, ICorDebugTypeEnum types)
+		{
+			var count = types.GetCount();
+
+			if (count == 0)
+			{
+				return ImmutableArray<MetaCompound>.Empty;
+			}
+
+			var result = ImmutableArray.CreateBuilder<MetaCompound>(count);
+			result.Count = count;
+
+			for (var i = 0; i < count; i++)
+			{
+				types.Next(1, out var type);
+				result[i] = GetCompound(module, type);
+			}
+
+			return result.MoveToImmutable();
+		}
+
 		public MetaFunction GetFunction(ICorDebugFunction function)
 		{
 			if (function == null)
@@ -112,19 +133,6 @@ namespace CausalityDbg.Core.MetaCache
 			var module = function.GetModule();
 			var cache = GetCache(module);
 			return cache.GetFunction(module, function.GetToken());
-		}
-
-		public MetaFrame GetFrame(ICorDebugILFrame frame)
-		{
-			var function = frame.GetFunction();
-			var module = function.GetModule();
-
-			var frame2 = frame as ICorDebugILFrame2;
-			var genArgs = frame2 == null
-				? ImmutableArray<MetaCompound>.Empty
-				: GetCompounds(module, frame2.EnumerateTypeParameters());
-
-			return new MetaFrame(GetFunction(function), frame.GetIP(), genArgs);
 		}
 
 		public void UnloadModule(ICorDebugModule module)
@@ -168,27 +176,6 @@ namespace CausalityDbg.Core.MetaCache
 			}
 
 			return result;
-		}
-
-		ImmutableArray<MetaCompound> GetCompounds(ICorDebugModule module, ICorDebugTypeEnum types)
-		{
-			var count = types.GetCount();
-
-			if (count == 0)
-			{
-				return ImmutableArray<MetaCompound>.Empty;
-			}
-
-			var result = ImmutableArray.CreateBuilder<MetaCompound>(count);
-			result.Count = count;
-
-			for (var i = 0; i < count; i++)
-			{
-				types.Next(1, out var type);
-				result[i] = GetCompound(module, type);
-			}
-
-			return result.MoveToImmutable();
 		}
 
 		readonly Dictionary<CorElementType, MetaType> _primitiveLookup;

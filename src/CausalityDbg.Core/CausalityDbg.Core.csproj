@@ -165,7 +165,6 @@
     <Compile Include="MetaCache\MetaCompoundGenArg.cs" />
     <Compile Include="MetaCache\MetaCompoundPointer.cs" />
     <Compile Include="MetaCache\MetaFormatter.cs" />
-    <Compile Include="MetaCache\MetaFrame.cs" />
     <Compile Include="MetaCache\MetaFunction.cs" />
     <Compile Include="MetaCache\MetaIDStringFormatter.cs" />
     <Compile Include="MetaCache\MetaModule.cs" />

@@ -17,12 +17,10 @@ namespace CausalityDbg.Core
 			_readers = new Dictionary<MetaModule, ISymUnmanagedReader>();
 		}
 
-		public SourceSection Get(MetaFrame frame)
+		public SourceSection Get(MetaFunction function, int ilOffset)
 		{
 			if (_isDisposed) throw new ObjectDisposedException(nameof(SourceProvider));
-			if (frame == null) throw new ArgumentNullException(nameof(frame));
-
-			var function = frame.Function;
+			if (function == null) throw new ArgumentNullException(nameof(function));
 
 			var reader = GetReader(function.Module);
 			if (reader == null) return null;
@@ -42,7 +40,7 @@ namespace CausalityDbg.Core
 
 			method.GetSequencePoints(size, out size, offsets, documents, fromLines, fromColumns, toLines, toColumns);
 
-			var index = Array.BinarySearch(offsets, frame.ILOffset.GetValueOrDefault(0));
+			var index = Array.BinarySearch(offsets, ilOffset);
 
 			if (index < 0)
 			{

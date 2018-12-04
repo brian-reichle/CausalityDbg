@@ -7,11 +7,9 @@ namespace CausalityDbg.Core.MetaCache
 {
 	sealed class MetaFormatter : IMetaCompoundVisitor
 	{
-		public static string Format(MetaFrame frame)
+		public static string Format(MetaFunction function, ImmutableArray<MetaCompound> genericArgs)
 		{
 			var builder = new StringBuilder();
-			var function = frame.Function;
-			var genericArgs = frame.GenericArgs;
 			var declType = function.DeclaringType;
 			var typeArgCount = declType == null ? 0 : declType.GenTypeArgs;
 			var visitor = new MetaFormatter(builder, genericArgs, typeArgCount);

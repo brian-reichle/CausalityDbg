@@ -87,8 +87,24 @@ namespace CausalityDbg.Core
 
 		FrameILData GetFrame(ICorDebugILFrame ilFrame)
 		{
-			var metaFrame = _cache.GetFrame(ilFrame);
-			return new FrameILData(metaFrame);
+			var function = ilFrame.GetFunction();
+			var module = function.GetModule();
+
+			ImmutableArray<MetaCompound> genArgs;
+
+			if (ilFrame is ICorDebugILFrame2 frame2)
+			{
+				genArgs = _cache.GetCompounds(module, frame2.EnumerateTypeParameters());
+			}
+			else
+			{
+				genArgs = ImmutableArray<MetaCompound>.Empty;
+			}
+
+			return new FrameILData(
+				_cache.GetFunction(function),
+				ilFrame.GetIP(),
+				genArgs);
 		}
 
 		static FrameInternalData GetFrame(ICorDebugInternalFrame internalFrame)

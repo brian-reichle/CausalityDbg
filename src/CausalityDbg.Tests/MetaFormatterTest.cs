@@ -1,5 +1,6 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
+using System.Collections.Immutable;
 using CausalityDbg.Core.MetaCache;
 using NUnit.Framework;
 
@@ -13,64 +14,68 @@ namespace CausalityDbg.Tests
 		[TestCase(2, ExpectedResult = "Function<Dummy.Type1, Dummy.Type2>()")]
 		public string GlobalFunction(int genericArgs)
 		{
-			var frame = _module.NewFunction("Function", genericArgs).ToFrame(GetGenericArgs(genericArgs));
-			return MetaFormatter.Format(frame);
+			var function = _module.NewFunction("Function", genericArgs);
+			var genArgs = GetGenericArgs(genericArgs);
+			return MetaFormatter.Format(function, genArgs);
 		}
 
 		[Test]
 		public void Function()
 		{
-			var frame = _type1.NewFunction("Function").ToFrame();
-			Assert.That(MetaFormatter.Format(frame), Is.EqualTo("Dummy.Type1.Function()"));
+			var function = _type1.NewFunction("Function");
+			Assert.That(MetaFormatter.Format(function, ImmutableArray<MetaCompound>.Empty), Is.EqualTo("Dummy.Type1.Function()"));
 		}
 
 		[Test]
 		public void GenericFunction()
 		{
-			var frame = _gType2.NewFunction("Function", 1).ToFrame(GetGenericArgs(3));
-			Assert.That(MetaFormatter.Format(frame), Is.EqualTo("Dummy.Type<Dummy.Type1, Dummy.Type2>.Function<Dummy.Type3>()"));
+			var function = _gType2.NewFunction("Function", 1);
+			var genArgs = GetGenericArgs(3);
+			Assert.That(MetaFormatter.Format(function, genArgs), Is.EqualTo("Dummy.Type<Dummy.Type1, Dummy.Type2>.Function<Dummy.Type3>()"));
 		}
 
 		[Test]
 		public void NestedType()
 		{
-			var frame = _type1.NewType("Nested").NewFunction("Function").ToFrame();
-			Assert.That(MetaFormatter.Format(frame), Is.EqualTo("Dummy.Type1.Nested.Function()"));
+			var function = _type1.NewType("Nested").NewFunction("Function");
+			Assert.That(MetaFormatter.Format(function, ImmutableArray<MetaCompound>.Empty), Is.EqualTo("Dummy.Type1.Nested.Function()"));
 		}
 
 		[Test]
 		public void GenericNestedType()
 		{
-			var frame = _gType1.NewType("Nested1").NewType("Nested2", 1).NewFunction("Function").ToFrame(GetGenericArgs(2));
-			Assert.That(MetaFormatter.Format(frame), Is.EqualTo("Dummy.Type<Dummy.Type1>.Nested1.Nested2<Dummy.Type2>.Function()"));
+			var function = _gType1.NewType("Nested1").NewType("Nested2", 1).NewFunction("Function");
+			var genArgs = GetGenericArgs(2);
+			Assert.That(MetaFormatter.Format(function, genArgs), Is.EqualTo("Dummy.Type<Dummy.Type1>.Nested1.Nested2<Dummy.Type2>.Function()"));
 		}
 
 		[Test]
 		public void NestedGenerics()
 		{
-			var frame = _gType1.NewFunction("Function").ToFrame(_gType1.Init(GetGenericArgs(1)));
-			Assert.That(MetaFormatter.Format(frame), Is.EqualTo("Dummy.Type<Dummy.Type<Dummy.Type1>>.Function()"));
+			var function = _gType1.NewFunction("Function");
+			var genArgs = ImmutableArray.Create<MetaCompound>(_gType1.Init(GetGenericArgs(1)));
+			Assert.That(MetaFormatter.Format(function, genArgs), Is.EqualTo("Dummy.Type<Dummy.Type<Dummy.Type1>>.Function()"));
 		}
 
 		[Test]
 		public void SingleParameter()
 		{
-			var frame = _type1.NewFunction("Function", _type2.Init().ToParam("arg")).ToFrame();
-			Assert.That(MetaFormatter.Format(frame), Is.EqualTo("Dummy.Type1.Function(Dummy.Type2 arg)"));
+			var function = _type1.NewFunction("Function", _type2.Init().ToParam("arg"));
+			Assert.That(MetaFormatter.Format(function, ImmutableArray<MetaCompound>.Empty), Is.EqualTo("Dummy.Type1.Function(Dummy.Type2 arg)"));
 		}
 
 		[Test]
 		public void MultipleParameters()
 		{
-			var frame = _type1.NewFunction("Function", _type2.Init().ToParam("arg1"), _type3.Init().ToParam("arg2")).ToFrame();
-			Assert.That(MetaFormatter.Format(frame), Is.EqualTo("Dummy.Type1.Function(Dummy.Type2 arg1, Dummy.Type3 arg2)"));
+			var function = _type1.NewFunction("Function", _type2.Init().ToParam("arg1"), _type3.Init().ToParam("arg2"));
+			Assert.That(MetaFormatter.Format(function, ImmutableArray<MetaCompound>.Empty), Is.EqualTo("Dummy.Type1.Function(Dummy.Type2 arg1, Dummy.Type3 arg2)"));
 		}
 
 		[Test]
 		public void UnnamedParameter()
 		{
-			var frame = _type1.NewFunction("Function", _type2.Init().ToParam()).ToFrame();
-			Assert.That(MetaFormatter.Format(frame), Is.EqualTo("Dummy.Type1.Function(Dummy.Type2)"));
+			var function = _type1.NewFunction("Function", _type2.Init().ToParam());
+			Assert.That(MetaFormatter.Format(function, ImmutableArray<MetaCompound>.Empty), Is.EqualTo("Dummy.Type1.Function(Dummy.Type2)"));
 		}
 
 		[Test]
@@ -94,8 +99,9 @@ namespace CausalityDbg.Tests
 		public string TypeGenArgRef(bool method, int index)
 		{
 			var param = new MetaCompoundGenArg(method, index).ToParam("arg");
-			var frame = _gType2.NewFunction("Function", 2, param).ToFrame(GetGenericArgs(4));
-			return MetaFormatter.Format(frame);
+			var function = _gType2.NewFunction("Function", 2, param);
+			var genArgs = GetGenericArgs(4).ToImmutableArray();
+			return MetaFormatter.Format(function, genArgs);
 		}
 
 		[TestCase(1, ExpectedResult = "Dummy.Type1[]")]
@@ -122,14 +128,15 @@ namespace CausalityDbg.Tests
 			_gType2 = _module.NewType("Dummy.Type`2", 2);
 		}
 
-		MetaCompound[] GetGenericArgs(int count)
+		ImmutableArray<MetaCompound> GetGenericArgs(int count)
 		{
 			if (count == 0)
 			{
-				return null;
+				return ImmutableArray<MetaCompound>.Empty;
 			}
 
-			var result = new MetaCompound[count];
+			var result = ImmutableArray.CreateBuilder<MetaCompound>(count);
+			result.Count = count;
 
 			switch (count)
 			{
@@ -147,7 +154,7 @@ namespace CausalityDbg.Tests
 
 				case 1:
 					result[0] = _type1.Init();
-					return result;
+					return result.ToImmutable();
 
 				default: throw new ArgumentException();
 			}
