@@ -125,9 +125,8 @@ namespace CausalityDbg.Core
 		{
 			try
 			{
-				var functionBreakpoint = breakpoint as ICorDebugFunctionBreakpoint;
-
-				if (functionBreakpoint != null && _breakpointLookup.TryGetValue(functionBreakpoint, out var action))
+				if (breakpoint is ICorDebugFunctionBreakpoint functionBreakpoint &&
+					_breakpointLookup.TryGetValue(functionBreakpoint, out var action))
 				{
 					action(thread);
 				}
@@ -562,8 +561,11 @@ namespace CausalityDbg.Core
 		{
 			ProcessEndOfBatch(thread);
 
-			var appDomain = controller as ICorDebugAppDomain;
-			Continue(appDomain == null ? (ICorDebugProcess)controller : appDomain.GetProcess());
+			var process = controller is ICorDebugAppDomain appDomain
+				? appDomain.GetProcess()
+				: (ICorDebugProcess)controller;
+
+			Continue(process);
 		}
 
 		#endregion
