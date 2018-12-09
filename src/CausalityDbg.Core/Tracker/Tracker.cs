@@ -144,7 +144,7 @@ namespace CausalityDbg.Core
 		{
 			if (_process != null)
 			{
-				_process.Stop(0);
+				_process.Stop();
 
 				_callback.ClearRegistrations();
 
@@ -152,7 +152,7 @@ namespace CausalityDbg.Core
 				{
 					_process.Continue(false);
 					Thread.Sleep(0);
-					_process.Stop(0);
+					_process.Stop();
 				}
 
 				_process.Detach();

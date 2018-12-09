@@ -13,7 +13,7 @@ namespace CausalityDbg.Core.CorDebugApi
 		//     [in] DWORD dwTimeoutIgnored
 		// );
 		void Stop(
-			int pwTimeoutIgnored);
+			int dwTimeoutIgnored = 0);
 
 		// HRESULT Continue(
 		//     [in] BOOL fIsOutOfBand
