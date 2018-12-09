@@ -5,7 +5,6 @@ namespace CausalityDbg.Core
 {
 	public interface ITracker : IDisposable
 	{
-		void Attach(int pid, ITrackerCallback callback);
-		void Attach(LaunchArguments launchArgs, ITrackerCallback callback);
+		void Attach();
 	}
 }

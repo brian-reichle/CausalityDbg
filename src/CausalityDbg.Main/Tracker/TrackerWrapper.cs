@@ -1,7 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Windows.Threading;
 using CausalityDbg.Core;
 
@@ -13,87 +11,43 @@ namespace CausalityDbg.Main
 		{
 			_dispatcher = dispatcher;
 			_config = config;
-			_queue = new Queue<Action>();
-
-			// * The callback needs to be registered on an MTA thread while the GUI
-			//   thread needs to be an STA thread.
-			// * The registering thread is not used for the actual callbacks, but
-			//   terminating the thread while connected seems to break the ICorDebug
-			//   objects.
-			_thread = new Thread(ThreadBody);
-			_thread.SetApartmentState(ApartmentState.MTA);
-			_thread.IsBackground = true;
-			_thread.Start();
 		}
 
 		public ITrackerStatus Status { get; set; }
 
 		public void StartProcess(LaunchArguments args, DataProvider store)
 		{
-			lock (_queue)
-			{
-				if (_disposed) throw new ObjectDisposedException(nameof(TrackerWrapper));
-				if (Status == null) throw new InvalidOperationException("Status not set yet.");
+			if (_disposed) throw new ObjectDisposedException(nameof(TrackerWrapper));
+			if (Status == null) throw new InvalidOperationException("Status not set yet.");
 
-				var callback = new Callback(_dispatcher, store, Status, this);
+			var callback = new Callback(_dispatcher, store, Status, this);
 
-				_queue.Enqueue(delegate
-				{
-					Close(ref _tracker);
-					_tracker = TrackerFactory.New(_config);
-					_tracker.Attach(args, callback);
-				});
-
-				Monitor.Pulse(_queue);
-			}
+			Close(ref _tracker);
+			_tracker = TrackerFactory.New(_config, callback, args);
+			_tracker.Attach();
 		}
 
 		public void SetProcess(int processID, DataProvider store)
 		{
-			lock (_queue)
-			{
-				if (_disposed) throw new ObjectDisposedException(nameof(TrackerWrapper));
-				if (Status == null) throw new InvalidOperationException("Status not set yet.");
+			if (_disposed) throw new ObjectDisposedException(nameof(TrackerWrapper));
+			if (Status == null) throw new InvalidOperationException("Status not set yet.");
 
-				var callback = new Callback(_dispatcher, store, Status, this);
+			var callback = new Callback(_dispatcher, store, Status, this);
 
-				_queue.Enqueue(delegate
-				{
-					Close(ref _tracker);
-					_tracker = TrackerFactory.New(_config);
-					_tracker.Attach(processID, callback);
-				});
-
-				Monitor.Pulse(_queue);
-			}
+			Close(ref _tracker);
+			_tracker = TrackerFactory.New(_config, callback, processID);
+			_tracker.Attach();
 		}
 
 		public void Detach()
 		{
-			lock (_queue)
-			{
-				if (_disposed) throw new ObjectDisposedException(nameof(TrackerWrapper));
-
-				_queue.Enqueue(delegate { Close(ref _tracker); });
-				Monitor.Pulse(_queue);
-			}
+			Close(ref _tracker);
 		}
 
 		public void Dispose()
 		{
-			lock (_queue)
-			{
-				if (_disposed) return;
-
-				_disposed = true;
-				_queue.Clear();
-				_queue.Enqueue(delegate { Close(ref _tracker); });
-				Monitor.Pulse(_queue);
-			}
-
-			var thread = _thread;
-			_thread = null;
-			thread.Join();
+			_disposed = true;
+			Close(ref _tracker);
 		}
 
 		public event EventHandler<ExceptionThrownEventArgs> ExceptionThrown;
@@ -120,34 +74,7 @@ namespace CausalityDbg.Main
 				ex);
 		}
 
-		void ThreadBody()
-		{
-			while (!_disposed)
-			{
-				Action action;
-
-				lock (_queue)
-				{
-					while (_queue.Count == 0)
-					{
-						Monitor.Wait(_queue);
-					}
-
-					action = _queue.Dequeue();
-				}
-
-				try
-				{
-					action();
-				}
-				catch (Exception ex)
-				{
-					ReportException(ex);
-				}
-			}
-		}
-
-		class Callback : ITrackerCallback
+		sealed class Callback : ITrackerCallback
 		{
 			public Callback(Dispatcher dispatcher, DataProvider provider, ITrackerStatus status, TrackerWrapper tracker)
 			{
@@ -211,11 +138,9 @@ namespace CausalityDbg.Main
 			delegate void ReportExceptionDelegate(Exception ex);
 		}
 
-		Thread _thread;
 		bool _disposed;
 		ITracker _tracker;
 		readonly Config _config;
 		readonly Dispatcher _dispatcher;
-		readonly Queue<Action> _queue;
 	}
 }

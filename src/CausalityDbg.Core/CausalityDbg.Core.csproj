@@ -92,6 +92,7 @@
     <Compile Include="Native\CorDebugApi\ICorDebugReferenceValue.cs" />
     <Compile Include="Interfaces\TrackerNotificationLevel.cs" />
     <Compile Include="BitnessHelper.cs" />
+    <Compile Include="Tracker\AttachTracker.cs" />
     <Compile Include="Tracker\ExceptionData.cs" />
     <Compile Include="Native\Win32\Enum\BinaryType.cs" />
     <Compile Include="Extensions\NotifierExtensions.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Native\SymbolStoreApi\ISymUnmanagedReader.cs" />
     <Compile Include="Tracker\EventMapper.cs" />
     <Compile Include="Interfaces\ITracker.cs" />
+    <Compile Include="Tracker\LaunchTracker.cs" />
     <Compile Include="Tracker\ScopeData.cs" />
     <Compile Include="Tracker\Tracker.cs" />
     <Compile Include="ManagedCallbackBase.cs" />
@@ -207,6 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\Config.xsd" />
+    <Compile Include="Tracker\Tracker.ManagedCallback.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CausalityDbg.IL\CausalityDbg.IL.csproj">

@@ -16,5 +16,6 @@ namespace CausalityDbg.Core
 		CORDBG_E_CANT_CHANGE_JIT_SETTING_FOR_ZAP_MODULE = unchecked((int)0x8013131D),
 		CORDBG_E_DEBUGGER_ALREADY_ATTACHED = unchecked((int)0x8013132e),
 		CORDBG_E_IL_VAR_NOT_AVAILABLE = unchecked((int)0x80131304),
+		CORDBG_E_PROCESS_TERMINATED = unchecked((int)0x80131301),
 	}
 }

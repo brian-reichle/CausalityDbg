@@ -3,9 +3,14 @@ namespace CausalityDbg.Core
 {
 	public static class TrackerFactory
 	{
-		public static ITracker New(Config config)
+		public static ITracker New(Config config, ITrackerCallback callback, int pid)
 		{
-			return new Tracker(config);
+			return new AttachTracker(config, callback, pid);
+		}
+
+		public static ITracker New(Config config, ITrackerCallback callback, LaunchArguments launchArguments)
+		{
+			return new LaunchTracker(config, callback, launchArguments);
 		}
 	}
 }
