@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using CausalityDbg.Core.MetaDataApi;
 using CausalityDbg.IL;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.Core.MetaDataApi
 {
 	static class MetaDataExtensions
 	{

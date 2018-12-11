@@ -1,12 +1,11 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
 using System.Runtime.InteropServices;
-using CausalityDbg.Core.CLRHostApi;
 using CausalityDbg.Core.CorDebugApi;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.Core.CLRHostApi
 {
-	static class RuntimeExtensions
+	static class RuntimeInfoExtensions
 	{
 		public static string GetVersionString(this ICLRRuntimeInfo runtime)
 		{

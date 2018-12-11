@@ -3,11 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using CausalityDbg.Core.CorDebugApi;
 using CausalityDbg.Core.MetaDataApi;
 using CausalityDbg.IL;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.Core.CorDebugApi
 {
 	static class FunctionExtensions
 	{

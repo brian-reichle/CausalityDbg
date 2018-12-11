@@ -2,10 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using CausalityDbg.Core.CorDebugApi;
 using CausalityDbg.IL;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.Core.CorDebugApi
 {
 	static class ClassExtensions
 	{
