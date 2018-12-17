@@ -100,7 +100,7 @@ namespace CausalityDbg.Tests
 		{
 			var param = new MetaCompoundGenArg(method, index).ToParam("arg");
 			var function = _gType2.NewFunction("Function", 2, param);
-			var genArgs = GetGenericArgs(4).ToImmutableArray();
+			var genArgs = GetGenericArgs(4);
 			return MetaFormatter.Format(function, genArgs);
 		}
 
@@ -156,7 +156,7 @@ namespace CausalityDbg.Tests
 					result[0] = _type1.Init();
 					return result.ToImmutable();
 
-				default: throw new ArgumentException();
+				default: throw new ArgumentOutOfRangeException(nameof(count));
 			}
 		}
 

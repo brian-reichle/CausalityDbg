@@ -1,6 +1,7 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace CausalityDbg.IL
@@ -8,8 +9,8 @@ namespace CausalityDbg.IL
 	sealed class CorExceptionFatClauseCollection : CorExceptionClauseCollection
 	{
 		internal CorExceptionFatClauseCollection(byte[] blob)
-			: base(blob)
 		{
+			_blob = blob;
 		}
 
 		public override int Count => (_blob.Length - 4) / 24;
@@ -70,5 +71,8 @@ namespace CausalityDbg.IL
 				handlerLength,
 				data);
 		}
+
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		readonly byte[] _blob;
 	}
 }

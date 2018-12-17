@@ -20,12 +20,14 @@ namespace CausalityDbg.Main.Win32
 				return null;
 			}
 
-			NativeMethods.GetWindowThreadProcessId(hWnd, out var pid);
-			var error = Marshal.GetLastWin32Error();
-
-			if (error != 0)
+			if (NativeMethods.GetWindowThreadProcessId(hWnd, out var pid) == 0)
 			{
-				throw new Win32Exception(error);
+				var error = Marshal.GetLastWin32Error();
+
+				if (error != 0)
+				{
+					throw new Win32Exception(error);
+				}
 			}
 
 			return pid;

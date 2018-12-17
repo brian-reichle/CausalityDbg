@@ -1,5 +1,6 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -37,7 +38,7 @@ namespace CausalityDbg.Tests
 			return TestHelper.GetResourceBasedTests(prefix, suffix);
 		}
 
-		string Format(CorExceptionClauseCollection clauses)
+		static string Format(CorExceptionClauseCollection clauses)
 		{
 			var builder = new StringBuilder();
 
@@ -54,13 +55,13 @@ namespace CausalityDbg.Tests
 					xmlWriter.WriteStartElement(clause.Flags.ToString());
 
 					xmlWriter.WriteStartElement("Try");
-					xmlWriter.WriteAttributeString("offset", clause.TryOffset.ToString());
-					xmlWriter.WriteAttributeString("length", clause.TryLength.ToString());
+					xmlWriter.WriteAttributeString("offset", clause.TryOffset.ToString(CultureInfo.InvariantCulture));
+					xmlWriter.WriteAttributeString("length", clause.TryLength.ToString(CultureInfo.InvariantCulture));
 					xmlWriter.WriteEndElement();
 
 					xmlWriter.WriteStartElement("Handler");
-					xmlWriter.WriteAttributeString("offset", clause.HandlerOffset.ToString());
-					xmlWriter.WriteAttributeString("length", clause.HandlerLength.ToString());
+					xmlWriter.WriteAttributeString("offset", clause.HandlerOffset.ToString(CultureInfo.InvariantCulture));
+					xmlWriter.WriteAttributeString("length", clause.HandlerLength.ToString(CultureInfo.InvariantCulture));
 					xmlWriter.WriteEndElement();
 
 					if (!clause.ClassToken.IsNil)
@@ -73,7 +74,7 @@ namespace CausalityDbg.Tests
 					if (clause.FilterOffset != 0)
 					{
 						xmlWriter.WriteStartElement("Filter");
-						xmlWriter.WriteAttributeString("offset", clause.FilterOffset.ToString());
+						xmlWriter.WriteAttributeString("offset", clause.FilterOffset.ToString(CultureInfo.InvariantCulture));
 						xmlWriter.WriteEndElement();
 					}
 

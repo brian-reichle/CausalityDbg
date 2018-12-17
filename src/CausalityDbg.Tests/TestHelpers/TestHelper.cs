@@ -18,14 +18,14 @@ namespace CausalityDbg.Tests
 
 			foreach (var name in Assembly.GetExecutingAssembly().GetManifestResourceNames())
 			{
-				if (name.StartsWith(prefix))
+				if (name.StartsWith(prefix, StringComparison.Ordinal))
 				{
 					result.Add(new TestCaseData(name)
 						.SetName(name.Substring(prefixLen, name.Length - prefixLen - suffixLen)));
 				}
 			}
 
-			result.Sort((x, y) => x.TestName.CompareTo(y.TestName));
+			result.Sort((x, y) => string.CompareOrdinal(x.TestName, y.TestName));
 
 			return result.ToArray();
 		}
@@ -80,7 +80,7 @@ namespace CausalityDbg.Tests
 
 					if (!newLine)
 					{
-						throw new ArgumentException();
+						throw new ArgumentException("Invalid format.", nameof(source));
 					}
 
 					break;
@@ -112,7 +112,7 @@ namespace CausalityDbg.Tests
 				}
 				else
 				{
-					throw new ArgumentException();
+					throw new ArgumentException("Invalid format.", nameof(source));
 				}
 
 				if (halfByte)

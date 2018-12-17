@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Text;
 using CausalityDbg.Core;
 using CausalityDbg.Core.CorDebugApi;
@@ -73,11 +74,11 @@ namespace CausalityDbg.Tests
 		{
 			var builder = new StringBuilder();
 
-			var indexWidth = (trace.Count - 1).ToString().Length;
+			var indexWidth = (trace.Count - 1).ToString(CultureInfo.InvariantCulture).Length;
 
 			foreach (var frame in trace)
 			{
-				var index = frame.Index.ToString();
+				var index = frame.Index.ToString(CultureInfo.InvariantCulture);
 
 				builder.Append(index);
 				builder.Append(' ', indexWidth - index.Length);
@@ -105,7 +106,7 @@ namespace CausalityDbg.Tests
 		static string FormatTrace(TraceData trace)
 		{
 			var builder = new StringBuilder();
-			var indexWidth = (trace.TotalDepth - 1).ToString().Length;
+			var indexWidth = (trace.TotalDepth - 1).ToString(CultureInfo.InvariantCulture).Length;
 			var colStarts = GetColumnStarts(trace);
 
 			for (var r = trace.TotalDepth; r > 0; r--)

@@ -1,5 +1,6 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Xml;
@@ -25,7 +26,7 @@ namespace CausalityDbg.Tests
 
 			if (element.GenParamCount != 0)
 			{
-				_writer.WriteAttributeString("genericParameterCount", element.GenParamCount.ToString());
+				_writer.WriteAttributeString("genericParameterCount", element.GenParamCount.ToString(CultureInfo.InvariantCulture));
 			}
 
 			_writer.WriteStartElement("Return");
@@ -73,7 +74,7 @@ namespace CausalityDbg.Tests
 				_writer.WriteStartElement("MethodGenArg");
 			}
 
-			_writer.WriteString(element.Index.ToString());
+			_writer.WriteString(element.Index.ToString(CultureInfo.InvariantCulture));
 			_writer.WriteEndElement();
 		}
 

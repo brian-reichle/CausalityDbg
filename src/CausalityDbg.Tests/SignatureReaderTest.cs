@@ -36,7 +36,7 @@ namespace CausalityDbg.Tests
 			return TestHelper.GetResourceBasedTests(prefix, suffix);
 		}
 
-		string Format(SigMethod method)
+		static string Format(SigMethod method)
 		{
 			var builder = new StringBuilder();
 

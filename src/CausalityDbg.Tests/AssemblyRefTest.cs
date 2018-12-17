@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -80,7 +81,7 @@ namespace CausalityDbg.Tests
 			if ((assembly.Flags & AssemblyRefFlags.HasPublicKeyToken) != 0)
 			{
 				builder.Append("Public Key Token: ");
-				builder.AppendLine(assembly.PublicKeyToken.ToString("x16"));
+				builder.AppendLine(assembly.PublicKeyToken.ToString("x16", CultureInfo.InvariantCulture));
 			}
 
 			return builder.ToString();
@@ -98,7 +99,7 @@ namespace CausalityDbg.Tests
 			}
 		}
 
-		string GetResource(string name)
+		static string GetResource(string name)
 		{
 			using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
 			using (var reader = new StreamReader(stream))
@@ -107,14 +108,14 @@ namespace CausalityDbg.Tests
 			}
 		}
 
-		KeyValuePair<string, string> ReadTupple(string name)
+		static KeyValuePair<string, string> ReadTupple(string name)
 		{
 			var source = GetResource(name);
 			var match = regex.Match(source);
 
 			if (!match.Success)
 			{
-				throw new ArgumentException();
+				throw new ArgumentException("Name references invalid resource.", nameof(name));
 			}
 
 			return new KeyValuePair<string, string>(

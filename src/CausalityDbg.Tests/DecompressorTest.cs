@@ -60,7 +60,7 @@ namespace CausalityDbg.Tests
 
 		#region Implementation
 
-		byte[] BlobFromHex(string hex)
+		static byte[] BlobFromHex(string hex)
 		{
 			var result = new byte[hex.Length >> 1];
 
@@ -73,7 +73,7 @@ namespace CausalityDbg.Tests
 			return result;
 		}
 
-		byte Hex(char c)
+		static byte Hex(char c)
 		{
 			if (c >= '0' && c <= '9')
 			{
@@ -89,7 +89,7 @@ namespace CausalityDbg.Tests
 			}
 			else
 			{
-				throw new ArgumentException(nameof(c));
+				throw new ArgumentOutOfRangeException(nameof(c));
 			}
 		}
 

@@ -32,9 +32,8 @@ namespace CausalityDbg.IL
 			}
 		}
 
-		internal CorExceptionClauseCollection(byte[] blob)
+		private protected CorExceptionClauseCollection()
 		{
-			_blob = blob;
 		}
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -58,8 +57,5 @@ namespace CausalityDbg.IL
 
 		[DebuggerStepThrough]
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		protected readonly byte[] _blob;
 	}
 }
