@@ -16,6 +16,68 @@ namespace CausalityDbg.Core.CorDebugApi
 			return len > 0 ? new string(buffer, 0, (int)(len - 1)) : string.Empty;
 		}
 
+		public static bool GetAssemblyProps(this ICorDebugModule module, out string name, out ASSEMBLYMETADATA aMetadata, out IntPtr publicKeyPtr, out int publicKeySize)
+		{
+			var aImport = module.GetMetaDataAssemblyImport();
+			var token = aImport.GetAssemblyFromScope();
+			aMetadata = default;
+
+			if (token.IsNil)
+			{
+				Marshal.ReleaseComObject(aImport);
+				var assembly = module.GetAssembly();
+				aImport = assembly.GetMetaDataAssemblyImport(out token);
+				Marshal.ReleaseComObject(assembly);
+
+				if (aImport == null)
+				{
+					publicKeyPtr = default;
+					publicKeySize = default;
+					name = default;
+					return false;
+				}
+			}
+
+			aImport.GetAssemblyProps(
+				token,
+				out publicKeyPtr,
+				out publicKeySize,
+				IntPtr.Zero,
+				null,
+				0,
+				out var size,
+				IntPtr.Zero,
+				IntPtr.Zero);
+
+			var buffer = new char[size];
+
+			var pMetadata = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(ASSEMBLYMETADATA)));
+			Marshal.StructureToPtr(aMetadata, pMetadata, false);
+
+			try
+			{
+				aImport.GetAssemblyProps(
+					token,
+					out publicKeyPtr,
+					out publicKeySize,
+					IntPtr.Zero,
+					buffer,
+					buffer.Length,
+					out size,
+					pMetadata,
+					IntPtr.Zero);
+
+				aMetadata = (ASSEMBLYMETADATA)Marshal.PtrToStructure(pMetadata, typeof(ASSEMBLYMETADATA));
+			}
+			finally
+			{
+				Marshal.FreeCoTaskMem(pMetadata);
+			}
+
+			name = new string(buffer, 0, size - 1);
+			return true;
+		}
+
 		public static IMetaDataImport GetMetaDataImport(this ICorDebugModule module)
 		{
 			return (IMetaDataImport)module.GetMetaDataInterface(typeof(IMetaDataImport).GUID);
