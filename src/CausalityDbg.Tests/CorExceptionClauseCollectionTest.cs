@@ -56,12 +56,6 @@ namespace CausalityDbg.Tests
 		}
 
 		[Test]
-		public void Count()
-		{
-			Assert.That(_collection.Count, Is.EqualTo(7));
-		}
-
-		[Test]
 		public void BlobConsistency()
 		{
 			var isFat = (_blob[0] & (byte)CorILMethodSectFlags.CorILMethod_Sect_FatFormat) != 0;
@@ -73,57 +67,6 @@ namespace CausalityDbg.Tests
 		}
 
 		#region Implementation
-
-		static string Format(CorExceptionClauseCollection clauses)
-		{
-			var builder = new StringBuilder();
-
-			using (var xmlWriter = new XmlTextWriter(new StringWriter(builder)))
-			{
-				xmlWriter.Formatting = Formatting.Indented;
-				xmlWriter.IndentChar = ' ';
-				xmlWriter.Indentation = 2;
-
-				xmlWriter.WriteStartElement("Clauses");
-
-				foreach (var clause in clauses)
-				{
-					xmlWriter.WriteStartElement(clause.Flags.ToString());
-
-					xmlWriter.WriteStartElement("Try");
-					xmlWriter.WriteAttributeString("offset", clause.TryOffset.ToString(CultureInfo.InvariantCulture));
-					xmlWriter.WriteAttributeString("length", clause.TryLength.ToString(CultureInfo.InvariantCulture));
-					xmlWriter.WriteEndElement();
-
-					xmlWriter.WriteStartElement("Handler");
-					xmlWriter.WriteAttributeString("offset", clause.HandlerOffset.ToString(CultureInfo.InvariantCulture));
-					xmlWriter.WriteAttributeString("length", clause.HandlerLength.ToString(CultureInfo.InvariantCulture));
-					xmlWriter.WriteEndElement();
-
-					if (!clause.ClassToken.IsNil)
-					{
-						xmlWriter.WriteStartElement("Exception");
-						xmlWriter.WriteAttributeString("token", clause.ClassToken.ToString());
-						xmlWriter.WriteEndElement();
-					}
-
-					if (clause.FilterOffset != 0)
-					{
-						xmlWriter.WriteStartElement("Filter");
-						xmlWriter.WriteAttributeString("offset", clause.FilterOffset.ToString(CultureInfo.InvariantCulture));
-						xmlWriter.WriteEndElement();
-					}
-
-					xmlWriter.WriteEndElement();
-				}
-
-				xmlWriter.WriteEndElement();
-				xmlWriter.Flush();
-			}
-
-			builder.AppendLine();
-			return builder.ToString();
-		}
 
 		readonly byte[] _blob;
 		readonly CorExceptionClauseCollection _collection;

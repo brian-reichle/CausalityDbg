@@ -13,9 +13,6 @@ namespace CausalityDbg.IL
 			_blob = blob;
 		}
 
-		public override int Count => (_blob.Length - 4) / 24;
-		public override CorExceptionClause this[int index] => ReadRow(_blob, index * 24 + 4);
-
 		public override CorExceptionClause FromFilterOffset(int offset)
 		{
 			for (var index = 4; index < _blob.Length; index += 24)
