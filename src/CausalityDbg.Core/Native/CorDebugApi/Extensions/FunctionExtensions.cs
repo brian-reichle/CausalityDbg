@@ -16,7 +16,7 @@ namespace CausalityDbg.Core.CorDebugApi
 			var addr = function.GetHeaderAddress();
 			var process = function.GetModule().GetProcess();
 
-			var header = process.ReadLong(addr);
+			var header = process.ReadValue<long>(addr);
 
 			if ((header & 0x03) == (int)CorILMethodFlags.CorILMethod_TinyFormat &&
 				(header & (int)CorILMethodFlags.CorILMethod_MoreSects) == 0)
@@ -31,7 +31,7 @@ namespace CausalityDbg.Core.CorDebugApi
 
 			do
 			{
-				var sectHeader = process.ReadInt(addr);
+				var sectHeader = process.ReadValue<int>(addr);
 				int sectLen;
 
 				if ((sectHeader & (int)CorILMethodSectFlags.CorILMethod_Sect_FatFormat) == 0)

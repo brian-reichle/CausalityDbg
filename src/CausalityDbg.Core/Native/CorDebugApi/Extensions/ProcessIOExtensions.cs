@@ -1,12 +1,11 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
-using System.Runtime.InteropServices;
 
 namespace CausalityDbg.Core.CorDebugApi
 {
 	static class ProcessIOExtensions
 	{
-		public static byte[] ReadBytes(this ICorDebugProcess process, CORDB_ADDRESS address, int size)
+		public static unsafe byte[] ReadBytes(this ICorDebugProcess process, CORDB_ADDRESS address, int size)
 		{
 			var result = new byte[size];
 
@@ -15,91 +14,22 @@ namespace CausalityDbg.Core.CorDebugApi
 				return result;
 			}
 
-			var buffer = process.ReadBuffer(address, size);
-
-			try
+			fixed (byte* resultPtr = &result[0])
 			{
-				Marshal.Copy(buffer, result, 0, size);
-			}
-			finally
-			{
-				Marshal.FreeCoTaskMem(buffer);
+				process.ReadMemory(address, size, (IntPtr)resultPtr, out var read);
 			}
 
 			return result;
 		}
 
-		public static byte ReadByte(this ICorDebugProcess process, CORDB_ADDRESS address)
+		public static unsafe T ReadValue<T>(this ICorDebugProcess process, CORDB_ADDRESS address)
+			where T : unmanaged
 		{
-			var buffer = process.ReadBuffer(address, 1);
+			T value = default;
 
-			try
-			{
-				return Marshal.ReadByte(buffer);
-			}
-			finally
-			{
-				Marshal.FreeCoTaskMem(buffer);
-			}
-		}
+			process.ReadMemory(address, sizeof(T), (IntPtr)(&value), out var read);
 
-		public static short ReadShort(this ICorDebugProcess process, CORDB_ADDRESS address)
-		{
-			var buffer = process.ReadBuffer(address, 2);
-
-			try
-			{
-				return Marshal.ReadInt16(buffer);
-			}
-			finally
-			{
-				Marshal.FreeCoTaskMem(buffer);
-			}
-		}
-
-		public static int ReadInt(this ICorDebugProcess processor, CORDB_ADDRESS address)
-		{
-			var buffer = processor.ReadBuffer(address, 4);
-
-			try
-			{
-				return Marshal.ReadInt32(buffer);
-			}
-			finally
-			{
-				Marshal.FreeCoTaskMem(buffer);
-			}
-		}
-
-		public static long ReadLong(this ICorDebugProcess process, CORDB_ADDRESS address)
-		{
-			var buffer = process.ReadBuffer(address, 8);
-
-			try
-			{
-				return Marshal.ReadInt64(buffer);
-			}
-			finally
-			{
-				Marshal.FreeCoTaskMem(buffer);
-			}
-		}
-
-		static IntPtr ReadBuffer(this ICorDebugProcess process, CORDB_ADDRESS address, int size)
-		{
-			var ptr = Marshal.AllocCoTaskMem(size);
-
-			try
-			{
-				process.ReadMemory(address, size, ptr, out var read);
-			}
-			catch
-			{
-				Marshal.FreeCoTaskMem(ptr);
-				throw;
-			}
-
-			return ptr;
+			return value;
 		}
 	}
 }
