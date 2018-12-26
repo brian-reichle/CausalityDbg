@@ -7,7 +7,7 @@ namespace CausalityDbg.Core.CLRHostApi
 	{
 		public static string GetVersionFromFile(this ICLRMetaHost host, string path)
 		{
-			var size = 0u;
+			var size = 0;
 			var hr = host.GetVersionFromFile(path, null, ref size);
 
 			if (hr < 0 && hr != (int)HResults.E_BUFFER_TOO_SMALL)
@@ -27,7 +27,7 @@ namespace CausalityDbg.Core.CLRHostApi
 				throw Marshal.GetExceptionForHR(hr);
 			}
 
-			return new string(buffer, 0, (int)size);
+			return new string(buffer, 0, size);
 		}
 
 		public static ICLRRuntimeInfo GetRuntime(this ICLRMetaHost host, string version)

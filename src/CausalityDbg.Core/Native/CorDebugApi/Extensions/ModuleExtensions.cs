@@ -12,8 +12,8 @@ namespace CausalityDbg.Core.CorDebugApi
 		{
 			module.GetName(0, out var len, null);
 			var buffer = new char[len];
-			module.GetName((uint)buffer.Length, out len, buffer);
-			return len > 0 ? new string(buffer, 0, (int)(len - 1)) : string.Empty;
+			module.GetName(buffer.Length, out len, buffer);
+			return len > 0 ? new string(buffer, 0, len - 1) : string.Empty;
 		}
 
 		public static bool GetAssemblyProps(this ICorDebugModule module, out string name, out ASSEMBLYMETADATA aMetadata, out IntPtr publicKeyPtr, out int publicKeySize)

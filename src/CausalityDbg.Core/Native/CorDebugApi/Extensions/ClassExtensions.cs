@@ -61,7 +61,7 @@ namespace CausalityDbg.Core.CorDebugApi
 						mToken,
 						out var classToken,
 						buffer,
-						(uint)buffer.Length,
+						buffer.Length,
 						out var size,
 						IntPtr.Zero,
 						out var sigBlob,

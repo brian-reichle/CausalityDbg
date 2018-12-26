@@ -10,7 +10,7 @@ namespace CausalityDbg.Core.CorDebugApi
 				false,
 				new[]
 				{
-					new COR_DEBUG_STEP_RANGE() { StartOffset = (uint)start, EndOffset = (uint)end },
+					new COR_DEBUG_STEP_RANGE() { StartOffset = start, EndOffset = end },
 				},
 				1);
 		}

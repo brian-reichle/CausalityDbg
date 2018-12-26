@@ -37,8 +37,8 @@ namespace CausalityDbg.Core.CorDebugApi
 		//     [out, size_is(cchName), length_is(*pcchName)] WCHAR szName[]
 		// );
 		void GetName(
-			uint cchName,
-			out uint pcchName,
+			int cchName,
+			out int pcchName,
 			[MarshalAs(UnmanagedType.LPArray)] char[] szName);
 	}
 }

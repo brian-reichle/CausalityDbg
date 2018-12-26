@@ -11,8 +11,8 @@ namespace CausalityDbg.Core.CorDebugApi
 		{
 			assembly.GetName(0, out var len, null);
 			var buffer = new char[len];
-			assembly.GetName((uint)buffer.Length, out len, buffer);
-			return len > 0 ? new string(buffer, 0, (int)(len - 1)) : string.Empty;
+			assembly.GetName(buffer.Length, out len, buffer);
+			return len > 0 ? new string(buffer, 0, len - 1) : string.Empty;
 		}
 
 		public static ICorDebugClass FindClass(this ICorDebugAssembly assembly, string className)

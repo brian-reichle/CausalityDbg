@@ -303,7 +303,7 @@ namespace CausalityDbg.Core.MetaCache
 					token,
 					out declaringType,
 					buffer,
-					(uint)buffer.Length,
+					size,
 					out size,
 					IntPtr.Zero,
 					out sigBlob,
@@ -393,14 +393,14 @@ namespace CausalityDbg.Core.MetaCache
 					IntPtr.Zero,
 					IntPtr.Zero,
 					buffer,
-					(uint)buffer.Length,
+					size,
 					out size,
 					IntPtr.Zero,
 					IntPtr.Zero,
 					IntPtr.Zero,
 					IntPtr.Zero);
 
-				return new string(buffer, 0, (int)size - 1);
+				return new string(buffer, 0, size - 1);
 			}
 		}
 

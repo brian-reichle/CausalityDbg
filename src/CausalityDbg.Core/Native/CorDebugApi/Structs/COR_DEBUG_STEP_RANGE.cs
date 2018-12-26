@@ -7,9 +7,9 @@ namespace CausalityDbg.Core.CorDebugApi
 	struct COR_DEBUG_STEP_RANGE
 	{
 		// ULONG32 startOffset;
-		public uint StartOffset;
+		public int StartOffset;
 
 		// ULONG32 endOffset;
-		public uint EndOffset;
+		public int EndOffset;
 	}
 }

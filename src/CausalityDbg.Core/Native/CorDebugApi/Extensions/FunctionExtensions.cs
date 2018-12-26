@@ -117,7 +117,7 @@ namespace CausalityDbg.Core.CorDebugApi
 						IntPtr.Zero,
 						IntPtr.Zero,
 						buffer,
-						(uint)paramName.Length,
+						paramName.Length,
 						out var size,
 						IntPtr.Zero,
 						IntPtr.Zero,

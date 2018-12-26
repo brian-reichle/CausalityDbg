@@ -42,7 +42,7 @@ namespace CausalityDbg.Core.CorDebugApi
 		// HRESULT GetLength(
 		//     [out] ULONG32   *pcchString
 		// );
-		uint GetLength();
+		int GetLength();
 
 		// HRESULT GetString(
 		//     [in] ULONG32    cchString,
@@ -50,8 +50,8 @@ namespace CausalityDbg.Core.CorDebugApi
 		//     [out, size_is(cchString), length_is(*pcchString)] WCHAR szString[]
 		// );
 		void GetString(
-			uint cchString,
-			out uint pcchString,
+			int cchString,
+			out int pcchString,
 			[MarshalAs(UnmanagedType.LPArray)] char[] szString);
 	}
 }

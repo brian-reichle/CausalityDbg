@@ -29,7 +29,7 @@ namespace CausalityDbg.Core.CLRHostApi
 		int GetVersionFromFile(
 			[MarshalAs(UnmanagedType.LPWStr)] string filePath,
 			[MarshalAs(UnmanagedType.LPArray)] char[] buffer,
-			ref uint bufferLength);
+			ref int bufferLength);
 
 		// HRESULT EnumerateInstalledRuntimes(
 		//     [out, retval] IEnumUnknown **ppEnumerator
