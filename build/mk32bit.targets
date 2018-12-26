@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<TargetName>$(AssemblyName)</TargetName>
+		<TargetFileNameX86>$(TargetName).x86.exe</TargetFileNameX86>
+		<TargetPathX86>$(OutputPath)$(TargetfileNameX86)</TargetPathX86>
+	</PropertyGroup>
+
+	<Target Name="Mk32BitClean" BeforeTargets="Clean">
+		<ItemGroup>
+			<Exe32 Include="$(TargetPathX86)" />
+		</ItemGroup>
+		<ItemGroup>
+			<FileWrites Include="@(Exe32)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="Mk32Bit" AfterTargets="Build" Inputs="$(TargetPath)" Outputs="$(TargetPathX86)">
+		<GetFrameworkSdkPath>
+			<Output TaskParameter="FrameworkSdkVersion40Path" PropertyName="SdkPath" />
+		</GetFrameworkSdkPath>
+		<PropertyGroup>
+			<CorFlags>$(SdkPath)bin\NETFX 4.6 Tools\CorFlags.exe</CorFlags>
+		</PropertyGroup>
+		<Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TargetPathX86)" />
+		<Exec Command="&quot;$(CorFlags)&quot; &quot;$(TargetPathX86)&quot; /32bit+" />
+	</Target>
+</Project>
