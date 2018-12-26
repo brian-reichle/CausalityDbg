@@ -5,21 +5,22 @@ namespace CausalityDbg.Core.CorDebugApi
 {
 	static class ProcessIOExtensions
 	{
-		public static unsafe byte[] ReadBytes(this ICorDebugProcess process, CORDB_ADDRESS address, int size)
+		public static unsafe void ReadBytes(this ICorDebugProcess process, CORDB_ADDRESS address, byte[] buffer, int offset, int size)
 		{
-			var result = new byte[size];
+			if (buffer == null) throw new ArgumentNullException(nameof(buffer));
+			if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
+			if (size < 0) throw new ArgumentOutOfRangeException(nameof(size));
+			if (offset + size > buffer.Length) throw new ArgumentOutOfRangeException(nameof(offset));
 
 			if (size == 0)
 			{
-				return result;
+				return;
 			}
 
-			fixed (byte* resultPtr = &result[0])
+			fixed (byte* resultPtr = &buffer[offset])
 			{
 				process.ReadMemory(address, size, (IntPtr)resultPtr, out var read);
 			}
-
-			return result;
 		}
 
 		public static unsafe T ReadValue<T>(this ICorDebugProcess process, CORDB_ADDRESS address)

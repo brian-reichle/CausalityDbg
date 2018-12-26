@@ -1,5 +1,6 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
+using System.Buffers;
 using System.Runtime.InteropServices;
 using CausalityDbg.Core.MetaDataApi;
 using CausalityDbg.IL;
@@ -11,9 +12,11 @@ namespace CausalityDbg.Core.CorDebugApi
 		public static string GetName(this ICorDebugModule module)
 		{
 			module.GetName(0, out var len, null);
-			var buffer = new char[len];
-			module.GetName(buffer.Length, out len, buffer);
-			return len > 0 ? new string(buffer, 0, len - 1) : string.Empty;
+			var buffer = ArrayPool<char>.Shared.Rent(len);
+			module.GetName(len, out len, buffer);
+			var name = len > 0 ? new string(buffer, 0, len - 1) : string.Empty;
+			ArrayPool<char>.Shared.Return(buffer);
+			return name;
 		}
 
 		public static bool GetAssemblyProps(this ICorDebugModule module, out string name, out ASSEMBLYMETADATA aMetadata, out IntPtr publicKeyPtr, out int publicKeySize)
@@ -49,7 +52,7 @@ namespace CausalityDbg.Core.CorDebugApi
 				IntPtr.Zero,
 				IntPtr.Zero);
 
-			var buffer = new char[size];
+			var buffer = ArrayPool<char>.Shared.Rent(size);
 
 			var pMetadata = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(ASSEMBLYMETADATA)));
 			Marshal.StructureToPtr(aMetadata, pMetadata, false);
@@ -276,7 +279,7 @@ namespace CausalityDbg.Core.CorDebugApi
 				0,
 				out var size);
 
-			var buffer = new char[size];
+			var buffer = ArrayPool<char>.Shared.Rent(size);
 
 			import.GetTypeRefProps(
 				typeRefToken,
@@ -286,6 +289,7 @@ namespace CausalityDbg.Core.CorDebugApi
 				out size);
 
 			className = new string(buffer, 0, size - 1);
+			ArrayPool<char>.Shared.Return(buffer);
 		}
 	}
 }

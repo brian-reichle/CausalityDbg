@@ -1,4 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System.Buffers;
 using System.Runtime.InteropServices;
 
 namespace CausalityDbg.Core.CLRHostApi
@@ -19,7 +20,7 @@ namespace CausalityDbg.Core.CLRHostApi
 				return null;
 			}
 
-			var buffer = new char[size];
+			var buffer = ArrayPool<char>.Shared.Rent(size);
 			hr = host.GetVersionFromFile(path, buffer, ref size);
 
 			if (hr < 0)
@@ -27,7 +28,10 @@ namespace CausalityDbg.Core.CLRHostApi
 				throw Marshal.GetExceptionForHR(hr);
 			}
 
-			return new string(buffer, 0, size);
+			var version = new string(buffer, 0, size);
+			ArrayPool<char>.Shared.Return(buffer);
+
+			return version;
 		}
 
 		public static ICLRRuntimeInfo GetRuntime(this ICLRMetaHost host, string version)

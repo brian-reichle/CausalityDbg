@@ -1,6 +1,6 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
-using System.Collections.Generic;
+using System.Buffers;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using CausalityDbg.Core.MetaDataApi;
@@ -10,9 +10,8 @@ namespace CausalityDbg.Core.CorDebugApi
 {
 	static class FunctionExtensions
 	{
-		public static List<byte[]> GetDataSections(this ICorDebugFunction function)
+		public static CorExceptionClauseCollection GetExceptionClauses(this ICorDebugFunction function)
 		{
-			var result = new List<byte[]>();
 			var addr = function.GetHeaderAddress();
 			var process = function.GetModule().GetProcess();
 
@@ -21,7 +20,7 @@ namespace CausalityDbg.Core.CorDebugApi
 			if ((header & 0x03) == (int)CorILMethodFlags.CorILMethod_TinyFormat &&
 				(header & (int)CorILMethodFlags.CorILMethod_MoreSects) == 0)
 			{
-				return result;
+				return null;
 			}
 
 			var headerLen = (int)((header >> 10) & 0x3C);
@@ -43,7 +42,15 @@ namespace CausalityDbg.Core.CorDebugApi
 					sectLen = (sectHeader >> 8) & 0xFFFFFF;
 				}
 
-				result.Add(process.ReadBytes(addr, sectLen));
+				var blob = ArrayPool<byte>.Shared.Rent(sectLen);
+				process.ReadBytes(addr, blob, 0, sectLen);
+				var collection = CorExceptionClauseCollection.New(blob);
+				ArrayPool<byte>.Shared.Return(blob);
+
+				if (collection != null)
+				{
+					return collection;
+				}
 
 				if ((sectHeader & (int)CorILMethodSectFlags.CorILMethod_Sect_MoreSects) == 0)
 				{
@@ -54,7 +61,7 @@ namespace CausalityDbg.Core.CorDebugApi
 			}
 			while (true);
 
-			return result;
+			return null;
 		}
 
 		public static CORDB_ADDRESS GetHeaderAddress(this ICorDebugFunction function)
@@ -77,21 +84,6 @@ namespace CausalityDbg.Core.CorDebugApi
 			return module.GetBaseAddress() + rva;
 		}
 
-		public static CorExceptionClauseCollection GetExceptionClauses(this ICorDebugFunction function)
-		{
-			foreach (var blob in function.GetDataSections())
-			{
-				var collection = CorExceptionClauseCollection.New(blob);
-
-				if (collection != null)
-				{
-					return collection;
-				}
-			}
-
-			return null;
-		}
-
 		public static int GetParamIndex(this ICorDebugFunction function, string paramName)
 		{
 			if (string.IsNullOrEmpty(paramName)) return -1;
@@ -109,7 +101,7 @@ namespace CausalityDbg.Core.CorDebugApi
 				{
 					if (buffer == null)
 					{
-						buffer = new char[paramName.Length + 1];
+						buffer = ArrayPool<char>.Shared.Rent(paramName.Length + 1);
 					}
 
 					import.GetParamProps(
@@ -133,6 +125,7 @@ namespace CausalityDbg.Core.CorDebugApi
 								index++;
 							}
 
+							ArrayPool<char>.Shared.Return(buffer);
 							return index;
 						}
 					}
@@ -146,6 +139,11 @@ namespace CausalityDbg.Core.CorDebugApi
 				{
 					import.CloseEnum(hEnum);
 				}
+			}
+
+			if (buffer != null)
+			{
+				ArrayPool<char>.Shared.Return(buffer);
 			}
 
 			return -1;

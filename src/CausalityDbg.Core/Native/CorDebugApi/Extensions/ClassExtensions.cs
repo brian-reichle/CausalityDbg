@@ -1,5 +1,6 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using CausalityDbg.IL;
@@ -50,18 +51,18 @@ namespace CausalityDbg.Core.CorDebugApi
 			var import = module.GetMetaDataImport();
 			var hEnum = IntPtr.Zero;
 			var name = method.Name;
+			var length = name.Length + 1;
+			var buffer = ArrayPool<char>.Shared.Rent(length);
 
 			try
 			{
-				var buffer = new char[name.Length + 1];
-
 				while (import.EnumMethods(ref hEnum, cl.GetToken(), out var mToken, 1))
 				{
 					import.GetMethodProps(
 						mToken,
 						out var classToken,
 						buffer,
-						buffer.Length,
+						length,
 						out var size,
 						IntPtr.Zero,
 						out var sigBlob,
@@ -69,7 +70,7 @@ namespace CausalityDbg.Core.CorDebugApi
 						out var rva,
 						IntPtr.Zero);
 
-					if (size != buffer.Length) continue;
+					if (size != length) continue;
 
 					var funcName = new string(buffer, 0, size - 1);
 
@@ -77,9 +78,11 @@ namespace CausalityDbg.Core.CorDebugApi
 
 					if (method.SpecifiesArgTypes)
 					{
-						var sig = new byte[sigSize];
-						Marshal.Copy(sigBlob, sig, 0, sigSize);
-						if (!IsMatch(module, SignatureReader.ReadMethodDefSig(sig), method)) continue;
+						var blob = ArrayPool<byte>.Shared.Rent(sigSize);
+						Marshal.Copy(sigBlob, blob, 0, sigSize);
+						var sig = SignatureReader.ReadMethodDefSig(new ArraySegment<byte>(blob, 0, sigSize));
+						ArrayPool<byte>.Shared.Return(blob);
+						if (!IsMatch(module, sig, method)) continue;
 					}
 
 					yield return module.GetFunctionFromToken(mToken);
@@ -92,6 +95,8 @@ namespace CausalityDbg.Core.CorDebugApi
 					import.CloseEnum(hEnum);
 				}
 			}
+
+			ArrayPool<char>.Shared.Return(buffer);
 		}
 
 		public static ICorDebugFunction FindPropertyGetterInherit(this ICorDebugClass cl, string name)
@@ -118,11 +123,11 @@ namespace CausalityDbg.Core.CorDebugApi
 			var import = module.GetMetaDataImport();
 			var hEnum = IntPtr.Zero;
 			var cToken = cl.GetToken();
+			var length = name.Length + 1;
+			var buffer = ArrayPool<char>.Shared.Rent(length);
 
 			try
 			{
-				var buffer = new char[name.Length + 1];
-
 				while (import.EnumProperties(ref hEnum, cToken, out var pToken, 1))
 				{
 					import.GetPropertyProps(
@@ -143,12 +148,13 @@ namespace CausalityDbg.Core.CorDebugApi
 						0,
 						IntPtr.Zero);
 
-					if (size != buffer.Length) continue;
+					if (size != length) continue;
 
 					var propertyName = new string(buffer, 0, size - 1);
 
 					if (propertyName != name) continue;
 
+					ArrayPool<char>.Shared.Return(buffer);
 					return module.GetFunctionFromToken(mToken);
 				}
 			}
@@ -160,6 +166,7 @@ namespace CausalityDbg.Core.CorDebugApi
 				}
 			}
 
+			ArrayPool<char>.Shared.Return(buffer);
 			return null;
 		}
 
@@ -224,23 +231,26 @@ namespace CausalityDbg.Core.CorDebugApi
 
 		static bool IsMatch_TypeRef(ICorDebugModule module, MetaDataToken token, string typeName, int len)
 		{
-			var buffer = new char[len + 1];
+			var length = len + 1;
+			var buffer = ArrayPool<char>.Shared.Rent(length);
 
 			var import = module.GetMetaDataImport();
 			import.GetTypeRefProps(
 				token,
 				out var scope,
 				buffer,
-				buffer.Length,
+				length,
 				out var size);
 
 			size--;
+
+			bool result;
 
 			if (scope.TokenType == TokenType.TypeRef)
 			{
 				var start = len - size - 2;
 
-				return start > 0
+				result = start > 0
 					&& IsMatch(typeName, buffer, start + 2, size)
 					&& typeName[start] == ':'
 					&& typeName[start + 1] == ':'
@@ -248,25 +258,32 @@ namespace CausalityDbg.Core.CorDebugApi
 			}
 			else
 			{
-				return size == len
+				result = size == len
 					&& IsMatch(typeName, buffer, 0, len);
 			}
+
+			ArrayPool<char>.Shared.Return(buffer);
+
+			return result;
 		}
 
 		static bool IsMatch_TypeDef(ICorDebugModule module, MetaDataToken token, string typeName, int len)
 		{
-			var buffer = new char[len + 1];
+			var length = len + 1;
+			var buffer = ArrayPool<char>.Shared.Rent(length);
 
 			var import = module.GetMetaDataImport();
 			import.GetTypeDefProps(
 				token,
 				buffer,
-				buffer.Length,
+				length,
 				out var size,
 				out var att,
 				out var parent);
 
 			size--;
+
+			bool result;
 
 			if (att.IsNested())
 			{
@@ -274,7 +291,7 @@ namespace CausalityDbg.Core.CorDebugApi
 
 				import.GetNestedClassProps(token, out var declaringToken);
 
-				return start > 0
+				result = start > 0
 					&& IsMatch(typeName, buffer, start + 2, size)
 					&& typeName[start] == ':'
 					&& typeName[start + 1] == ':'
@@ -282,9 +299,13 @@ namespace CausalityDbg.Core.CorDebugApi
 			}
 			else
 			{
-				return size == len
+				result = size == len
 					&& IsMatch(typeName, buffer, 0, size);
 			}
+
+			ArrayPool<char>.Shared.Return(buffer);
+
+			return result;
 		}
 
 		static bool IsMatch(string typeName, char[] segment, int start, int length)

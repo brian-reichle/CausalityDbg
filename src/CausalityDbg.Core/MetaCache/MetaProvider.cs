@@ -1,5 +1,6 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Runtime.InteropServices;
@@ -249,15 +250,18 @@ namespace CausalityDbg.Core.MetaCache
 					out var att,
 					out var baseToken);
 
-				var buffer = new char[size];
+				var buffer = ArrayPool<char>.Shared.Rent(size);
 
 				import.GetTypeDefProps(
 					token,
 					buffer,
-					buffer.Length,
+					size,
 					out size,
 					out att,
 					out baseToken);
+
+				var name = new string(buffer, 0, size - 1);
+				ArrayPool<char>.Shared.Return(buffer);
 
 				MetaType declaringType = null;
 
@@ -273,7 +277,7 @@ namespace CausalityDbg.Core.MetaCache
 
 				var count = import.CountGenericParams(token);
 
-				return new MetaType(Module, declaringType, new string(buffer, 0, size - 1), count);
+				return new MetaType(Module, declaringType, name, count);
 			}
 
 			MetaType CreateTypeRef(ICorDebugModule module, MetaDataToken token)
@@ -297,7 +301,7 @@ namespace CausalityDbg.Core.MetaCache
 					out var rva,
 					IntPtr.Zero);
 
-				var buffer = new char[size];
+				var buffer = ArrayPool<char>.Shared.Rent(size);
 
 				import.GetMethodProps(
 					token,
@@ -312,6 +316,8 @@ namespace CausalityDbg.Core.MetaCache
 					IntPtr.Zero);
 
 				var name = new string(buffer, 0, size - 1);
+				ArrayPool<char>.Shared.Return(buffer);
+
 				var count = import.CountGenericParams(token);
 				var sig = Read(sigBlob, sigLen);
 				var converter = new SigTranslator(this, module);
@@ -342,10 +348,11 @@ namespace CausalityDbg.Core.MetaCache
 
 			static SigMethod Read(IntPtr sigBlob, int sigLen)
 			{
-				var blob = new byte[sigLen];
+				var blob = ArrayPool<byte>.Shared.Rent(sigLen);
 				Marshal.Copy(sigBlob, blob, 0, sigLen);
 
-				var sig = SignatureReader.ReadMethodDefSig(blob);
+				var sig = SignatureReader.ReadMethodDefSig(new ArraySegment<byte>(blob, 0, sigLen));
+				ArrayPool<byte>.Shared.Return(blob);
 
 				if (sig.Parameters.Length > sig.OrderedParamCount)
 				{
@@ -386,7 +393,7 @@ namespace CausalityDbg.Core.MetaCache
 					return null;
 				}
 
-				var buffer = new char[size];
+				var buffer = ArrayPool<char>.Shared.Rent(size);
 
 				import.GetParamProps(
 					paramToken,
@@ -400,7 +407,9 @@ namespace CausalityDbg.Core.MetaCache
 					IntPtr.Zero,
 					IntPtr.Zero);
 
-				return new string(buffer, 0, size - 1);
+				var name = new string(buffer, 0, size - 1);
+				ArrayPool<char>.Shared.Return(buffer);
+				return name;
 			}
 		}
 

@@ -1,4 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System.Buffers;
 using System.Runtime.InteropServices;
 using CausalityDbg.Core.MetaDataApi;
 using CausalityDbg.IL;
@@ -10,9 +11,13 @@ namespace CausalityDbg.Core.CorDebugApi
 		public static string GetName(this ICorDebugAssembly assembly)
 		{
 			assembly.GetName(0, out var len, null);
-			var buffer = new char[len];
-			assembly.GetName(buffer.Length, out len, buffer);
-			return len > 0 ? new string(buffer, 0, len - 1) : string.Empty;
+			var buffer = ArrayPool<char>.Shared.Rent(len);
+			assembly.GetName(len, out len, buffer);
+
+			var name = len > 0 ? new string(buffer, 0, len - 1) : string.Empty;
+			ArrayPool<char>.Shared.Return(buffer);
+
+			return name;
 		}
 
 		public static ICorDebugClass FindClass(this ICorDebugAssembly assembly, string className)

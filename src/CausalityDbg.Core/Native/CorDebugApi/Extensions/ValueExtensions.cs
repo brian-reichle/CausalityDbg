@@ -1,4 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System.Buffers;
 using System.Runtime.InteropServices;
 
 namespace CausalityDbg.Core.CorDebugApi
@@ -38,10 +39,11 @@ namespace CausalityDbg.Core.CorDebugApi
 		public static string GetStringValue(this ICorDebugStringValue objectValue)
 		{
 			var len = objectValue.GetLength();
-			var buffer = new char[len];
+			var buffer = ArrayPool<char>.Shared.Rent(len);
 			objectValue.GetString(len, out len, buffer);
-
-			return new string(buffer, 0, (int)len);
+			var value = new string(buffer, 0, len);
+			ArrayPool<char>.Shared.Return(buffer);
+			return value;
 		}
 	}
 }

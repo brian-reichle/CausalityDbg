@@ -1,5 +1,7 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Buffers;
+
 namespace CausalityDbg.Core.SymbolStoreApi
 {
 	static class SymUnmanagedDocumentExtensions
@@ -13,14 +15,16 @@ namespace CausalityDbg.Core.SymbolStoreApi
 				out var size,
 				null);
 
-			var buffer = new char[size];
+			var buffer = ArrayPool<char>.Shared.Rent(size);
 
 			document.GetURL(
 				buffer.Length,
 				out size,
 				buffer);
 
-			return new string(buffer, 0, size - 1);
+			var url = new string(buffer, 0, size - 1);
+			ArrayPool<char>.Shared.Return(buffer);
+			return url;
 		}
 	}
 }

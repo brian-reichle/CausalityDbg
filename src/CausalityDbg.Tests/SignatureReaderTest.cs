@@ -1,4 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -14,7 +15,7 @@ namespace CausalityDbg.Tests
 		public void CheckSig(string name)
 		{
 			var tuple = TestHelper.ReadBinaryTextPair(name);
-			var text = Format(SignatureReader.ReadMethodDefSig(tuple.Key));
+			var text = Format(SignatureReader.ReadMethodDefSig(new ArraySegment<byte>(tuple.Key)));
 
 			try
 			{

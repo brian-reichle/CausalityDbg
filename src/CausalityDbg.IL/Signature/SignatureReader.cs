@@ -1,4 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System;
 using System.Collections.Immutable;
 using System.Reflection;
 
@@ -6,11 +7,11 @@ namespace CausalityDbg.IL
 {
 	public static class SignatureReader
 	{
-		public static SigMethod ReadMethodDefSig(byte[] blob)
+		public static SigMethod ReadMethodDefSig(ArraySegment<byte> blob)
 		{
-			var index = 0;
-			var result = ReadMethodSig(blob, ref index, false);
-			if (index != blob.Length) throw new InvalidSignatureException();
+			var index = blob.Offset;
+			var result = ReadMethodSig(blob.Array, ref index, false);
+			if (index != blob.Offset + blob.Count) throw new InvalidSignatureException();
 			return result;
 		}
 
