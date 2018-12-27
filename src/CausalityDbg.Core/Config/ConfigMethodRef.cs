@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace CausalityDbg.Core
 {
-	[DebuggerDisplay("ConfigMethodRef: {MethodName.Text}")]
+	[DebuggerDisplay("ConfigMethodRef: {Method.Text}")]
 	public sealed class ConfigMethodRef
 	{
 		internal ConfigMethodRef(MethodRef method, ImmutableArray<ConfigHook> hooks)
