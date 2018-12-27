@@ -5,32 +5,6 @@ namespace CausalityDbg.Core
 {
 	static class ElementTypeExtensions
 	{
-		public static string GetShortName(this CorElementType type)
-		{
-			switch (type)
-			{
-				case CorElementType.ELEMENT_TYPE_BOOLEAN: return "bool";
-				case CorElementType.ELEMENT_TYPE_CHAR: return "char";
-				case CorElementType.ELEMENT_TYPE_I1: return "sbyte";
-				case CorElementType.ELEMENT_TYPE_U1: return "byte";
-				case CorElementType.ELEMENT_TYPE_I2: return "short";
-				case CorElementType.ELEMENT_TYPE_U2: return "ushort";
-				case CorElementType.ELEMENT_TYPE_I4: return "int";
-				case CorElementType.ELEMENT_TYPE_U4: return "uint";
-				case CorElementType.ELEMENT_TYPE_I8: return "long";
-				case CorElementType.ELEMENT_TYPE_U8: return "ulong";
-				case CorElementType.ELEMENT_TYPE_R4: return "float";
-				case CorElementType.ELEMENT_TYPE_R8: return "double";
-				case CorElementType.ELEMENT_TYPE_I: return "System.IntPtr";
-				case CorElementType.ELEMENT_TYPE_U: return "System.UIntPtr";
-				case CorElementType.ELEMENT_TYPE_OBJECT: return "object";
-				case CorElementType.ELEMENT_TYPE_STRING: return "string";
-				case CorElementType.ELEMENT_TYPE_VOID: return "void";
-				case CorElementType.ELEMENT_TYPE_TYPEDBYREF: return "System.TypedReference";
-				default: throw new TypeResolutionException();
-			}
-		}
-
 		public static string GetFullName(this CorElementType type)
 		{
 			switch (type)
