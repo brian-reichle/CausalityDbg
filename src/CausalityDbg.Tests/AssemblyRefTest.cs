@@ -7,7 +7,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using CausalityDbg.Core;
+using CausalityDbg.Configuration;
 using NUnit.Framework;
 
 namespace CausalityDbg.Tests

@@ -6,6 +6,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:local="clr-namespace:CausalityDbg.Main"
 	xmlns:core="clr-namespace:CausalityDbg.Core;assembly=CausalityDbg.Core"
+	xmlns:configuration="clr-namespace:CausalityDbg.Configuration;assembly=CausalityDbg.Configuration"
 	>
 
 	<UserControl.CommandBindings>
@@ -29,7 +30,7 @@
 
 		<DataTemplate
 			x:Key="CategoryMarker"
-			DataType="{x:Type core:ConfigCategory}"
+			DataType="{x:Type configuration:ConfigCategory}"
 			>
 
 			<Path

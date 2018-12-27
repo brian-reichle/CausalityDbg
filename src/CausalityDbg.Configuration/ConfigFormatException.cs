@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.Configuration
 {
 	[Serializable]
 	public sealed class ConfigFormatException : Exception

@@ -2,6 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using CausalityDbg.Configuration;
 using CausalityDbg.Core.CorDebugApi;
 
 namespace CausalityDbg.Core

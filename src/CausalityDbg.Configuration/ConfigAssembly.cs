@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.Configuration
 {
 	[DebuggerDisplay("ConfigAssembly: {AssemblyRef.FullyQualifiedName}")]
 	public sealed class ConfigAssembly

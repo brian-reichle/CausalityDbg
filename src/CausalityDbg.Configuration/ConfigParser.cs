@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Xml;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.Configuration
 {
 	public static class ConfigParser
 	{

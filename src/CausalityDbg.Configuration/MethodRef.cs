@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.Configuration
 {
 	public sealed class MethodRef
 	{

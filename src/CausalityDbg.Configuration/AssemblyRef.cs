@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.Configuration
 {
 	[DebuggerDisplay("ConfigAssembly: {FullyQualifiedName}")]
 	public sealed class AssemblyRef

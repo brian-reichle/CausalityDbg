@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using CausalityDbg.Configuration;
 using CausalityDbg.Core.CorDebugApi;
 using CausalityDbg.Core.MetaCache;
 

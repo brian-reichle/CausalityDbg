@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -33,12 +33,6 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CLSID.cs" />
-    <Compile Include="Config\ArgumentType.cs" />
-    <Compile Include="Config\ConfigClass.cs" />
-    <Compile Include="Config\ConfigHookType.cs" />
-    <Compile Include="Config\ConfigParser.cs" />
-    <Compile Include="Config\ConfigHook.cs" />
-    <Compile Include="Config\MethodRef.cs" />
     <Compile Include="Interfaces\LaunchArguments.cs" />
     <Compile Include="Native\CLRHostApi\Interfaces\ICLRMetaHost.cs" />
     <Compile Include="Native\CLRHostApi\Interfaces\ICLRRuntimeInfo.cs" />
@@ -64,14 +58,6 @@
     <Compile Include="Native\CorDebugApi\Extensions\ThreadExtensions.cs" />
     <Compile Include="Extensions\TypeAttributeExtensions.cs" />
     <Compile Include="Native\CorDebugApi\Extensions\ValueExtensions.cs" />
-    <Compile Include="Config\AssemblyRef.cs" />
-    <Compile Include="Config\AssemblyRefFlags.cs" />
-    <Compile Include="Config\Config.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Config\ConfigAssembly.cs" />
-    <Compile Include="Config\ConfigCategory.cs" />
-    <Compile Include="Config\ConfigCategoryType.cs" />
     <Compile Include="Native\CorDebugApi\Enums\CorDebugHandleType.cs" />
     <Compile Include="Native\CorDebugApi\Enums\CorDebugIntercept.cs" />
     <Compile Include="Native\CorDebugApi\Enums\CorDebugJITCompilerFlags.cs" />
@@ -91,8 +77,6 @@
     <Compile Include="Native\Win32\Enum\ProcessCreationFlags.cs" />
     <Compile Include="Native\Win32\Struct\PROCESS_INFORMATION.cs" />
     <Compile Include="Native\Win32\Struct\STARTUPINFO.cs" />
-    <Compile Include="Exceptions\ConfigFormatException.cs" />
-    <Compile Include="Config\ConfigMethodRef.cs" />
     <Compile Include="Native\CorDebugApi\Enums\CorDebugChainReason.cs" />
     <Compile Include="Native\CorDebugApi\Enums\CorDebugExceptionCallbackType.cs" />
     <Compile Include="Native\CorDebugApi\Enums\CorDebugExceptionFlags.cs" />
@@ -191,15 +175,13 @@
     <Compile Include="Native\Win32\SafeHandle\UnmanagedBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\Config.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Config\Config.xsd" />
     <Compile Include="Tracker\Tracker.ManagedCallback.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CausalityDbg.Configuration\CausalityDbg.Configuration.csproj">
+      <Project>{1ae370b5-6d9d-499a-8222-1d878802b687}</Project>
+      <Name>CausalityDbg.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CausalityDbg.IL\CausalityDbg.IL.csproj">
       <Project>{4CA83BB9-BD59-4361-A972-E9E1E46720CF}</Project>
       <Name>CausalityDbg.IL</Name>

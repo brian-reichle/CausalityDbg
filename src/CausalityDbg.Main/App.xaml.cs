@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Threading;
+using CausalityDbg.Configuration;
 using CausalityDbg.Core;
 
 namespace CausalityDbg.Main

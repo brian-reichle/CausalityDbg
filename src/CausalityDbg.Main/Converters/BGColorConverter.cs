@@ -3,7 +3,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using CausalityDbg.Core;
+using CausalityDbg.Configuration;
 
 namespace CausalityDbg.Main
 {

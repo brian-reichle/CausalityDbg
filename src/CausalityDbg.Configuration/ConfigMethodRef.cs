@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.Configuration
 {
 	[DebuggerDisplay("ConfigMethodRef: {Method.Text}")]
 	public sealed class ConfigMethodRef

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Runtime.InteropServices;
+using CausalityDbg.Configuration;
 using CausalityDbg.Core.CorDebugApi;
 using Microsoft.Win32.SafeHandles;
 using static CausalityDbg.Core.NativeMethods;

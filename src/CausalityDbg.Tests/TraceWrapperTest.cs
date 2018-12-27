@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Text;
+using CausalityDbg.Configuration;
 using CausalityDbg.Core;
 using CausalityDbg.Core.CorDebugApi;
 using CausalityDbg.Main;

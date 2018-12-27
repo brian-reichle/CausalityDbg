@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using CausalityDbg.Configuration;
 using CausalityDbg.Core.CorDebugApi;
 using CausalityDbg.Core.MetaDataApi;
 

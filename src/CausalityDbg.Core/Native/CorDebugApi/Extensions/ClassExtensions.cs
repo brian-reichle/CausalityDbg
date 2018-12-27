@@ -3,6 +3,7 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using CausalityDbg.Configuration;
 using CausalityDbg.IL;
 
 namespace CausalityDbg.Core.CorDebugApi
