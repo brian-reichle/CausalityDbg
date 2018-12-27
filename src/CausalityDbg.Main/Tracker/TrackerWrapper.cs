@@ -24,8 +24,18 @@ namespace CausalityDbg.Main
 			var callback = new Callback(_dispatcher, store, Status, this);
 
 			Close(ref _tracker);
-			_tracker = TrackerFactory.New(_config, callback, args);
-			_tracker.Attach();
+
+			try
+			{
+				_tracker = TrackerFactory.New(_config, callback, args);
+				_tracker.Attach();
+			}
+			catch (AttachException ex)
+			{
+				_tracker?.Dispose();
+				_tracker = null;
+				ReportException(ex);
+			}
 		}
 
 		public void SetProcess(int processID, DataProvider store)
@@ -36,8 +46,18 @@ namespace CausalityDbg.Main
 			var callback = new Callback(_dispatcher, store, Status, this);
 
 			Close(ref _tracker);
-			_tracker = TrackerFactory.New(_config, callback, processID);
-			_tracker.Attach();
+
+			try
+			{
+				_tracker = TrackerFactory.New(_config, callback, processID);
+				_tracker.Attach();
+			}
+			catch (AttachException ex)
+			{
+				_tracker?.Dispose();
+				_tracker = null;
+				ReportException(ex);
+			}
 		}
 
 		public void Detach()
