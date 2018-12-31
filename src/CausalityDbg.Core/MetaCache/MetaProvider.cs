@@ -82,12 +82,12 @@ namespace CausalityDbg.Core.MetaCache
 					return new MetaCompoundByRef(
 						GetCompound(module, type.GetFirstTypeParameter()));
 
-				case CorElementType.ELEMENT_TYPE_ARRAY:
+				case CorElementType.ELEMENT_TYPE_SZARRAY:
 					return new MetaCompoundArray(
 						GetCompound(module, type.GetFirstTypeParameter()),
 						1);
 
-				case CorElementType.ELEMENT_TYPE_SZARRAY:
+				case CorElementType.ELEMENT_TYPE_ARRAY:
 					return new MetaCompoundArray(
 						GetCompound(module, type.GetFirstTypeParameter()),
 						type.GetRank());
