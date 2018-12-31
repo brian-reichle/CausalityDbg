@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using CausalityDbg.Configuration;
 using CausalityDbg.Core.CorDebugApi;
-using CausalityDbg.Core.MetaCache;
+using CausalityDbg.Metadata;
 
 namespace CausalityDbg.Core
 {

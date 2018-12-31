@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 
-namespace CausalityDbg.Core.MetaCache
+namespace CausalityDbg.Metadata
 {
-	sealed class MetaFormatter : IMetaCompoundVisitor
+	public sealed class MetaFormatter : IMetaCompoundVisitor
 	{
 		public static string Format(MetaFunction function, ImmutableArray<MetaCompound> genericArgs)
 		{

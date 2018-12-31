@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
-using CausalityDbg.Core.MetaCache;
+using CausalityDbg.Metadata;
 
 namespace CausalityDbg.Core
 {

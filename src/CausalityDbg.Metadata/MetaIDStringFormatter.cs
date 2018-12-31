@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CausalityDbg.Core.MetaCache
+namespace CausalityDbg.Metadata
 {
-	sealed class MetaIDStringFormatter : IMetaCompoundVisitor
+	public sealed class MetaIDStringFormatter : IMetaCompoundVisitor
 	{
 		public MetaIDStringFormatter()
 		{

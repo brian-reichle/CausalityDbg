@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using CausalityDbg.Core.MetaCache;
 using CausalityDbg.Core.MetaDataApi;
 using CausalityDbg.Core.SymbolStoreApi;
+using CausalityDbg.Metadata;
 
 namespace CausalityDbg.Core
 {

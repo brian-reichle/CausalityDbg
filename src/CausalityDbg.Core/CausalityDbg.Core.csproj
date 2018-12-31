@@ -34,6 +34,7 @@
     </Compile>
     <Compile Include="CLSID.cs" />
     <Compile Include="Interfaces\LaunchArguments.cs" />
+    <Compile Include="MetaCache\MetaProvider.cs" />
     <Compile Include="Native\CLRHostApi\Interfaces\ICLRMetaHost.cs" />
     <Compile Include="Native\CLRHostApi\Interfaces\ICLRRuntimeInfo.cs" />
     <Compile Include="Native\CLRHostApi\Interfaces\IEnumUnknown.cs" />
@@ -130,21 +131,6 @@
     <Compile Include="Exceptions\AttachErrorType.cs" />
     <Compile Include="Exceptions\AttachException.cs" />
     <Compile Include="DataStore\FrameData.cs" />
-    <Compile Include="MetaCache\IMetaCompoundVisitor.cs" />
-    <Compile Include="MetaCache\MetaCompound.cs" />
-    <Compile Include="MetaCache\MetaCompoundArray.cs" />
-    <Compile Include="MetaCache\MetaCompoundByRef.cs" />
-    <Compile Include="MetaCache\MetaCompoundClass.cs" />
-    <Compile Include="MetaCache\MetaCompoundGenArg.cs" />
-    <Compile Include="MetaCache\MetaCompoundPointer.cs" />
-    <Compile Include="MetaCache\MetaFormatter.cs" />
-    <Compile Include="MetaCache\MetaFunction.cs" />
-    <Compile Include="MetaCache\MetaIDStringFormatter.cs" />
-    <Compile Include="MetaCache\MetaModule.cs" />
-    <Compile Include="MetaCache\MetaModuleFlags.cs" />
-    <Compile Include="MetaCache\MetaParameter.cs" />
-    <Compile Include="MetaCache\MetaProvider.cs" />
-    <Compile Include="MetaCache\MetaType.cs" />
     <Compile Include="Native\MetaDataApi\Enums\CorOpenFlags.cs" />
     <Compile Include="Native\MetaDataApi\Interfaces\IMetaDataDispenser.cs" />
     <Compile Include="Native\MetaDataApi\Structs\ASSEMBLYMETADATA.cs" />
@@ -185,6 +171,10 @@
     <ProjectReference Include="..\CausalityDbg.IL\CausalityDbg.IL.csproj">
       <Project>{4CA83BB9-BD59-4361-A972-E9E1E46720CF}</Project>
       <Name>CausalityDbg.IL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CausalityDbg.Metadata\CausalityDbg.Metadata.csproj">
+      <Project>{1cf00b35-817f-482c-8ce3-3687eba9535e}</Project>
+      <Name>CausalityDbg.Metadata</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

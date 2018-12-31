@@ -1,7 +1,7 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
 using System.Collections.Immutable;
-using CausalityDbg.Core.MetaCache;
+using CausalityDbg.Metadata;
 using NUnit.Framework;
 
 namespace CausalityDbg.Tests
@@ -53,42 +53,42 @@ namespace CausalityDbg.Tests
 		public void NestedGenerics()
 		{
 			var function = _gType1.NewFunction("Function");
-			var genArgs = ImmutableArray.Create<MetaCompound>(_gType1.Init(GetGenericArgs(1)));
+			var genArgs = ImmutableArray.Create<MetaCompound>(_gType1.CreateCompound(GetGenericArgs(1)));
 			Assert.That(MetaFormatter.Format(function, genArgs), Is.EqualTo("Dummy.Type<Dummy.Type<Dummy.Type1>>.Function()"));
 		}
 
 		[Test]
 		public void SingleParameter()
 		{
-			var function = _type1.NewFunction("Function", _type2.Init().ToParam("arg"));
+			var function = _type1.NewFunction("Function", _type2.CreateCompound().ToParam("arg"));
 			Assert.That(MetaFormatter.Format(function, ImmutableArray<MetaCompound>.Empty), Is.EqualTo("Dummy.Type1.Function(Dummy.Type2 arg)"));
 		}
 
 		[Test]
 		public void MultipleParameters()
 		{
-			var function = _type1.NewFunction("Function", _type2.Init().ToParam("arg1"), _type3.Init().ToParam("arg2"));
+			var function = _type1.NewFunction("Function", _type2.CreateCompound().ToParam("arg1"), _type3.CreateCompound().ToParam("arg2"));
 			Assert.That(MetaFormatter.Format(function, ImmutableArray<MetaCompound>.Empty), Is.EqualTo("Dummy.Type1.Function(Dummy.Type2 arg1, Dummy.Type3 arg2)"));
 		}
 
 		[Test]
 		public void UnnamedParameter()
 		{
-			var function = _type1.NewFunction("Function", _type2.Init().ToParam());
+			var function = _type1.NewFunction("Function", _type2.CreateCompound().ToParam());
 			Assert.That(MetaFormatter.Format(function, ImmutableArray<MetaCompound>.Empty), Is.EqualTo("Dummy.Type1.Function(Dummy.Type2)"));
 		}
 
 		[Test]
 		public void ByRef()
 		{
-			var type = _type1.Init().ByRef();
+			var type = _type1.CreateCompound().CreateByRef();
 			Assert.That(MetaFormatter.Format(type), Is.EqualTo("Dummy.Type1&"));
 		}
 
 		[Test]
 		public void Pointer()
 		{
-			var type = _type1.Init().Ptr();
+			var type = _type1.CreateCompound().CreatePointer();
 			Assert.That(MetaFormatter.Format(type), Is.EqualTo("Dummy.Type1*"));
 		}
 
@@ -98,7 +98,7 @@ namespace CausalityDbg.Tests
 		[TestCase(true, 1, ExpectedResult = "Dummy.Type<Dummy.Type1, Dummy.Type2>.Function<Dummy.Type3, Dummy.Type4>(Dummy.Type4 arg)")]
 		public string TypeGenArgRef(bool method, int index)
 		{
-			var param = new MetaCompoundGenArg(method, index).ToParam("arg");
+			var param = MetaFactory.CreateTypeArg(method, index).ToParam("arg");
 			var function = _gType2.NewFunction("Function", 2, param);
 			var genArgs = GetGenericArgs(4);
 			return MetaFormatter.Format(function, genArgs);
@@ -109,7 +109,7 @@ namespace CausalityDbg.Tests
 		[TestCase(3, ExpectedResult = "Dummy.Type1[,,]")]
 		public string Array(int rank)
 		{
-			var type = _type1.Init().ToArray(rank);
+			var type = _type1.CreateCompound().CreateArray(rank);
 			return MetaFormatter.Format(type);
 		}
 
@@ -117,7 +117,7 @@ namespace CausalityDbg.Tests
 
 		public MetaFormatterTest()
 		{
-			_module = new MetaModule("Dummy1.dll", MetaModuleFlags.None);
+			_module = MetaFactory.CreateModule("Dummy1.dll", MetaModuleFlags.None);
 
 			_type1 = _module.NewType("Dummy.Type1");
 			_type2 = _module.NewType("Dummy.Type2");
@@ -141,19 +141,19 @@ namespace CausalityDbg.Tests
 			switch (count)
 			{
 				case 4:
-					result[3] = _type4.Init();
+					result[3] = _type4.CreateCompound();
 					goto case 3;
 
 				case 3:
-					result[2] = _type3.Init();
+					result[2] = _type3.CreateCompound();
 					goto case 2;
 
 				case 2:
-					result[1] = _type2.Init();
+					result[1] = _type2.CreateCompound();
 					goto case 1;
 
 				case 1:
-					result[0] = _type1.Init();
+					result[0] = _type1.CreateCompound();
 					return result.ToImmutable();
 
 				default: throw new ArgumentOutOfRangeException(nameof(count));

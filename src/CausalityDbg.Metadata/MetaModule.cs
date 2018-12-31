@@ -2,12 +2,12 @@
 using System;
 using System.Diagnostics;
 
-namespace CausalityDbg.Core.MetaCache
+namespace CausalityDbg.Metadata
 {
 	[DebuggerDisplay("Module: {Name}")]
-	sealed class MetaModule
+	public sealed class MetaModule
 	{
-		public MetaModule(string name, MetaModuleFlags flags)
+		internal MetaModule(string name, MetaModuleFlags flags)
 		{
 			if (name == null) throw new ArgumentNullException(nameof(name));
 

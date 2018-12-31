@@ -66,6 +66,10 @@
       <Project>{946ED607-1746-4DA7-8203-6A36FB356A0F}</Project>
       <Name>CausalityDbg.Main</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CausalityDbg.Metadata\CausalityDbg.Metadata.csproj">
+      <Project>{1cf00b35-817f-482c-8ce3-3687eba9535e}</Project>
+      <Name>CausalityDbg.Metadata</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestFiles\Signature\Generic.txt" />

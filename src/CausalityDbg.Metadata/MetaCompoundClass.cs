@@ -3,12 +3,12 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace CausalityDbg.Core.MetaCache
+namespace CausalityDbg.Metadata
 {
 	[DebuggerDisplay("Class: {TargetType.Name}")]
-	sealed class MetaCompoundClass : MetaCompound
+	public sealed class MetaCompoundClass : MetaCompound
 	{
-		public MetaCompoundClass(MetaType targetType, ImmutableArray<MetaCompound> genericArgs)
+		internal MetaCompoundClass(MetaType targetType, ImmutableArray<MetaCompound> genericArgs)
 		{
 			if (targetType == null) throw new ArgumentNullException(nameof(targetType));
 

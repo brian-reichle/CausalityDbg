@@ -2,12 +2,12 @@
 using System;
 using System.Diagnostics;
 
-namespace CausalityDbg.Core.MetaCache
+namespace CausalityDbg.Metadata
 {
 	[DebuggerDisplay("Type: {Name}")]
-	sealed class MetaType
+	public sealed class MetaType
 	{
-		public MetaType(MetaModule module, MetaType declaringType, string name, int genTypeArgs)
+		internal MetaType(MetaModule module, MetaType declaringType, string name, int genTypeArgs)
 		{
 			if (module == null) throw new ArgumentNullException(nameof(module));
 			if (name == null) throw new ArgumentNullException(nameof(name));

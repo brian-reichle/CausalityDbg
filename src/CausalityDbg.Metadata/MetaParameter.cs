@@ -2,12 +2,12 @@
 using System;
 using System.Diagnostics;
 
-namespace CausalityDbg.Core.MetaCache
+namespace CausalityDbg.Metadata
 {
 	[DebuggerDisplay("Param: {Name}")]
-	sealed class MetaParameter
+	public sealed class MetaParameter
 	{
-		public MetaParameter(string name, MetaCompound parameterType)
+		internal MetaParameter(string name, MetaCompound parameterType)
 		{
 			if (parameterType == null) throw new ArgumentNullException(nameof(parameterType));
 

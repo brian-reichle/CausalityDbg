@@ -5,12 +5,12 @@ using System.Diagnostics;
 using System.Reflection;
 using CausalityDbg.IL;
 
-namespace CausalityDbg.Core.MetaCache
+namespace CausalityDbg.Metadata
 {
 	[DebuggerDisplay("Function: {Name}")]
-	sealed class MetaFunction
+	public sealed class MetaFunction
 	{
-		public MetaFunction(MetaModule module, MetaType declaringType, MetaDataToken token, string name, int genTypeArgs, CallingConventions callingConvention, ImmutableArray<MetaParameter> parameters)
+		internal MetaFunction(MetaModule module, MetaType declaringType, MetaDataToken token, string name, int genTypeArgs, CallingConventions callingConvention, ImmutableArray<MetaParameter> parameters)
 		{
 			if (module == null) throw new ArgumentNullException(nameof(module));
 			if (name == null) throw new ArgumentNullException(nameof(name));
