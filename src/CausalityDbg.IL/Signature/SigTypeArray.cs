@@ -23,6 +23,6 @@ namespace CausalityDbg.IL
 		public ImmutableArray<uint> Sizes { get; }
 		public ImmutableArray<int> LowerBounds { get; }
 
-		public override void Apply(ISigTypeVisitor visitor) => visitor.Visit(this);
+		public override TResult Apply<TArg, TResult>(ISigTypeVisitor<TArg, TResult> visitor, TArg arg) => visitor.Visit(this, arg);
 	}
 }

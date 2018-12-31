@@ -11,6 +11,6 @@ namespace CausalityDbg.IL
 
 		public SigMethod Method { get; }
 
-		public override void Apply(ISigTypeVisitor visitor) => visitor.Visit(this);
+		public override TResult Apply<TArg, TResult>(ISigTypeVisitor<TArg, TResult> visitor, TArg arg) => visitor.Visit(this, arg);
 	}
 }

@@ -10,6 +10,6 @@ namespace CausalityDbg.IL
 
 		public CorElementType ElementType { get; }
 
-		public abstract void Apply(ISigTypeVisitor visitor);
+		public abstract TResult Apply<TArg, TResult>(ISigTypeVisitor<TArg, TResult> visitor, TArg arg);
 	}
 }

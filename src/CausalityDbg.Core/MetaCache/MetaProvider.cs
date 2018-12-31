@@ -191,10 +191,12 @@ namespace CausalityDbg.Core.MetaCache
 				Module = module;
 				TypeLookup = new Dictionary<MetaDataToken, MetaType>();
 				FunctionLookup = new Dictionary<MetaDataToken, MetaFunction>();
+				Translator = new SigTranslator(this);
 			}
 
 			public MetaModule Module { get; }
 			public MetaProvider Provider { get; }
+			public SigTranslator Translator { get; }
 			public Dictionary<MetaDataToken, MetaType> TypeLookup { get; }
 			public Dictionary<MetaDataToken, MetaFunction> FunctionLookup { get; }
 
@@ -320,7 +322,6 @@ namespace CausalityDbg.Core.MetaCache
 
 				var count = import.CountGenericParams(token);
 				var sig = Read(sigBlob, sigLen);
-				var converter = new SigTranslator(this, module);
 
 				ImmutableArray<MetaParameter> parameters;
 
@@ -333,7 +334,7 @@ namespace CausalityDbg.Core.MetaCache
 					{
 						builder[i] = new MetaParameter(
 							GetParameterName(import, token, i + 1),
-							converter.Visit(sig.Parameters[i]));
+							Translator.Visit(sig.Parameters[i], module));
 					}
 
 					parameters = builder.MoveToImmutable();
@@ -413,73 +414,50 @@ namespace CausalityDbg.Core.MetaCache
 			}
 		}
 
-		sealed class SigTranslator : ISigTypeVisitor
+		sealed class SigTranslator : ISigTypeVisitor<ICorDebugModule, MetaCompound>
 		{
-			public SigTranslator(ModuleLevelCache cache, ICorDebugModule module)
+			public SigTranslator(ModuleLevelCache cache)
 			{
 				_cache = cache;
-				_module = module;
 			}
 
-			public MetaCompound Visit(SigParameter type)
+			public MetaCompound Visit(SigParameter type, ICorDebugModule module)
 			{
-				var result = Visit(type.ValueType);
-				return type.ByRef ? new MetaCompoundByRef(result) : result;
-			}
+				var result = type.ValueType.Apply(this, module);
 
-			public MetaCompound Visit(SigType type)
-			{
-				_result = null;
-
-				try
+				if (type.ByRef)
 				{
-					type.Apply(this);
-					return _result;
+					result = new MetaCompoundByRef(result);
 				}
-				finally
-				{
-					_result = null;
-				}
+
+				return result;
 			}
 
-			void ISigTypeVisitor.Visit(SigTypePrimitive element)
-			{
-				_result = new MetaCompoundClass(
-					_cache.Provider.GetType(_module, element.ElementType),
-					ImmutableArray<MetaCompound>.Empty);
-			}
+			public MetaCompound Visit(SigTypePrimitive element, ICorDebugModule module)
+				=> new MetaCompoundClass(GetType(module, element.ElementType), ImmutableArray<MetaCompound>.Empty);
 
-			void ISigTypeVisitor.Visit(SigTypeGen element)
+			public MetaCompound Visit(SigTypeGen element, ICorDebugModule module)
 			{
 				switch (element.ElementType)
 				{
 					case CorElementType.ELEMENT_TYPE_MVAR:
-						_result = new MetaCompoundGenArg(true, (int)element.Index);
-						break;
+						return new MetaCompoundGenArg(true, (int)element.Index);
 
 					case CorElementType.ELEMENT_TYPE_VAR:
-						_result = new MetaCompoundGenArg(false, (int)element.Index);
-						break;
+						return new MetaCompoundGenArg(false, (int)element.Index);
 
 					default:
 						throw new TypeResolutionException();
 				}
 			}
 
-			void ISigTypeVisitor.Visit(SigTypeUserType element)
-			{
-				_result = new MetaCompoundClass(
-					_cache.GetType(_module, element.Token),
-					ImmutableArray<MetaCompound>.Empty);
-			}
+			public MetaCompound Visit(SigTypeUserType element, ICorDebugModule module)
+				=> new MetaCompoundClass(GetType(module, element.Token), ImmutableArray<MetaCompound>.Empty);
 
-			void ISigTypeVisitor.Visit(SigTypePointer element)
-			{
-				element.BaseType.Apply(this);
-				_result = new MetaCompoundPointer(_result);
-			}
+			public MetaCompound Visit(SigTypePointer element, ICorDebugModule module)
+				=> new MetaCompoundPointer(element.BaseType.Apply(this, module));
 
-			void ISigTypeVisitor.Visit(SigTypeGenericInst element)
+			public MetaCompound Visit(SigTypeGenericInst element, ICorDebugModule module)
 			{
 				var args = ImmutableArray.CreateBuilder<MetaCompound>(element.GenArguments.Length);
 				args.Count = args.Capacity;
@@ -488,37 +466,25 @@ namespace CausalityDbg.Core.MetaCache
 
 				for (var i = 0; i < arguments.Length; i++)
 				{
-					arguments[i].Apply(this);
-					args[i] = _result;
+					args[i] = arguments[i].Apply(this, module);
 				}
 
-				_result = new MetaCompoundClass(
-					_cache.GetType(_module, element.Template.Token),
-					args.MoveToImmutable());
+				return new MetaCompoundClass(GetType(module, element.Template.Token), args.MoveToImmutable());
 			}
 
-			void ISigTypeVisitor.Visit(SigTypeArray element)
-			{
-				element.Apply(this);
-				_result = new MetaCompoundArray(_result, (int)element.Rank);
-			}
+			public MetaCompound Visit(SigTypeArray element, ICorDebugModule module)
+				=> new MetaCompoundArray(element.BaseType.Apply(this, module), (int)element.Rank);
 
-			void ISigTypeVisitor.Visit(SigTypeSZArray element)
-			{
-				element.BaseType.Apply(this);
-				_result = new MetaCompoundArray(_result, 1);
-			}
+			public MetaCompound Visit(SigTypeSZArray element, ICorDebugModule module)
+				=> new MetaCompoundArray(element.BaseType.Apply(this, module), 1);
 
-			void ISigTypeVisitor.Visit(SigTypeFNPtr element)
-			{
-				_result = new MetaCompoundClass(
-					_cache.Provider.GetType(_module, CorElementType.ELEMENT_TYPE_I),
-					ImmutableArray<MetaCompound>.Empty);
-			}
+			public MetaCompound Visit(SigTypeFNPtr element, ICorDebugModule module)
+				=> new MetaCompoundClass(GetType(module, CorElementType.ELEMENT_TYPE_I), ImmutableArray<MetaCompound>.Empty);
+
+			MetaType GetType(ICorDebugModule module, MetaDataToken token) => _cache.GetType(module, token);
+			MetaType GetType(ICorDebugModule module, CorElementType element) => _cache.Provider.GetType(module, element);
 
 			readonly ModuleLevelCache _cache;
-			readonly ICorDebugModule _module;
-			MetaCompound _result;
 		}
 	}
 }

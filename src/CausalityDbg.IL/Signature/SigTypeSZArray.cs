@@ -15,6 +15,6 @@ namespace CausalityDbg.IL
 		public SigType BaseType { get; }
 		public ImmutableArray<SigCustomModifier> CustomModifiers { get; }
 
-		public override void Apply(ISigTypeVisitor visitor) => visitor.Visit(this);
+		public override TResult Apply<TArg, TResult>(ISigTypeVisitor<TArg, TResult> visitor, TArg arg) => visitor.Visit(this, arg);
 	}
 }

@@ -8,168 +8,179 @@ using CausalityDbg.IL;
 
 namespace CausalityDbg.Tests
 {
-	class SigFormatter : ISigTypeVisitor
+	sealed class SigFormatter : ISigTypeVisitor<XmlWriter, XmlWriter>
 	{
-		public SigFormatter(XmlWriter writer)
+		public static SigFormatter Instance { get; } = new SigFormatter();
+
+		SigFormatter()
 		{
-			_writer = writer;
 		}
 
-		public void Visit(SigMethod element)
+		public XmlWriter Visit(SigMethod element, XmlWriter writer)
 		{
-			_writer.WriteStartElement("Method");
+			writer.WriteStartElement("Method");
 
 			if (element.CallingConvention != CallingConventions.Standard)
 			{
-				_writer.WriteAttributeString("callingConvention", element.CallingConvention.ToString());
+				writer.WriteAttributeString("callingConvention", element.CallingConvention.ToString());
 			}
 
 			if (element.GenParamCount != 0)
 			{
-				_writer.WriteAttributeString("genericParameterCount", element.GenParamCount.ToString(CultureInfo.InvariantCulture));
+				writer.WriteAttributeString("genericParameterCount", element.GenParamCount.ToString(CultureInfo.InvariantCulture));
 			}
 
-			_writer.WriteStartElement("Return");
-			Visit(element.RetType);
-			_writer.WriteEndElement();
+			writer.WriteStartElement("Return");
+			Visit(element.RetType, writer);
+			writer.WriteEndElement();
 
 			for (var i = 0; i < element.Parameters.Length; i++)
 			{
 				var param = element.Parameters[i];
-				_writer.WriteStartElement(i < element.OrderedParamCount ? "Param" : "VarParam");
-				Visit(param);
-				_writer.WriteEndElement();
+				writer.WriteStartElement(i < element.OrderedParamCount ? "Param" : "VarParam");
+				Visit(param, writer);
+				writer.WriteEndElement();
 			}
 
-			_writer.WriteEndElement();
+			writer.WriteEndElement();
+			return writer;
 		}
 
-		public void Visit(SigParameter element)
+		public XmlWriter Visit(SigParameter element, XmlWriter writer)
 		{
-			_writer.WriteStartElement("TypeRef");
+			writer.WriteStartElement("TypeRef");
 
 			if (element.ByRef)
 			{
-				_writer.WriteAttributeString("byRef", "True");
+				writer.WriteAttributeString("byRef", "True");
 			}
 
-			Visit(element.CustomModifiers, element.ByRefIndex);
-			element.ValueType.Apply(this);
-			_writer.WriteEndElement();
+			Visit(writer, element.CustomModifiers, element.ByRefIndex);
+			element.ValueType.Apply(this, writer);
+			writer.WriteEndElement();
+			return writer;
 		}
 
-		public void Visit(SigTypePrimitive element)
+		public XmlWriter Visit(SigTypePrimitive element, XmlWriter writer)
 		{
-			_writer.WriteElementString("Primitive", element.ElementType.ToString());
+			writer.WriteElementString("Primitive", element.ElementType.ToString());
+			return writer;
 		}
 
-		public void Visit(SigTypeGen element)
+		public XmlWriter Visit(SigTypeGen element, XmlWriter writer)
 		{
 			if (element.ElementType == CorElementType.ELEMENT_TYPE_VAR)
 			{
-				_writer.WriteStartElement("TypeGenArg");
+				writer.WriteStartElement("TypeGenArg");
 			}
 			else
 			{
-				_writer.WriteStartElement("MethodGenArg");
+				writer.WriteStartElement("MethodGenArg");
 			}
 
-			_writer.WriteString(element.Index.ToString(CultureInfo.InvariantCulture));
-			_writer.WriteEndElement();
+			writer.WriteString(element.Index.ToString(CultureInfo.InvariantCulture));
+			writer.WriteEndElement();
+			return writer;
 		}
 
-		public void Visit(SigTypeUserType element)
+		public XmlWriter Visit(SigTypeUserType element, XmlWriter writer)
 		{
 			if (element.ElementType == CorElementType.ELEMENT_TYPE_CLASS)
 			{
-				_writer.WriteStartElement("Class");
+				writer.WriteStartElement("Class");
 			}
 			else
 			{
-				_writer.WriteStartElement("ValueType");
+				writer.WriteStartElement("ValueType");
 			}
 
-			WriteToken(element.Token);
+			WriteToken(writer, element.Token);
 
-			_writer.WriteEndElement();
+			writer.WriteEndElement();
+			return writer;
 		}
 
-		public void Visit(SigTypePointer element)
+		public XmlWriter Visit(SigTypePointer element, XmlWriter writer)
 		{
-			_writer.WriteStartElement("Pointer");
-			Visit(element.CustomModifiers, element.CustomModifiers.Length);
-			element.BaseType.Apply(this);
-			_writer.WriteEndElement();
+			writer.WriteStartElement("Pointer");
+			Visit(writer, element.CustomModifiers, element.CustomModifiers.Length);
+			element.BaseType.Apply(this, writer);
+			writer.WriteEndElement();
+			return writer;
 		}
 
-		public void Visit(SigTypeGenericInst element)
+		public XmlWriter Visit(SigTypeGenericInst element, XmlWriter writer)
 		{
-			_writer.WriteStartElement("GenericInst");
-			_writer.WriteStartElement("Template");
-			Visit(element.Template);
-			_writer.WriteEndElement();
+			writer.WriteStartElement("GenericInst");
+			writer.WriteStartElement("Template");
+			Visit(element.Template, writer);
+			writer.WriteEndElement();
 
 			foreach (var type in element.GenArguments)
 			{
-				_writer.WriteStartElement("TypeArg");
-				type.Apply(this);
-				_writer.WriteEndElement();
+				writer.WriteStartElement("TypeArg");
+				type.Apply(this, writer);
+				writer.WriteEndElement();
 			}
 
-			_writer.WriteEndElement();
+			writer.WriteEndElement();
+			return writer;
 		}
 
-		public void Visit(SigTypeArray element)
+		public XmlWriter Visit(SigTypeArray element, XmlWriter writer)
 		{
-			_writer.WriteStartElement("Array");
-			_writer.WriteAttributeString("rank", FormatBounds(element));
-			element.BaseType.Apply(this);
-			_writer.WriteEndElement();
+			writer.WriteStartElement("Array");
+			writer.WriteAttributeString("rank", FormatBounds(element));
+			element.BaseType.Apply(this, writer);
+			writer.WriteEndElement();
+			return writer;
 		}
 
-		public void Visit(SigTypeSZArray element)
+		public XmlWriter Visit(SigTypeSZArray element, XmlWriter writer)
 		{
-			_writer.WriteStartElement("SZArray");
-			Visit(element.CustomModifiers, element.CustomModifiers.Length);
-			element.BaseType.Apply(this);
-			_writer.WriteEndElement();
+			writer.WriteStartElement("SZArray");
+			Visit(writer, element.CustomModifiers, element.CustomModifiers.Length);
+			element.BaseType.Apply(this, writer);
+			writer.WriteEndElement();
+			return writer;
 		}
 
-		public void Visit(SigTypeFNPtr element)
+		public XmlWriter Visit(SigTypeFNPtr element, XmlWriter writer)
 		{
-			_writer.WriteStartElement("FNPtr");
-			Visit(element.Method);
-			_writer.WriteEndElement();
+			writer.WriteStartElement("FNPtr");
+			Visit(element.Method, writer);
+			writer.WriteEndElement();
+			return writer;
 		}
 
-		void Visit(ImmutableArray<SigCustomModifier> modifiers, int byRefIndex)
+		static void Visit(XmlWriter writer, ImmutableArray<SigCustomModifier> modifiers, int byRefIndex)
 		{
 			foreach (var modifier in modifiers)
 			{
 				if (byRefIndex == 0)
 				{
-					_writer.WriteComment(" ByRef Marker ");
+					writer.WriteComment(" ByRef Marker ");
 				}
 
 				byRefIndex--;
 
 				if (modifier.ElementType == CorElementType.ELEMENT_TYPE_CMOD_OPT)
 				{
-					_writer.WriteStartElement("ModOpt");
+					writer.WriteStartElement("ModOpt");
 				}
 				else
 				{
-					_writer.WriteStartElement("ModReq");
+					writer.WriteStartElement("ModReq");
 				}
 
-				WriteToken(modifier.Token);
-				_writer.WriteEndElement();
+				WriteToken(writer, modifier.Token);
+				writer.WriteEndElement();
 			}
 		}
 
-		void WriteToken(MetaDataToken token)
+		static void WriteToken(XmlWriter writer, MetaDataToken token)
 		{
-			_writer.WriteString(token.ToString());
+			writer.WriteString(token.ToString());
 		}
 
 		static string FormatBounds(SigTypeArray array)
@@ -208,7 +219,5 @@ namespace CausalityDbg.Tests
 				builder.Append(size);
 			}
 		}
-
-		readonly XmlWriter _writer;
 	}
 }

@@ -47,7 +47,7 @@ namespace CausalityDbg.Tests
 				xmlWriter.IndentChar = ' ';
 				xmlWriter.Indentation = 2;
 
-				new SigFormatter(xmlWriter).Visit(method);
+				SigFormatter.Instance.Visit(method, xmlWriter);
 				xmlWriter.Flush();
 			}
 
