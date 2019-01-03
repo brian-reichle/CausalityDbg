@@ -30,21 +30,14 @@ namespace CausalityDbg.Main
 
 		protected override void OnExit(ExitEventArgs e)
 		{
-			Resources.Remove(ProviderKey);
-
-			if (_wrapper != null)
-			{
-				_wrapper.Dispose();
-			}
+			_wrapper?.Dispose();
 
 			base.OnExit(e);
 		}
 
 		static void ExceptionThrown(object sender, ExceptionThrownEventArgs e)
 		{
-			var attachEx = e.Exception as AttachException;
-
-			if (attachEx != null)
+			if (e.Exception is AttachException attachEx)
 			{
 				MessageBox.Show(attachEx.Message, "Error attaching to process");
 			}
@@ -62,9 +55,7 @@ namespace CausalityDbg.Main
 
 		static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
-			var ex = e.ExceptionObject as Exception;
-
-			if (ex != null)
+			if (e.ExceptionObject is Exception ex)
 			{
 				ExceptionReporter.Report(ex);
 			}
