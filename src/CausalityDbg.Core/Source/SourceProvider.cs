@@ -1,5 +1,6 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using CausalityDbg.Core.MetaDataApi;
@@ -31,25 +32,34 @@ namespace CausalityDbg.Core
 			var size = method.GetSequencePointCount();
 			if (size == 0) return null;
 
-			var offsets = new int[size];
-			var fromLines = new int[size];
-			var toLines = new int[size];
-			var fromColumns = new int[size];
-			var toColumns = new int[size];
-			var documents = new ISymUnmanagedDocument[size];
+			var offsets = ArrayPool<int>.Shared.Rent(size);
+			var fromLines = ArrayPool<int>.Shared.Rent(size);
+			var toLines = ArrayPool<int>.Shared.Rent(size);
+			var fromColumns = ArrayPool<int>.Shared.Rent(size);
+			var toColumns = ArrayPool<int>.Shared.Rent(size);
+			var documents = ArrayPool<ISymUnmanagedDocument>.Shared.Rent(size);
 
 			method.GetSequencePoints(size, out size, offsets, documents, fromLines, fromColumns, toLines, toColumns);
 
-			var index = Array.BinarySearch(offsets, ilOffset);
+			var index = Array.BinarySearch(offsets, 0, size, ilOffset);
 
 			if (index < 0)
 			{
 				index = Math.Max(0, ~index - 1);
 			}
 
-			if (fromLines[index] == HiddenLine) return null;
+			var result = fromLines[index] == HiddenLine
+				? null
+				: new SourceSection(documents[index].GetUrl(), fromLines[index], fromColumns[index], toLines[index], toColumns[index]);
 
-			return new SourceSection(documents[index].GetUrl(), fromLines[index], fromColumns[index], toLines[index], toColumns[index]);
+			ArrayPool<int>.Shared.Return(offsets);
+			ArrayPool<int>.Shared.Return(fromLines);
+			ArrayPool<int>.Shared.Return(toLines);
+			ArrayPool<int>.Shared.Return(fromColumns);
+			ArrayPool<int>.Shared.Return(toColumns);
+			ArrayPool<ISymUnmanagedDocument>.Shared.Return(documents, true);
+
+			return result;
 		}
 
 		public void Dispose()
