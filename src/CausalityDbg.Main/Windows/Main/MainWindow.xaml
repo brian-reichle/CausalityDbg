@@ -9,6 +9,7 @@
 	MinHeight="400"
 	MinWidth="400"
 	local:EnvironmentProperties.Config="{DynamicResource Config}"
+	local:EnvironmentProperties.SourceProvider="{StaticResource SourceProvider}"
 	DataContext="{DynamicResource Provider}"
 	Title="{Binding Caption}"
 	>

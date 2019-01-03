@@ -12,7 +12,7 @@ namespace CausalityDbg.Main
 		const string NA = "N/A";
 		const string RowSharedSizeGroup = "Field";
 
-		public FrameDetailsView(FrameILData frame)
+		public FrameDetailsView(FrameILData frame, ISourceProvider provider)
 		{
 			InitializeComponent();
 
@@ -21,7 +21,7 @@ namespace CausalityDbg.Main
 			AddFullWidthRow("IL Offset", NewTextField(frame.ILOffset.HasValue ? FormatHex(frame.ILOffset.Value) : NA));
 			AddFullWidthRow("Is In Memory", NewBoolField(frame.IsInMemory));
 
-			var source = frame.Source;
+			var source = provider.GetSourceSection(frame);
 
 			string filename;
 			string line;

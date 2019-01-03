@@ -8,7 +8,7 @@ namespace CausalityDbg.Main
 {
 	static class ToolLauncher
 	{
-		public static Process Launch(this SettingsExternalTool tool, FrameILData frame)
+		public static Process Launch(this SettingsExternalTool tool, FrameILData frame, ISourceProvider provider)
 		{
 			return tool.Launch(x =>
 			{
@@ -16,8 +16,8 @@ namespace CausalityDbg.Main
 				{
 					case "AssemblyLocation": return frame.ModuleLocation;
 					case "IDString": return frame.IDString;
-					case "Source": return frame.Source?.File;
-					case "Line": return frame.Source?.FromLine.ToString(CultureInfo.InvariantCulture);
+					case "Source": return provider.GetSourceSection(frame)?.File;
+					case "Line": return provider.GetSourceSection(frame)?.FromLine.ToString(CultureInfo.InvariantCulture);
 					default: return null;
 				}
 			});

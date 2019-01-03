@@ -8,7 +8,7 @@ using CausalityDbg.Metadata;
 
 namespace CausalityDbg.Core
 {
-	sealed class SourceProvider : IDisposable
+	public sealed class SourceProvider : ISourceProvider, IDisposable
 	{
 		public SourceProvider()
 		{
@@ -17,15 +17,15 @@ namespace CausalityDbg.Core
 			_readers = new Dictionary<MetaModule, ISymUnmanagedReader>();
 		}
 
-		public SourceSection Get(MetaFunction function, int ilOffset)
+		public SourceSection GetSourceSection(MetaFunction metaFunction, int ilOffset)
 		{
 			if (_isDisposed) throw new ObjectDisposedException(nameof(SourceProvider));
-			if (function == null) throw new ArgumentNullException(nameof(function));
+			if (metaFunction == null) throw new ArgumentNullException(nameof(metaFunction));
 
-			var reader = GetReader(function.Module);
+			var reader = GetReader(metaFunction.Module);
 			if (reader == null) return null;
 
-			var method = reader.GetMethod(function.Token);
+			var method = reader.GetMethod(metaFunction.Token);
 			if (method == null) return null;
 
 			var size = method.GetSequencePointCount();

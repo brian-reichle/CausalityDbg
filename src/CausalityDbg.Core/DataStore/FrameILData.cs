@@ -34,16 +34,5 @@ namespace CausalityDbg.Core
 				return formatter.ToString();
 			}
 		}
-
-		public SourceSection Source
-		{
-			get
-			{
-				using (var provider = new SourceProvider())
-				{
-					return provider.Get(Function, ILOffset.GetValueOrDefault());
-				}
-			}
-		}
 	}
 }

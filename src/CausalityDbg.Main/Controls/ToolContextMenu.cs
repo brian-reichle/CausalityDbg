@@ -68,10 +68,12 @@ namespace CausalityDbg.Main
 		static void CanRunToolExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			var control = (ToolContextMenu)sender;
+			var provider = EnvironmentProperties.GetSourceProvider(control.PlacementTarget);
 
 			e.CanExecute = control.Frame != null
+				&& provider != null
 				&& e.Parameter != null
-				&& CanExecute((SettingsExternalTool)e.Parameter, control.Frame);
+				&& CanRunTool((SettingsExternalTool)e.Parameter, control.Frame, provider);
 		}
 
 		static void OnRunToolExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -79,14 +81,15 @@ namespace CausalityDbg.Main
 			var control = (ToolContextMenu)sender;
 			var frame = control.Frame;
 			var tool = (SettingsExternalTool)e.Parameter;
+			var provider = EnvironmentProperties.GetSourceProvider(control.PlacementTarget);
 
-			if (frame != null && tool != null)
+			if (frame != null && tool != null && provider != null)
 			{
 				const int ERROR_CANCELLED = 0x000004C7;
 
 				try
 				{
-					tool.Launch(frame);
+					tool.Launch(frame, provider);
 				}
 				catch (Win32Exception ex) when (ex.NativeErrorCode == ERROR_CANCELLED)
 				{
@@ -98,8 +101,9 @@ namespace CausalityDbg.Main
 		static void CanShowDetailsExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			var control = (ToolContextMenu)sender;
+			var provider = EnvironmentProperties.GetSourceProvider(control.PlacementTarget);
 
-			e.CanExecute = control.Frame != null;
+			e.CanExecute = control.Frame != null && provider != null;
 			e.Handled = true;
 		}
 
@@ -108,10 +112,13 @@ namespace CausalityDbg.Main
 			var control = (ToolContextMenu)sender;
 			e.Handled = true;
 
-			new FrameDetailsView(control.Frame).Show();
+			new FrameDetailsView(control.Frame, EnvironmentProperties.GetSourceProvider(control.PlacementTarget))
+			{
+				Owner = Window.GetWindow(control.PlacementTarget),
+			}.Show();
 		}
 
-		static bool CanExecute(SettingsExternalTool tool, FrameILData frame)
+		static bool CanRunTool(SettingsExternalTool tool, FrameILData frame, ISourceProvider provider)
 		{
 			if (frame.IsInMemory || tool == null) return false;
 
@@ -119,7 +126,7 @@ namespace CausalityDbg.Main
 
 			if (!File.Exists(tool.Process)) return false;
 			if ((flags & ToolFlags.Invalid) != 0) return false;
-			if ((flags & ToolFlags.NeedsSource) != 0 && frame.Source == null) return false;
+			if ((flags & ToolFlags.NeedsSource) != 0 && provider.GetSourceSection(frame) == null) return false;
 
 			return true;
 		}

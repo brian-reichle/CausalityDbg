@@ -11,12 +11,15 @@ namespace CausalityDbg.Main
 	{
 		const string ProviderKey = "Provider";
 		const string ConfigKey = "Config";
+		const string SourceProviderKey = "SourceProvider";
 
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			base.OnStartup(e);
 
 			var config = ConfigParser.Load("Config\\Config.xml");
+
+			_provider = new SourceProvider();
 
 			_wrapper = new TrackerWrapper(Dispatcher, config);
 			_wrapper.ExceptionThrown += ExceptionThrown;
@@ -26,11 +29,13 @@ namespace CausalityDbg.Main
 
 			Resources.Add(ConfigKey, config);
 			Resources.Add(ProviderKey, new TrackerModel(_wrapper));
+			Resources.Add(SourceProviderKey, _provider);
 		}
 
 		protected override void OnExit(ExitEventArgs e)
 		{
 			_wrapper?.Dispose();
+			_provider?.Dispose();
 
 			base.OnExit(e);
 		}
@@ -62,5 +67,6 @@ namespace CausalityDbg.Main
 		}
 
 		TrackerWrapper _wrapper;
+		SourceProvider _provider;
 	}
 }
