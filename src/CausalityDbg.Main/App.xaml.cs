@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Threading;
 using CausalityDbg.Configuration;
 using CausalityDbg.Core;
+using CausalityDbg.Source;
 
 namespace CausalityDbg.Main
 {

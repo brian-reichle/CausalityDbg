@@ -2,7 +2,7 @@
 
 using System.Buffers;
 
-namespace CausalityDbg.Core.SymbolStoreApi
+namespace CausalityDbg.Source.SymbolStoreApi
 {
 	static class SymUnmanagedDocumentExtensions
 	{

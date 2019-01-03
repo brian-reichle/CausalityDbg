@@ -224,6 +224,10 @@
       <Project>{1cf00b35-817f-482c-8ce3-3687eba9535e}</Project>
       <Name>CausalityDbg.Metadata</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CausalityDbg.Source\CausalityDbg.Source.csproj">
+      <Project>{228B86C2-EACE-4726-A86B-6C7BF5BDD71B}</Project>
+      <Name>CausalityDbg.Source</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Crosshair.cur" />

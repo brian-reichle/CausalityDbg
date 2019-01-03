@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace CausalityDbg.Core.MetaDataApi
+namespace CausalityDbg.Source.MetaDataApi
 {
 	[ComImport]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

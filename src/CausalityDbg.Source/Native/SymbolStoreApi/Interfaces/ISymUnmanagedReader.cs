@@ -3,7 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 using CausalityDbg.IL;
 
-namespace CausalityDbg.Core.SymbolStoreApi
+namespace CausalityDbg.Source.SymbolStoreApi
 {
 	[ComImport]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

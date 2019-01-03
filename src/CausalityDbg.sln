@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CausalityDbg.Configuration"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CausalityDbg.Metadata", "CausalityDbg.Metadata\CausalityDbg.Metadata.csproj", "{1CF00B35-817F-482C-8CE3-3687EBA9535E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CausalityDbg.Source", "CausalityDbg.Source\CausalityDbg.Source.csproj", "{228B86C2-EACE-4726-A86B-6C7BF5BDD71B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{1CF00B35-817F-482C-8CE3-3687EBA9535E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CF00B35-817F-482C-8CE3-3687EBA9535E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CF00B35-817F-482C-8CE3-3687EBA9535E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{228B86C2-EACE-4726-A86B-6C7BF5BDD71B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{228B86C2-EACE-4726-A86B-6C7BF5BDD71B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{228B86C2-EACE-4726-A86B-6C7BF5BDD71B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{228B86C2-EACE-4726-A86B-6C7BF5BDD71B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

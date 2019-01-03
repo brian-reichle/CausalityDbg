@@ -3,11 +3,11 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using CausalityDbg.Core.MetaDataApi;
-using CausalityDbg.Core.SymbolStoreApi;
 using CausalityDbg.Metadata;
+using CausalityDbg.Source.MetaDataApi;
+using CausalityDbg.Source.SymbolStoreApi;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.Source
 {
 	public sealed class SourceProvider : ISourceProvider, IDisposable
 	{
@@ -101,7 +101,7 @@ namespace CausalityDbg.Core
 				return null;
 			}
 
-			var import = _dispenser.OpenScope(module.Name, CorOpenFlags.OfRead, typeof(IMetaDataImport).GUID);
+			var import = _dispenser.OpenScope(module.Name, CorOpenFlags.OfRead, IID.IID_IMetaDataImport);
 
 			var hr = _binder.GetReaderForFile(import, module.Name, null, out var reader);
 

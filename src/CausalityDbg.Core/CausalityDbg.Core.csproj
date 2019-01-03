@@ -55,7 +55,6 @@
     <Compile Include="Native\CorDebugApi\Extensions\ProcessIOExtensions.cs" />
     <Compile Include="Native\CLRHostApi\Extensions\RuntimeInfoExtensions.cs" />
     <Compile Include="Native\CorDebugApi\Extensions\StepperExtensions.cs" />
-    <Compile Include="Native\SymbolStoreApi\Extensions\SymUnmanagedDocumentExtensions.cs" />
     <Compile Include="Native\CorDebugApi\Extensions\ThreadExtensions.cs" />
     <Compile Include="Extensions\TypeAttributeExtensions.cs" />
     <Compile Include="Native\CorDebugApi\Extensions\ValueExtensions.cs" />
@@ -67,7 +66,6 @@
     <Compile Include="Native\CorDebugApi\Interfaces\ICorDebugReferenceValue.cs" />
     <Compile Include="Interfaces\TrackerNotificationLevel.cs" />
     <Compile Include="BitnessHelper.cs" />
-    <Compile Include="Source\ISourceProvider.cs" />
     <Compile Include="Source\SourceProviderExtensions.cs" />
     <Compile Include="Tracker\AttachTracker.cs" />
     <Compile Include="Tracker\ExceptionData.cs" />
@@ -133,21 +131,10 @@
     <Compile Include="Exceptions\AttachErrorType.cs" />
     <Compile Include="Exceptions\AttachException.cs" />
     <Compile Include="DataStore\FrameData.cs" />
-    <Compile Include="Native\MetaDataApi\Enums\CorOpenFlags.cs" />
-    <Compile Include="Native\MetaDataApi\Interfaces\IMetaDataDispenser.cs" />
     <Compile Include="Native\MetaDataApi\Structs\ASSEMBLYMETADATA.cs" />
     <Compile Include="Native\MetaDataApi\Interfaces\IMetaDataAssemblyImport.cs" />
     <Compile Include="Native\MetaDataApi\Interfaces\IMetaDataImport.cs" />
     <Compile Include="Native\MetaDataApi\Interfaces\IMetaDataImport2.cs" />
-    <Compile Include="Source\SourceProvider.cs" />
-    <Compile Include="Source\SourceSection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Native\SymbolStoreApi\Interfaces\ISymUnmanagedBinder.cs" />
-    <Compile Include="Native\SymbolStoreApi\Interfaces\ISymUnmanagedDispose.cs" />
-    <Compile Include="Native\SymbolStoreApi\Interfaces\ISymUnmanagedDocument.cs" />
-    <Compile Include="Native\SymbolStoreApi\Interfaces\ISymUnmanagedMethod.cs" />
-    <Compile Include="Native\SymbolStoreApi\Interfaces\ISymUnmanagedReader.cs" />
     <Compile Include="Tracker\EventMapper.cs" />
     <Compile Include="Interfaces\ITracker.cs" />
     <Compile Include="Tracker\LaunchTracker.cs" />
@@ -177,6 +164,10 @@
     <ProjectReference Include="..\CausalityDbg.Metadata\CausalityDbg.Metadata.csproj">
       <Project>{1cf00b35-817f-482c-8ce3-3687eba9535e}</Project>
       <Name>CausalityDbg.Metadata</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CausalityDbg.Source\CausalityDbg.Source.csproj">
+      <Project>{228B86C2-EACE-4726-A86B-6C7BF5BDD71B}</Project>
+      <Name>CausalityDbg.Source</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

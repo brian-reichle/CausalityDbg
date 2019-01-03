@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using CausalityDbg.Core;
+using CausalityDbg.Source;
 
 namespace CausalityDbg.Main
 {

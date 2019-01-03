@@ -2,6 +2,7 @@
 using System.Windows;
 using CausalityDbg.Configuration;
 using CausalityDbg.Core;
+using CausalityDbg.Source;
 
 namespace CausalityDbg.Main
 {

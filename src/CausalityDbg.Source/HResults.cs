@@ -1,10 +1,8 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-using System;
-
-namespace CausalityDbg.Core
+namespace CausalityDbg.Source
 {
-	static class CLSID
+	enum HResults
 	{
-		public static readonly Guid CLSID_CLRMetaHost = new Guid("9280188D-0E8E-4867-B30C-7FA83884E8DE");
+		E_PDB_NOT_FOUND = unchecked((int)0x806D0005),
 	}
 }

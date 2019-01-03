@@ -3,7 +3,6 @@ namespace CausalityDbg.Core
 {
 	enum HResults
 	{
-		E_PDB_NOT_FOUND = unchecked((int)0x806D0005),
 		E_BUFFER_TOO_SMALL = unchecked((int)0x8007007A),
 
 		CLDB_E_RECORD_NOTFOUND = unchecked((int)0x80131130),

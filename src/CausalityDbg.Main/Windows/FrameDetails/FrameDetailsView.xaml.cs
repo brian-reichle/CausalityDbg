@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CausalityDbg.Core;
+using CausalityDbg.Source;
 
 namespace CausalityDbg.Main
 {
