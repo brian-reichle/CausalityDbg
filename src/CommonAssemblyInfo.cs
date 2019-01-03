@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("CausalityDbg")]
-[assembly: AssemblyCopyright("Copyright © Brian Reichle 2012 - 2018")]
+[assembly: AssemblyCopyright("Copyright © Brian Reichle 2012 - 2019")]
 
 [assembly: CLSCompliant(false)]
 [assembly: ComVisible(false)]
