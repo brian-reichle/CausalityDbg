@@ -1,4 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -81,7 +82,16 @@ namespace CausalityDbg.Main
 
 			if (frame != null && tool != null)
 			{
-				tool.Launch(frame);
+				const int ERROR_CANCELLED = 0x000004C7;
+
+				try
+				{
+					tool.Launch(frame);
+				}
+				catch (Win32Exception ex) when (ex.NativeErrorCode == ERROR_CANCELLED)
+				{
+					// Operation cancelled by user.
+				}
 			}
 		}
 
