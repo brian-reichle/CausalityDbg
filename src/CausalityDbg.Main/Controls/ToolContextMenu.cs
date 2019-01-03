@@ -1,5 +1,4 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,9 +15,13 @@ namespace CausalityDbg.Main
 			typeof(ToolContextMenu),
 			new FrameworkPropertyMetadata(null));
 
-		public ToolContextMenu()
+		public static readonly RoutedCommand RunTool = new RoutedCommand(nameof(RunTool), typeof(ToolContextMenu));
+		public static readonly RoutedCommand ShowDetails = new RoutedCommand(nameof(ShowDetails), typeof(ToolContextMenu));
+
+		static ToolContextMenu()
 		{
-			_command = new ToolCommand(this);
+			CommandManager.RegisterClassCommandBinding(typeof(ToolContextMenu), new CommandBinding(RunTool, OnRunToolExecuted, CanRunToolExecute));
+			CommandManager.RegisterClassCommandBinding(typeof(ToolContextMenu), new CommandBinding(ShowDetails, OnShowDetailsExecuted, CanShowDetailsExecute));
 		}
 
 		public FrameILData Frame
@@ -29,14 +32,11 @@ namespace CausalityDbg.Main
 
 		protected override void OnOpened(RoutedEventArgs e)
 		{
-			var detailsItem = new MenuItem()
+			Items.Add(new MenuItem()
 			{
 				Header = "Show Details",
-			};
-
-			detailsItem.Click += ShowDetails;
-
-			Items.Add(detailsItem);
+				Command = ShowDetails,
+			});
 
 			var externalTools = SettingsStorage.Instance.Tools;
 
@@ -50,7 +50,7 @@ namespace CausalityDbg.Main
 					{
 						Header = tool.Name,
 						CommandParameter = tool,
-						Command = _command,
+						Command = RunTool,
 					});
 				}
 			}
@@ -64,52 +64,54 @@ namespace CausalityDbg.Main
 			Items.Clear();
 		}
 
-		void ShowDetails(object sender, RoutedEventArgs e) => new FrameDetailsView(Frame).Show();
-
-		void RunTool(SettingsExternalTool tool)
+		static void CanRunToolExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			if (Frame != null)
+			var control = (ToolContextMenu)sender;
+
+			e.CanExecute = control.Frame != null
+				&& e.Parameter != null
+				&& CanExecute((SettingsExternalTool)e.Parameter, control.Frame);
+		}
+
+		static void OnRunToolExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			var control = (ToolContextMenu)sender;
+			var frame = control.Frame;
+			var tool = (SettingsExternalTool)e.Parameter;
+
+			if (frame != null && tool != null)
 			{
-				tool.Launch(Frame);
+				tool.Launch(frame);
 			}
 		}
 
-		sealed class ToolCommand : ICommand
+		static void CanShowDetailsExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			public ToolCommand(ToolContextMenu parent)
-			{
-				_parent = parent;
-			}
+			var control = (ToolContextMenu)sender;
 
-			public void Execute(object parameter) => _parent.RunTool((SettingsExternalTool)parameter);
-
-			public bool CanExecute(object parameter)
-			{
-				var frame = _parent.Frame;
-
-				if (frame == null ||
-					frame.IsInMemory ||
-					parameter == null) return false;
-
-				var tool = (SettingsExternalTool)parameter;
-				var flags = tool.CalculateFlags();
-
-				if (!File.Exists(tool.Process)) return false;
-				if ((flags & ToolFlags.Invalid) != 0) return false;
-				if ((flags & ToolFlags.NeedsSource) != 0 && _parent.Frame.Source == null) return false;
-
-				return true;
-			}
-
-			event EventHandler ICommand.CanExecuteChanged
-			{
-				add { }
-				remove { }
-			}
-
-			readonly ToolContextMenu _parent;
+			e.CanExecute = control.Frame != null;
+			e.Handled = true;
 		}
 
-		readonly ICommand _command;
+		static void OnShowDetailsExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			var control = (ToolContextMenu)sender;
+			e.Handled = true;
+
+			new FrameDetailsView(control.Frame).Show();
+		}
+
+		static bool CanExecute(SettingsExternalTool tool, FrameILData frame)
+		{
+			if (frame.IsInMemory || tool == null) return false;
+
+			var flags = tool.CalculateFlags();
+
+			if (!File.Exists(tool.Process)) return false;
+			if ((flags & ToolFlags.Invalid) != 0) return false;
+			if ((flags & ToolFlags.NeedsSource) != 0 && frame.Source == null) return false;
+
+			return true;
+		}
 	}
 }
