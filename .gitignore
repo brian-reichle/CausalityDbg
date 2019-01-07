@@ -5,3 +5,4 @@ bin
 # Visual Studio
 .vs
 *.csproj.user
+*.shproj.user
