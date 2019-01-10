@@ -10,60 +10,6 @@ namespace CausalityDbg.Core.CorDebugApi
 {
 	static class FunctionExtensions
 	{
-		public static CorExceptionClauseCollection GetExceptionClauses(this ICorDebugFunction function)
-		{
-			var addr = function.GetHeaderAddress();
-			var process = function.GetModule().GetProcess();
-
-			var header = process.ReadValue<long>(addr);
-
-			if ((header & 0x03) == (int)CorILMethodFlags.CorILMethod_TinyFormat &&
-				(header & (int)CorILMethodFlags.CorILMethod_MoreSects) == 0)
-			{
-				return null;
-			}
-
-			var headerLen = (int)((header >> 10) & 0x3C);
-			var codeLen = (int)((header >> 32) & 0xFFFFFFFF);
-
-			addr = (addr + headerLen + codeLen).AlignToWord();
-
-			do
-			{
-				var sectHeader = process.ReadValue<int>(addr);
-				int sectLen;
-
-				if ((sectHeader & (int)CorILMethodSectFlags.CorILMethod_Sect_FatFormat) == 0)
-				{
-					sectLen = (sectHeader >> 8) & 0xFF;
-				}
-				else
-				{
-					sectLen = (sectHeader >> 8) & 0xFFFFFF;
-				}
-
-				var blob = ArrayPool<byte>.Shared.Rent(sectLen);
-				process.ReadBytes(addr, blob, 0, sectLen);
-				var collection = CorExceptionClauseCollection.New(blob);
-				ArrayPool<byte>.Shared.Return(blob);
-
-				if (collection != null)
-				{
-					return collection;
-				}
-
-				if ((sectHeader & (int)CorILMethodSectFlags.CorILMethod_Sect_MoreSects) == 0)
-				{
-					break;
-				}
-
-				addr = (addr + sectLen).AlignToWord();
-			}
-			while (true);
-
-			return null;
-		}
-
 		public static CORDB_ADDRESS GetHeaderAddress(this ICorDebugFunction function)
 		{
 			var module = function.GetModule();

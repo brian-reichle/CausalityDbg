@@ -34,8 +34,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyRefTest.cs" />
-    <Compile Include="CorExceptionClauseCollectionTest.cs" />
-    <Compile Include="CorExceptionClauseCollectionSampleTest.cs" />
+    <Compile Include="CorExceptionClauseHelperTest.cs" />
     <Compile Include="DecompressorTest.cs" />
     <Compile Include="MetaFormatterTest.cs" />
     <Compile Include="MetaIDStringFormatterTest.cs" />
@@ -150,36 +149,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestFiles\AssemblyReferences\Culture\neutral.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\DataSections\ExceptionFat.txt" />
-    <EmbeddedResource Include="TestFiles\DataSections\ExceptionShort.txt" />
-    <EmbeddedResource Include="TestFiles\DataSections\EmptyFat.txt" />
-    <EmbeddedResource Include="TestFiles\DataSections\EmptyShort.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\DataSections\FinallyShort.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\DataSections\FinallyFat.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\DataSections\FaultShort.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\DataSections\FaultFat.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\DataSections\FilterFat.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\DataSections\FilterShort.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\DataSections\MultiFat.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\DataSections\MultiShort.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestFiles\Signature\BrokenModifiers.txt" />

@@ -1,5 +1,6 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
@@ -7,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using CausalityDbg.Configuration;
 using CausalityDbg.Core.CorDebugApi;
+using CausalityDbg.IL;
 using CausalityDbg.Metadata;
 
 namespace CausalityDbg.Core
@@ -379,48 +381,18 @@ namespace CausalityDbg.Core
 				var frame = (ICorDebugILFrame)thread.GetActiveFrame();
 				var ip = frame.GetIP();
 				var function = frame.GetFunction();
-				var clauses = function.GetExceptionClauses();
 				var eventId = GetEventId(_config.ExceptionCategory, exception);
 				var isFilter = reason == CorDebugStepReason.STEP_EXCEPTION_FILTER || reason == CorDebugStepReason.STEP_INTERCEPT;
-				var isTerminal = false;
 
-				int start;
-				int end;
-				ConfigCategory category;
+				var clauses = GetExceptionDataSection(function);
 
-				if (isFilter)
+				if (!ExtractFromClause(clauses, ip.Value, isFilter, out var isTerminal, out var start, out var end, out var category))
 				{
-					var clause = clauses.FromFilterOffset(ip.Value);
-					start = clause.FilterOffset;
-					end = clause.HandlerOffset;
-					category = _config.FilterCategory;
+					ArrayPool<byte>.Shared.Return(clauses);
+					return;
 				}
-				else
-				{
-					var clause = clauses.FromHandlerOffset(ip.Value);
-					start = clause.HandlerOffset;
-					end = clause.HandlerOffset + clause.HandlerLength;
 
-					switch (clause.Flags)
-					{
-						case ExceptionHandlingClauseOptions.Clause:
-						case ExceptionHandlingClauseOptions.Filter:
-							category = _config.CatchCategory;
-							isTerminal = true;
-							break;
-
-						case ExceptionHandlingClauseOptions.Fault:
-							category = _config.FaultCategory;
-							break;
-
-						case ExceptionHandlingClauseOptions.Finally:
-							category = _config.FinallyCategory;
-							break;
-
-						default:
-							throw new InvalidOperationException();
-					}
-				}
+				ArrayPool<byte>.Shared.Return(clauses);
 
 				var item = new DataItem(category, _frameFactory.GetTrace(scope.Trace, thread.GetActiveFrame()));
 				var newScopeId = Interlocked.Increment(ref _nextScopeId) - 1;
@@ -444,6 +416,106 @@ namespace CausalityDbg.Core
 					var exData = _currentExceptionData[thread];
 					exData.CurrentStepper = stepper;
 				}
+			}
+
+			bool ExtractFromClause(byte[] clauses, int ip, bool isFilter, out bool isTerminal, out int start, out int end, out ConfigCategory category)
+			{
+				isTerminal = false;
+
+				if (isFilter)
+				{
+					if (!CorExceptionClauseHelper.FilterFromOffset(clauses, ip, out start, out end))
+					{
+						category = null;
+						return false;
+					}
+
+					category = _config.FilterCategory;
+				}
+				else
+				{
+					if (!CorExceptionClauseHelper.HandlerFromOffset(clauses, ip, out start, out end, out var flags))
+					{
+						category = null;
+						return false;
+					}
+
+					switch (flags)
+					{
+						case ExceptionHandlingClauseOptions.Clause:
+						case ExceptionHandlingClauseOptions.Filter:
+							category = _config.CatchCategory;
+							isTerminal = true;
+							break;
+
+						case ExceptionHandlingClauseOptions.Fault:
+							category = _config.FaultCategory;
+							break;
+
+						case ExceptionHandlingClauseOptions.Finally:
+							category = _config.FinallyCategory;
+							break;
+
+						default:
+							throw new InvalidOperationException();
+					}
+				}
+
+				return true;
+			}
+
+			static byte[] GetExceptionDataSection(ICorDebugFunction function)
+			{
+				var addr = function.GetHeaderAddress();
+				var process = function.GetModule().GetProcess();
+
+				var header = process.ReadValue<long>(addr);
+
+				if ((header & 0x03) == (int)CorILMethodFlags.CorILMethod_TinyFormat &&
+					(header & (int)CorILMethodFlags.CorILMethod_MoreSects) == 0)
+				{
+					return null;
+				}
+
+				var headerLen = (int)((header >> 10) & 0x3C);
+				var codeLen = (int)((header >> 32) & 0xFFFFFFFF);
+
+				addr = (addr + headerLen + codeLen).AlignToWord();
+
+				do
+				{
+					var sectHeader = process.ReadValue<int>(addr);
+					int sectLen;
+
+					if ((sectHeader & (int)CorILMethodSectFlags.CorILMethod_Sect_FatFormat) == 0)
+					{
+						sectLen = (sectHeader >> 8) & 0xFF;
+					}
+					else
+					{
+						sectLen = (sectHeader >> 8) & 0xFFFFFF;
+					}
+
+					var blob = ArrayPool<byte>.Shared.Rent(sectLen);
+					process.ReadBytes(addr, blob, 0, sectLen);
+
+					if (CorExceptionClauseHelper.IsExceptionData(blob))
+					{
+						return blob;
+					}
+
+					ArrayPool<byte>.Shared.Return(blob);
+
+					if ((sectHeader & (int)CorILMethodSectFlags.CorILMethod_Sect_MoreSects) == 0)
+					{
+						break;
+					}
+
+					addr = (addr + sectLen).AlignToWord();
+				}
+				while (true);
+
+				return null;
 			}
 
 			void PurgeClosedScopes(ICorDebugThread thread)

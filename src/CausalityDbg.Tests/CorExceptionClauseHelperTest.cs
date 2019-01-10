@@ -1,9 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Xml;
 using CausalityDbg.IL;
 using NUnit.Framework;
 
@@ -11,30 +7,39 @@ namespace CausalityDbg.Tests
 {
 	[TestFixture(true)]
 	[TestFixture(false)]
-	class CorExceptionClauseCollectionTest
+	class CorExceptionClauseHelperTest
 	{
-		public CorExceptionClauseCollectionTest(bool isFat)
+		public CorExceptionClauseHelperTest(bool isFat)
 		{
 			_blob = isFat ? ConstructFatCollection() : ConstructShortCollection();
-			_collection = CorExceptionClauseCollection.New(_blob);
+		}
+
+		[Test]
+		public void IsExceptionData()
+		{
+			Assert.That(CorExceptionClauseHelper.IsExceptionData(_blob), Is.True);
 		}
 
 		[TestCase(0, ExpectedResult = null)]
-		[TestCase(1, ExpectedResult = 1)]
+		[TestCase(1, ExpectedResult = "1-2:Clause")]
 		[TestCase(2, ExpectedResult = null)]
 		[TestCase(3, ExpectedResult = null)]
-		[TestCase(4, ExpectedResult = 4)]
-		[TestCase(5, ExpectedResult = 5)]
-		[TestCase(6, ExpectedResult = 6)]
-		[TestCase(7, ExpectedResult = 5)]
-		[TestCase(8, ExpectedResult = 5)]
-		[TestCase(9, ExpectedResult = 9)]
-		[TestCase(10, ExpectedResult = 10)]
-		[TestCase(11, ExpectedResult = 11)]
-		public int? FromHandler(int offset)
+		[TestCase(4, ExpectedResult = "4-5:Clause")]
+		[TestCase(5, ExpectedResult = "5-10:Clause")]
+		[TestCase(6, ExpectedResult = "6-7:Fault")]
+		[TestCase(7, ExpectedResult = "5-10:Clause")]
+		[TestCase(8, ExpectedResult = "5-10:Clause")]
+		[TestCase(9, ExpectedResult = "9-10:Filter")]
+		[TestCase(10, ExpectedResult = "10-11:Finally")]
+		[TestCase(11, ExpectedResult = "11-12:Finally")]
+		public string FromHandler(int offset)
 		{
-			var clause = _collection.FromHandlerOffset(offset);
-			return clause == null ? null : (int?)clause.HandlerOffset;
+			if (CorExceptionClauseHelper.HandlerFromOffset(_blob, offset, out var start, out var end, out var flags))
+			{
+				return start + "-" + end + ":" + flags;
+			}
+
+			return null;
 		}
 
 		[TestCase(0, ExpectedResult = null)]
@@ -45,14 +50,18 @@ namespace CausalityDbg.Tests
 		[TestCase(5, ExpectedResult = null)]
 		[TestCase(6, ExpectedResult = null)]
 		[TestCase(7, ExpectedResult = null)]
-		[TestCase(8, ExpectedResult = 8)]
+		[TestCase(8, ExpectedResult = "8-9")]
 		[TestCase(9, ExpectedResult = null)]
 		[TestCase(10, ExpectedResult = null)]
 		[TestCase(11, ExpectedResult = null)]
-		public int? FromFilter(int offset)
+		public string FromFilter(int offset)
 		{
-			var clause = _collection.FromFilterOffset(offset);
-			return clause == null ? null : (int?)clause.FilterOffset;
+			if (CorExceptionClauseHelper.FilterFromOffset(_blob, offset, out var start, out var end))
+			{
+				return start + "-" + end;
+			}
+
+			return null;
 		}
 
 		[Test]
@@ -69,7 +78,6 @@ namespace CausalityDbg.Tests
 		#region Implementation
 
 		readonly byte[] _blob;
-		readonly CorExceptionClauseCollection _collection;
 
 		// try
 		// {

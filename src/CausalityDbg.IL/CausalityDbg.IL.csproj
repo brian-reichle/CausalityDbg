@@ -32,10 +32,7 @@
     <Compile Include="CorElementType.cs" />
     <Compile Include="CorILMethodFlags.cs" />
     <Compile Include="CorILMethodSectFlags.cs" />
-    <Compile Include="ExceptionHandlers\CorExceptionSmallClauseCollection.cs" />
-    <Compile Include="ExceptionHandlers\CorExceptionFatClauseCollection.cs" />
-    <Compile Include="ExceptionHandlers\CorExceptionClause.cs" />
-    <Compile Include="ExceptionHandlers\CorExceptionClauseCollection.cs" />
+    <Compile Include="CorExceptionClauseHelper.cs" />
     <Compile Include="MetadataToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Decompressor.cs" />
