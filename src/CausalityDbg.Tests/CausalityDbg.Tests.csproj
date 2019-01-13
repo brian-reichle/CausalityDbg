@@ -1,187 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{294E7A28-D02D-41C4-96E8-BD0A3D3F3489}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CausalityDbg.Tests</RootNamespace>
-    <AssemblyName>CausalityDbg.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.XML" />
-    <Reference Include="WindowsBase">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
+    <None Remove="TestFiles\**\*.txt" />
+    <EmbeddedResource Include="TestFiles\**\*.txt" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="AssemblyRefTest.cs" />
-    <Compile Include="CorExceptionClauseHelperTest.cs" />
-    <Compile Include="DecompressorTest.cs" />
-    <Compile Include="MetaFormatterTest.cs" />
-    <Compile Include="MetaIDStringFormatterTest.cs" />
-    <Compile Include="MethodRefTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SignatureReaderTest.cs" />
-    <Compile Include="TemplateProcessorTest.cs" />
-    <Compile Include="TestHelpers\MetaExtensions.cs" />
-    <Compile Include="TestHelpers\SigFormatter.cs" />
-    <Compile Include="TestHelpers\TestHelper.cs" />
-    <Compile Include="TimelineMappingsTest.cs" />
-    <Compile Include="TraceWrapperTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CausalityDbg.Configuration\CausalityDbg.Configuration.csproj">
-      <Project>{1ae370b5-6d9d-499a-8222-1d878802b687}</Project>
-      <Name>CausalityDbg.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CausalityDbg.Core\CausalityDbg.Core.csproj">
-      <Project>{82680D43-F86C-43F2-9748-DEE06B2DB23E}</Project>
-      <Name>CausalityDbg.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CausalityDbg.IL\CausalityDbg.IL.csproj">
-      <Project>{4CA83BB9-BD59-4361-A972-E9E1E46720CF}</Project>
-      <Name>CausalityDbg.IL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CausalityDbg.Main\CausalityDbg.Main.csproj">
-      <Project>{946ED607-1746-4DA7-8203-6A36FB356A0F}</Project>
-      <Name>CausalityDbg.Main</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CausalityDbg.Metadata\CausalityDbg.Metadata.csproj">
-      <Project>{1cf00b35-817f-482c-8ce3-3687eba9535e}</Project>
-      <Name>CausalityDbg.Metadata</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\Signature\Generic.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\Void.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Param.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\ParamByRef.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\ParamMod.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\RetVal.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\RetValByRef.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\RetValMod.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\TypedByRef.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\Signature\Compound\Array.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Compound\ArrayFull.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Compound\FNPtr.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Compound\GenInst.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Compound\Pointer.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Compound\PointerMod.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Compound\PointerVoid.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Compound\SZArray.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Compound\SZArrayMod.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\Bool.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\Byte.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\Char.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\Double.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\Float.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\Int.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\IntPtr.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\Long.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\Object.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\SByte.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\Short.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\String.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\UInt.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\UIntPtr.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\ULong.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Primitive\UShort.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\Signature\Type\Class.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Type\GenMethodArg.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Type\GenTypeArg.txt" />
-    <EmbeddedResource Include="TestFiles\Signature\Type\ValueType.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\Basic.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\Full.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\Version\MajorMinor.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\Version\Revision.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\Version\Build.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\Culture\en-AU.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\Token.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\ProcessorArch\MSIL.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\ProcessorArch\X86.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\ProcessorArch\IA64.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\ProcessorArch\Amd64.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\AssemblyReferences\Culture\neutral.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\Signature\BrokenModifiers.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
-      <Version>2.6.3</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3">
       <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="NUnit">
-      <Version>3.11.0</Version>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.0.2</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NUnit" Version="3.11.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
       <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="System.Collections.Immutable">
-      <Version>1.5.0</Version>
-    </PackageReference>
-    <PackageReference Include="WTG.Analyzers">
-      <Version>2.0.6</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="WTG.Analyzers" Version="2.0.6">
       <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\CausalityDbg.Configuration\CausalityDbg.Configuration.csproj" />
+    <ProjectReference Include="..\CausalityDbg.Core\CausalityDbg.Core.csproj" />
+    <ProjectReference Include="..\CausalityDbg.Main\CausalityDbg.Main.csproj" />
+  </ItemGroup>
+
 </Project>

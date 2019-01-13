@@ -1,87 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4CA83BB9-BD59-4361-A972-E9E1E46720CF}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CausalityDbg.IL</RootNamespace>
-    <AssemblyName>CausalityDbg.IL</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="CorElementType.cs" />
-    <Compile Include="CorILMethodFlags.cs" />
-    <Compile Include="CorILMethodSectFlags.cs" />
-    <Compile Include="CorExceptionClauseHelper.cs" />
-    <Compile Include="MetadataToken.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Decompressor.cs" />
-    <Compile Include="InvalidSignatureException.cs" />
-    <Compile Include="Signature\ISigTypeVisitor.cs" />
-    <Compile Include="Signature\SigCustomModifier.cs" />
-    <Compile Include="Signature\SigMethod.cs" />
-    <Compile Include="Signature\SignatureReader.cs" />
-    <Compile Include="Signature\SigType.cs" />
-    <Compile Include="Signature\SigTypeArray.cs" />
-    <Compile Include="Signature\SigTypeFNPtr.cs" />
-    <Compile Include="Signature\SigTypeGen.cs" />
-    <Compile Include="Signature\SigTypeGenericInst.cs" />
-    <Compile Include="Signature\SigTypePointer.cs" />
-    <Compile Include="Signature\SigTypePrimitive.cs" />
-    <Compile Include="Signature\SigParameter.cs" />
-    <Compile Include="Signature\SigTypeSZArray.cs" />
-    <Compile Include="Signature\SigTypeUserType.cs" />
-    <Compile Include="TokenType.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
-      <Version>2.6.3</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3">
       <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.0.2</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
       <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="System.Buffers">
-      <Version>4.5.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Collections.Immutable">
-      <Version>1.5.0</Version>
-    </PackageReference>
-    <PackageReference Include="WTG.Analyzers">
-      <Version>2.0.6</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
+    <PackageReference Include="WTG.Analyzers" Version="2.0.6">
       <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
