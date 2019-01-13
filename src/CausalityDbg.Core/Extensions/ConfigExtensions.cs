@@ -1,7 +1,6 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using CausalityDbg.Configuration;
 using CausalityDbg.Core.CorDebugApi;
 using CausalityDbg.Core.MetaDataApi;
@@ -78,11 +77,11 @@ namespace CausalityDbg.Core
 
 		static bool SupportsProcessorArch(ref ASSEMBLYMETADATA metadata, ProcessorArchitecture arch)
 		{
-			for (var i = 0; i < metadata.ulProcessor; i++)
-			{
-				var supported = Marshal.ReadInt32(metadata.rdwProcessor, i << 2);
+			var span = SpanUtils.Create<int>(metadata.rdwProcessor, metadata.ulProcessor);
 
-				if (supported == (int)arch)
+			for (var i = 0; i < span.Length; i++)
+			{
+				if (span[i] == (int)arch)
 				{
 					return true;
 				}

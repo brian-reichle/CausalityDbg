@@ -7,20 +7,20 @@ namespace CausalityDbg.IL
 {
 	public static class SignatureReader
 	{
-		public static SigMethod ReadMethodDefSig(ArraySegment<byte> blob)
+		public static SigMethod ReadMethodDefSig(ReadOnlySpan<byte> blob)
 		{
-			var index = blob.Offset;
-			var result = ReadMethodSig(blob.Array, ref index, false);
-			if (index != blob.Offset + blob.Count) throw new InvalidSignatureException();
+			var index = 0;
+			var result = ReadMethodSig(blob, ref index, false);
+			if (index != blob.Length) throw new InvalidSignatureException();
 			return result;
 		}
 
-		static SigMethod ReadMethodRefSig(byte[] blob, ref int index)
+		static SigMethod ReadMethodRefSig(ReadOnlySpan<byte> blob, ref int index)
 		{
 			return ReadMethodSig(blob, ref index, true);
 		}
 
-		static SigMethod ReadMethodSig(byte[] blob, ref int index, bool allowSentinel)
+		static SigMethod ReadMethodSig(ReadOnlySpan<byte> blob, ref int index, bool allowSentinel)
 		{
 			const CallingConventions mask =
 				CallingConventions.HasThis |
@@ -90,7 +90,7 @@ namespace CausalityDbg.IL
 			return method;
 		}
 
-		static SigType ReadTypeCore(byte[] blob, ref int index)
+		static SigType ReadTypeCore(ReadOnlySpan<byte> blob, ref int index)
 		{
 			var elementType = (CorElementType)blob[index++];
 
@@ -143,7 +143,7 @@ namespace CausalityDbg.IL
 			}
 		}
 
-		static SigTypeArray ReadArray(byte[] blob, ref int index)
+		static SigTypeArray ReadArray(ReadOnlySpan<byte> blob, ref int index)
 		{
 			var baseType = ReadTypeCore(blob, ref index);
 			var rank = Decompressor.ReadCompressedUInt(blob, ref index);
@@ -168,27 +168,27 @@ namespace CausalityDbg.IL
 			return new SigTypeArray(baseType, rank, sizes.MoveToImmutable(), lowerBounds.MoveToImmutable());
 		}
 
-		static SigTypeSZArray ReadSZArray(byte[] blob, ref int index)
+		static SigTypeSZArray ReadSZArray(ReadOnlySpan<byte> blob, ref int index)
 		{
 			var modifiers = ReadCMODList(blob, ref index);
 			var baseType = ReadTypeCore(blob, ref index);
 			return new SigTypeSZArray(baseType, modifiers);
 		}
 
-		static SigTypeUserType ReadClass(CorElementType elementType, byte[] blob, ref int index)
+		static SigTypeUserType ReadClass(CorElementType elementType, ReadOnlySpan<byte> blob, ref int index)
 		{
 			var token = Decompressor.ReadTypeDefOrRefOrSpecEncoded(blob, ref index);
 			return new SigTypeUserType(elementType, token);
 		}
 
-		static SigTypePointer ReadPointer(byte[] blob, ref int index)
+		static SigTypePointer ReadPointer(ReadOnlySpan<byte> blob, ref int index)
 		{
 			var modifiers = ReadCMODList(blob, ref index);
 			var baseType = ReadTypeCore(blob, ref index);
 			return new SigTypePointer(baseType, modifiers);
 		}
 
-		static SigTypeGenericInst ReadGenericInst(byte[] blob, ref int index)
+		static SigTypeGenericInst ReadGenericInst(ReadOnlySpan<byte> blob, ref int index)
 		{
 			var innerPreamble = (CorElementType)blob[index++];
 
@@ -215,19 +215,19 @@ namespace CausalityDbg.IL
 			return new SigTypeGenericInst(baseType, genArguments.MoveToImmutable());
 		}
 
-		static SigTypeFNPtr ReadFunctionPTR(byte[] blob, ref int index)
+		static SigTypeFNPtr ReadFunctionPTR(ReadOnlySpan<byte> blob, ref int index)
 		{
 			var method = ReadMethodRefSig(blob, ref index);
 			return new SigTypeFNPtr(method);
 		}
 
-		static SigTypeGen ReadVar(CorElementType elementType, byte[] blob, ref int index)
+		static SigTypeGen ReadVar(CorElementType elementType, ReadOnlySpan<byte> blob, ref int index)
 		{
 			var genIndex = Decompressor.ReadCompressedUInt(blob, ref index);
 			return new SigTypeGen(elementType, genIndex);
 		}
 
-		static SigParameter ReadTypeRef(byte[] blob, ref int index)
+		static SigParameter ReadTypeRef(ReadOnlySpan<byte> blob, ref int index)
 		{
 			var modifiers = ImmutableArray.CreateBuilder<SigCustomModifier>();
 			ReadCMODList(blob, ref index, modifiers);
@@ -258,14 +258,14 @@ namespace CausalityDbg.IL
 			return new SigParameter(type, byRef, byRefIndex, modifiers.ToImmutable());
 		}
 
-		static ImmutableArray<SigCustomModifier> ReadCMODList(byte[] blob, ref int index)
+		static ImmutableArray<SigCustomModifier> ReadCMODList(ReadOnlySpan<byte> blob, ref int index)
 		{
 			var modifiers = ImmutableArray.CreateBuilder<SigCustomModifier>();
 			ReadCMODList(blob, ref index, modifiers);
 			return modifiers.ToImmutable();
 		}
 
-		static void ReadCMODList(byte[] blob, ref int index, ImmutableArray<SigCustomModifier>.Builder modifiers)
+		static void ReadCMODList(ReadOnlySpan<byte> blob, ref int index, ImmutableArray<SigCustomModifier>.Builder modifiers)
 		{
 			while (true)
 			{

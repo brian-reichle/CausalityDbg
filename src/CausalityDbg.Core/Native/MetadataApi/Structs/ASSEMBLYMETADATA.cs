@@ -29,7 +29,7 @@ namespace CausalityDbg.Core.MetaDataApi
 		public IntPtr rdwProcessor;
 
 		// ULONG   ulProcessor
-		public uint ulProcessor;
+		public int ulProcessor;
 
 		// OSINFO* rOS[];
 		public IntPtr rOS;

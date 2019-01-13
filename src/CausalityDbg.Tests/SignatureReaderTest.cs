@@ -15,7 +15,7 @@ namespace CausalityDbg.Tests
 		public void CheckSig(string name)
 		{
 			var tuple = TestHelper.ReadBinaryTextPair(name);
-			var text = Format(SignatureReader.ReadMethodDefSig(new ArraySegment<byte>(tuple.Key)));
+			var text = Format(SignatureReader.ReadMethodDefSig(tuple.Key));
 
 			try
 			{

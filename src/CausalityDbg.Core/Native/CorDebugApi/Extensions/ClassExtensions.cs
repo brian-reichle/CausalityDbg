@@ -2,7 +2,6 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using CausalityDbg.Configuration;
 using CausalityDbg.IL;
 
@@ -52,8 +51,7 @@ namespace CausalityDbg.Core.CorDebugApi
 			var import = module.GetMetaDataImport();
 			var hEnum = IntPtr.Zero;
 			var name = method.Name;
-			var length = name.Length + 1;
-			var buffer = ArrayPool<char>.Shared.Rent(length);
+			var buffer = ArrayPool<char>.Shared.Rent(name.Length + 1);
 
 			try
 			{
@@ -63,7 +61,7 @@ namespace CausalityDbg.Core.CorDebugApi
 						mToken,
 						out var classToken,
 						buffer,
-						length,
+						buffer.Length,
 						out var size,
 						IntPtr.Zero,
 						out var sigBlob,
@@ -71,22 +69,17 @@ namespace CausalityDbg.Core.CorDebugApi
 						out var rva,
 						IntPtr.Zero);
 
-					if (size != length) continue;
-
-					var funcName = new string(buffer, 0, size - 1);
-
-					if (funcName != name) continue;
-
-					if (method.SpecifiesArgTypes)
+					if (size == name.Length + 1 &&
+						name.AsSpan().Equals(buffer.AsSpan(0, size - 1), StringComparison.Ordinal))
 					{
-						var blob = ArrayPool<byte>.Shared.Rent(sigSize);
-						Marshal.Copy(sigBlob, blob, 0, sigSize);
-						var sig = SignatureReader.ReadMethodDefSig(new ArraySegment<byte>(blob, 0, sigSize));
-						ArrayPool<byte>.Shared.Return(blob);
-						if (!IsMatch(module, sig, method)) continue;
-					}
+						if (method.SpecifiesArgTypes)
+						{
+							var sig = SignatureReader.ReadMethodDefSig(SpanUtils.Create<byte>(sigBlob, sigSize));
+							if (!IsMatch(module, sig, method)) continue;
+						}
 
-					yield return module.GetFunctionFromToken(mToken);
+						yield return module.GetFunctionFromToken(mToken);
+					}
 				}
 			}
 			finally
@@ -124,8 +117,7 @@ namespace CausalityDbg.Core.CorDebugApi
 			var import = module.GetMetaDataImport();
 			var hEnum = IntPtr.Zero;
 			var cToken = cl.GetToken();
-			var length = name.Length + 1;
-			var buffer = ArrayPool<char>.Shared.Rent(length);
+			var buffer = ArrayPool<char>.Shared.Rent(name.Length + 1);
 
 			try
 			{
@@ -149,14 +141,12 @@ namespace CausalityDbg.Core.CorDebugApi
 						0,
 						IntPtr.Zero);
 
-					if (size != length) continue;
-
-					var propertyName = new string(buffer, 0, size - 1);
-
-					if (propertyName != name) continue;
-
-					ArrayPool<char>.Shared.Return(buffer);
-					return module.GetFunctionFromToken(mToken);
+					if (size == name.Length + 1 &&
+						name.AsSpan().Equals(buffer.AsSpan(0, size - 1), StringComparison.Ordinal))
+					{
+						ArrayPool<char>.Shared.Return(buffer);
+						return module.GetFunctionFromToken(mToken);
+					}
 				}
 			}
 			finally
@@ -191,22 +181,22 @@ namespace CausalityDbg.Core.CorDebugApi
 		{
 			switch (sigType.ElementType)
 			{
-				case CorElementType.ELEMENT_TYPE_BOOLEAN: return typeName == "System.Boolean";
-				case CorElementType.ELEMENT_TYPE_CHAR: return typeName == "System.Char";
-				case CorElementType.ELEMENT_TYPE_I: return typeName == "System.IntPtr";
-				case CorElementType.ELEMENT_TYPE_I1: return typeName == "System.SByte";
-				case CorElementType.ELEMENT_TYPE_I2: return typeName == "System.Int16";
-				case CorElementType.ELEMENT_TYPE_I4: return typeName == "System.Int32";
-				case CorElementType.ELEMENT_TYPE_I8: return typeName == "System.Int64";
-				case CorElementType.ELEMENT_TYPE_OBJECT: return typeName == "System.Object";
-				case CorElementType.ELEMENT_TYPE_R4: return typeName == "System.Single";
-				case CorElementType.ELEMENT_TYPE_R8: return typeName == "System.Double";
-				case CorElementType.ELEMENT_TYPE_STRING: return typeName == "System.String";
-				case CorElementType.ELEMENT_TYPE_U: return typeName == "System.UIntPtr";
-				case CorElementType.ELEMENT_TYPE_U1: return typeName == "System.Byte";
-				case CorElementType.ELEMENT_TYPE_U2: return typeName == "System.UInt16";
-				case CorElementType.ELEMENT_TYPE_U4: return typeName == "System.UInt32";
-				case CorElementType.ELEMENT_TYPE_U8: return typeName == "System.UInt64";
+				case CorElementType.ELEMENT_TYPE_BOOLEAN: return typeName.Equals("System.Boolean", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_CHAR: return typeName.Equals("System.Char", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_I: return typeName.Equals("System.IntPtr", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_I1: return typeName.Equals("System.SByte", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_I2: return typeName.Equals("System.Int16", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_I4: return typeName.Equals("System.Int32", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_I8: return typeName.Equals("System.Int64", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_OBJECT: return typeName.Equals("System.Object", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_R4: return typeName.Equals("System.Single", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_R8: return typeName.Equals("System.Double", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_STRING: return typeName.Equals("System.String", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_U: return typeName.Equals("System.UIntPtr", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_U1: return typeName.Equals("System.Byte", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_U2: return typeName.Equals("System.UInt16", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_U4: return typeName.Equals("System.UInt32", StringComparison.Ordinal);
+				case CorElementType.ELEMENT_TYPE_U8: return typeName.Equals("System.UInt64", StringComparison.Ordinal);
 
 				case CorElementType.ELEMENT_TYPE_CLASS:
 				case CorElementType.ELEMENT_TYPE_VALUETYPE:
@@ -214,11 +204,11 @@ namespace CausalityDbg.Core.CorDebugApi
 
 					if (token.TokenType == TokenType.TypeDef)
 					{
-						return IsMatch_TypeDef(module, token, typeName, typeName.Length);
+						return IsMatch_TypeDef(module, token, typeName.AsSpan());
 					}
 					else if (token.TokenType == TokenType.TypeRef)
 					{
-						return IsMatch_TypeRef(module, token, typeName, typeName.Length);
+						return IsMatch_TypeRef(module, token, typeName.AsSpan());
 					}
 					else
 					{
@@ -230,17 +220,16 @@ namespace CausalityDbg.Core.CorDebugApi
 			}
 		}
 
-		static bool IsMatch_TypeRef(ICorDebugModule module, MetaDataToken token, string typeName, int len)
+		static bool IsMatch_TypeRef(ICorDebugModule module, MetaDataToken token, ReadOnlySpan<char> typeName)
 		{
-			var length = len + 1;
-			var buffer = ArrayPool<char>.Shared.Rent(length);
+			var buffer = ArrayPool<char>.Shared.Rent(typeName.Length + 1);
 
 			var import = module.GetMetaDataImport();
 			import.GetTypeRefProps(
 				token,
 				out var scope,
 				buffer,
-				length,
+				buffer.Length,
 				out var size);
 
 			size--;
@@ -249,18 +238,17 @@ namespace CausalityDbg.Core.CorDebugApi
 
 			if (scope.TokenType == TokenType.TypeRef)
 			{
-				var start = len - size - 2;
+				var start = typeName.Length - size - 2;
 
 				result = start > 0
-					&& IsMatch(typeName, buffer, start + 2, size)
+					&& typeName.Slice(start + 2).Equals(buffer.AsSpan(0, size), StringComparison.Ordinal)
 					&& typeName[start] == ':'
 					&& typeName[start + 1] == ':'
-					&& IsMatch_TypeRef(module, scope, typeName, start);
+					&& IsMatch_TypeRef(module, scope, typeName.Slice(0, start));
 			}
 			else
 			{
-				result = size == len
-					&& IsMatch(typeName, buffer, 0, len);
+				result = typeName.Equals(buffer.AsSpan(0, size), StringComparison.Ordinal);
 			}
 
 			ArrayPool<char>.Shared.Return(buffer);
@@ -268,16 +256,15 @@ namespace CausalityDbg.Core.CorDebugApi
 			return result;
 		}
 
-		static bool IsMatch_TypeDef(ICorDebugModule module, MetaDataToken token, string typeName, int len)
+		static bool IsMatch_TypeDef(ICorDebugModule module, MetaDataToken token, ReadOnlySpan<char> typeName)
 		{
-			var length = len + 1;
-			var buffer = ArrayPool<char>.Shared.Rent(length);
+			var buffer = ArrayPool<char>.Shared.Rent(typeName.Length + 1);
 
 			var import = module.GetMetaDataImport();
 			import.GetTypeDefProps(
 				token,
 				buffer,
-				length,
+				buffer.Length,
 				out var size,
 				out var att,
 				out var parent);
@@ -288,38 +275,24 @@ namespace CausalityDbg.Core.CorDebugApi
 
 			if (att.IsNested())
 			{
-				var start = len - size - 2;
+				var start = typeName.Length - size - 2;
 
 				import.GetNestedClassProps(token, out var declaringToken);
 
 				result = start > 0
-					&& IsMatch(typeName, buffer, start + 2, size)
+					&& typeName.Slice(start + 2, size).Equals(buffer.AsSpan(0, size), StringComparison.Ordinal)
 					&& typeName[start] == ':'
 					&& typeName[start + 1] == ':'
-					&& IsMatch_TypeDef(module, declaringToken, typeName, start);
+					&& IsMatch_TypeDef(module, declaringToken, typeName.Slice(0, start));
 			}
 			else
 			{
-				result = size == len
-					&& IsMatch(typeName, buffer, 0, size);
+				result = typeName.Equals(buffer.AsSpan(0, size), StringComparison.Ordinal);
 			}
 
 			ArrayPool<char>.Shared.Return(buffer);
 
 			return result;
-		}
-
-		static bool IsMatch(string typeName, char[] segment, int start, int length)
-		{
-			for (var i = 0; i < length; i++)
-			{
-				if (typeName[start + i] != segment[i])
-				{
-					return false;
-				}
-			}
-
-			return true;
 		}
 	}
 }

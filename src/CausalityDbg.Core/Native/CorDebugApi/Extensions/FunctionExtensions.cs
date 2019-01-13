@@ -64,7 +64,7 @@ namespace CausalityDbg.Core.CorDebugApi
 
 					if (size == paramName.Length + 1)
 					{
-						if (new string(buffer, 0, paramName.Length) == paramName)
+						if (paramName.AsSpan().Equals(buffer.AsSpan(0, paramName.Length), StringComparison.Ordinal))
 						{
 							if ((GetCallingConventionLight(import, functionToken) & CallingConventionThisMask) == CallingConventions.HasThis)
 							{

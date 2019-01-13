@@ -336,11 +336,7 @@ namespace CausalityDbg.Core
 
 			static SigMethod Read(IntPtr sigBlob, int sigLen)
 			{
-				var blob = ArrayPool<byte>.Shared.Rent(sigLen);
-				Marshal.Copy(sigBlob, blob, 0, sigLen);
-
-				var sig = SignatureReader.ReadMethodDefSig(new ArraySegment<byte>(blob, 0, sigLen));
-				ArrayPool<byte>.Shared.Return(blob);
+				var sig = SignatureReader.ReadMethodDefSig(SpanUtils.Create<byte>(sigBlob, sigLen));
 
 				if (sig.Parameters.Length > sig.OrderedParamCount)
 				{

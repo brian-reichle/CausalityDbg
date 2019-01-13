@@ -1,9 +1,11 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System;
+
 namespace CausalityDbg.IL
 {
 	static class Decompressor
 	{
-		public static uint ReadCompressedUInt(byte[] blob, ref int index)
+		public static uint ReadCompressedUInt(ReadOnlySpan<byte> blob, ref int index)
 		{
 			if (index >= blob.Length)
 			{
@@ -47,7 +49,7 @@ namespace CausalityDbg.IL
 			return tmp;
 		}
 
-		public static int ReadCompressedInt(byte[] blob, ref int index)
+		public static int ReadCompressedInt(ReadOnlySpan<byte> blob, ref int index)
 		{
 			if (index >= blob.Length)
 			{
@@ -103,7 +105,7 @@ namespace CausalityDbg.IL
 			return tmp;
 		}
 
-		public static MetaDataToken ReadTypeDefOrRefOrSpecEncoded(byte[] blob, ref int index)
+		public static MetaDataToken ReadTypeDefOrRefOrSpecEncoded(ReadOnlySpan<byte> blob, ref int index)
 		{
 			var val = ReadCompressedUInt(blob, ref index);
 
