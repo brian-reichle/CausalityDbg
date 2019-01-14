@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CausalityDbg.Core", "CausalityDbg.Core\CausalityDbg.Core.csproj", "{82680D43-F86C-43F2-9748-DEE06B2DB23E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.Core", "CausalityDbg.Core\CausalityDbg.Core.csproj", "{82680D43-F86C-43F2-9748-DEE06B2DB23E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CausalityDbg.Main", "CausalityDbg.Main\CausalityDbg.Main.csproj", "{946ED607-1746-4DA7-8203-6A36FB356A0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CausalityDbg.Tests", "CausalityDbg.Tests\CausalityDbg.Tests.csproj", "{294E7A28-D02D-41C4-96E8-BD0A3D3F3489}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.Tests", "CausalityDbg.Tests\CausalityDbg.Tests.csproj", "{294E7A28-D02D-41C4-96E8-BD0A3D3F3489}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CausalityDbg.IL", "CausalityDbg.IL\CausalityDbg.IL.csproj", "{4CA83BB9-BD59-4361-A972-E9E1E46720CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.IL", "CausalityDbg.IL\CausalityDbg.IL.csproj", "{4CA83BB9-BD59-4361-A972-E9E1E46720CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CausalityDbg.Configuration", "CausalityDbg.Configuration\CausalityDbg.Configuration.csproj", "{1AE370B5-6D9D-499A-8222-1D878802B687}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.Configuration", "CausalityDbg.Configuration\CausalityDbg.Configuration.csproj", "{1AE370B5-6D9D-499A-8222-1D878802B687}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CausalityDbg.Metadata", "CausalityDbg.Metadata\CausalityDbg.Metadata.csproj", "{1CF00B35-817F-482C-8CE3-3687EBA9535E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.Metadata", "CausalityDbg.Metadata\CausalityDbg.Metadata.csproj", "{1CF00B35-817F-482C-8CE3-3687EBA9535E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CausalityDbg.Source", "CausalityDbg.Source\CausalityDbg.Source.csproj", "{228B86C2-EACE-4726-A86B-6C7BF5BDD71B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.Source", "CausalityDbg.Source\CausalityDbg.Source.csproj", "{228B86C2-EACE-4726-A86B-6C7BF5BDD71B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
