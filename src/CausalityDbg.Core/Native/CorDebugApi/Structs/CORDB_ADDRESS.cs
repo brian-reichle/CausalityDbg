@@ -14,6 +14,8 @@ namespace CausalityDbg.Core.CorDebugApi
 		public static bool operator ==(CORDB_ADDRESS address1, CORDB_ADDRESS address2) => address1._value == address2._value;
 		public static bool operator !=(CORDB_ADDRESS address1, CORDB_ADDRESS address2) => address1._value != address2._value;
 
+		public static explicit operator long(CORDB_ADDRESS value) => value._value;
+
 		CORDB_ADDRESS(long address) => _value = address;
 
 		public bool IsNull => _value == 0;

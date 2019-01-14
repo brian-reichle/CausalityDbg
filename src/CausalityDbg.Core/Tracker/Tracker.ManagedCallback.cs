@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using CausalityDbg.Configuration;
 using CausalityDbg.Core.CorDebugApi;
+using CausalityDbg.DataStore;
 using CausalityDbg.IL;
 using CausalityDbg.Metadata;
 

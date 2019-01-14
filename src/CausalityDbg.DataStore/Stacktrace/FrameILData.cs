@@ -4,21 +4,21 @@ using System.Diagnostics;
 using System.IO;
 using CausalityDbg.Metadata;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.DataStore
 {
 	[DebuggerDisplay("FrameText = {FrameText}")]
 	public sealed class FrameILData : FrameData
 	{
-		internal FrameILData(MetaFunction function, int? ilOffset, ImmutableArray<MetaCompound> genericArgs)
+		public FrameILData(MetaFunction function, int? ilOffset, ImmutableArray<MetaCompound> genericArgs)
 		{
 			Function = function;
 			ILOffset = ilOffset;
 			GenericArgs = genericArgs;
 		}
 
-		internal MetaFunction Function { get; }
+		public MetaFunction Function { get; }
 		public int? ILOffset { get; }
-		internal ImmutableArray<MetaCompound> GenericArgs { get; }
+		public ImmutableArray<MetaCompound> GenericArgs { get; }
 
 		public string ModuleLocation => Function.Module.Name;
 		public string ModuleName => Path.GetFileName(Function.Module.Name);

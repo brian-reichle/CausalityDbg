@@ -141,17 +141,9 @@
     <Compile Include="Converters\StackTraceProcessor.cs" />
     <Compile Include="Converters\LabelAndCountConverter.cs" />
     <Compile Include="Converters\TimestampConverter.cs" />
-    <Compile Include="Data\Band.cs" />
-    <Compile Include="Data\DataProvider.cs" />
-    <Compile Include="Data\Event.cs" />
     <Compile Include="Data\FrameWrapper.cs" />
-    <Compile Include="Data\IDataProvider.cs" />
-    <Compile Include="Data\IEventScope.cs" />
     <Compile Include="Data\Notification.cs" />
     <Compile Include="Data\ProcessData.cs" />
-    <Compile Include="Data\Scope.cs" />
-    <Compile Include="Data\TimelineMappings.cs" />
-    <Compile Include="Data\TimelineSection.cs" />
     <Compile Include="Data\TraceWrapper.cs" />
     <Compile Include="Extensions\ControlTextExtensions.cs" />
     <Compile Include="ToolLauncher\TemplateProcessor.cs" />
@@ -221,6 +213,10 @@
     <ProjectReference Include="..\CausalityDbg.Core\CausalityDbg.Core.csproj">
       <Project>{82680D43-F86C-43F2-9748-DEE06B2DB23E}</Project>
       <Name>CausalityDbg.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CausalityDbg.DataStore\CausalityDbg.DataStore.csproj">
+      <Project>{8813246B-953B-4325-BAFE-21D9E617B592}</Project>
+      <Name>CausalityDbg.DataStore</Name>
     </ProjectReference>
     <ProjectReference Include="..\CausalityDbg.Metadata\CausalityDbg.Metadata.csproj">
       <Project>{1cf00b35-817f-482c-8ce3-3687eba9535e}</Project>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="CausalityDbg Rules" ToolsVersion="10.0">
   <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.Features" RuleNamespace="Microsoft.CodeAnalysis.CSharp.Features">
     <Rule Id="IDE0040" Action="None" />
@@ -113,6 +113,7 @@
     <Rule Id="CA1063" Action="None" />
     <Rule Id="CA1707" Action="None" />
     <Rule Id="CA2227" Action="None" />
+    <Rule Id="CA1716" Action="None" />
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeQuality.CSharp.Analyzers" RuleNamespace="Microsoft.CodeQuality.CSharp.Analyzers">
     <Rule Id="CA1001" Action="None" />

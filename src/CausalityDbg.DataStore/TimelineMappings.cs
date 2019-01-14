@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace CausalityDbg.Main
+namespace CausalityDbg.DataStore
 {
-	sealed class TimelineMappings
+	public sealed class TimelineMappings
 	{
 		public TimelineMappings(long threashold, long lip)
 		{

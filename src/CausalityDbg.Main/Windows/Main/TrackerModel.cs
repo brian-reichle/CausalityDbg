@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CausalityDbg.Core;
+using CausalityDbg.DataStore;
 
 namespace CausalityDbg.Main
 {

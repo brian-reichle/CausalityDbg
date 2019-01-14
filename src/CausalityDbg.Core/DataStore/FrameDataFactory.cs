@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using CausalityDbg.Core.CorDebugApi;
+using CausalityDbg.DataStore;
 using CausalityDbg.Metadata;
 
 namespace CausalityDbg.Core
@@ -32,14 +33,14 @@ namespace CausalityDbg.Core
 				{
 					frame.GetStackRange(out var startAddress, out endAddress);
 
-					if (startAddress == containingTrace.TopAddress)
+					if ((long)startAddress == containingTrace.TopAddress)
 					{
-						return new TraceData(topAddress, containingTrace, result.ToImmutable());
+						return new TraceData((long)topAddress, containingTrace, result.ToImmutable());
 					}
 				}
 			}
 
-			return new TraceData(topAddress, result.ToImmutable());
+			return new TraceData((long)topAddress, result.ToImmutable());
 		}
 
 		static IEnumerable<ICorDebugFrame> GetFrames(ICorDebugFrame topFrame)

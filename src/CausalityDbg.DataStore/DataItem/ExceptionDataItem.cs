@@ -1,7 +1,7 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using CausalityDbg.Configuration;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.DataStore
 {
 	public sealed class ExceptionDataItem : DataItem
 	{
@@ -12,6 +12,6 @@ namespace CausalityDbg.Core
 		}
 
 		public string ExceptionType { get; }
-		public string ExceptionMessage { get; internal set; }
+		public string ExceptionMessage { get; set; }
 	}
 }

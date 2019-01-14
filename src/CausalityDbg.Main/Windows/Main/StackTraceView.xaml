@@ -7,6 +7,7 @@
 	xmlns:local="clr-namespace:CausalityDbg.Main"
 	xmlns:core="clr-namespace:CausalityDbg.Core;assembly=CausalityDbg.Core"
 	xmlns:configuration="clr-namespace:CausalityDbg.Configuration;assembly=CausalityDbg.Configuration"
+	xmlns:data="clr-namespace:CausalityDbg.DataStore;assembly=CausalityDbg.DataStore"
 	>
 
 	<UserControl.CommandBindings>
@@ -44,7 +45,7 @@
 				/>
 		</DataTemplate>
 
-		<DataTemplate DataType="{x:Type core:FrameILData}">
+		<DataTemplate DataType="{x:Type data:FrameILData}">
 			<StackPanel
 				Orientation="Horizontal"
 				>
@@ -72,7 +73,7 @@
 			</DataTemplate.Triggers>
 		</DataTemplate>
 
-		<DataTemplate DataType="{x:Type core:FrameInternalData}">
+		<DataTemplate DataType="{x:Type data:FrameInternalData}">
 			<TextBlock
 				Text="{Binding Text}"
 				TextBlock.Foreground="Gray"

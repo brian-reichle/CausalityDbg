@@ -2,11 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using CausalityDbg.Core;
 
-namespace CausalityDbg.Main
+namespace CausalityDbg.DataStore
 {
-	sealed class DataProvider : IDataProvider
+	public sealed class DataProvider : IDataProvider
 	{
 		public DataProvider()
 		{

@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace CausalityDbg.Main
+namespace CausalityDbg.DataStore
 {
-	interface IDataProvider
+	public interface IDataProvider
 	{
 		int CountBands { get; }
 		int CountScopes { get; }

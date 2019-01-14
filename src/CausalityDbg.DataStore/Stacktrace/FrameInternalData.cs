@@ -1,12 +1,12 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-using CausalityDbg.Configuration;
+using System.Diagnostics;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.DataStore
 {
-	public sealed class TraceDataItem : DataItem
+	[DebuggerDisplay("Text = {Text}")]
+	public sealed class FrameInternalData : FrameData
 	{
-		public TraceDataItem(ConfigCategory category, TraceData stackTrace, string text)
-			: base(category, stackTrace)
+		public FrameInternalData(string text)
 		{
 			Text = text;
 		}

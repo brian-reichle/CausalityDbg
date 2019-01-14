@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using CausalityDbg.DataStore;
 
 namespace CausalityDbg.Main
 {

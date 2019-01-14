@@ -3,6 +3,7 @@ using System;
 using System.Windows.Threading;
 using CausalityDbg.Configuration;
 using CausalityDbg.Core;
+using CausalityDbg.DataStore;
 
 namespace CausalityDbg.Main
 {

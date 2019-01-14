@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using CausalityDbg.Configuration;
 
-namespace CausalityDbg.Core
+namespace CausalityDbg.DataStore
 {
 	[DebuggerDisplay("Category = {Category.Name}")]
 	public class DataItem

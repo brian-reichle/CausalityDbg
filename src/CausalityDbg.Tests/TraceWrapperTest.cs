@@ -5,8 +5,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Text;
 using CausalityDbg.Configuration;
-using CausalityDbg.Core;
-using CausalityDbg.Core.CorDebugApi;
+using CausalityDbg.DataStore;
 using CausalityDbg.Main;
 using NUnit.Framework;
 
@@ -177,14 +176,14 @@ namespace CausalityDbg.Tests
 		static TraceData NewTrace(TraceData baseTrace, string label, int count)
 		{
 			ImmutableArray<FrameData>.Builder frames;
-			CORDB_ADDRESS topAddress;
+			long topAddress;
 
 			if (baseTrace == null || baseTrace.Frames.Length == 0)
 			{
 				baseTrace = TraceData.Empty;
 				frames = ImmutableArray.CreateBuilder<FrameData>(count);
 				frames.Count = count;
-				topAddress = CORDB_ADDRESS.Null + frames.Count;
+				topAddress = frames.Count;
 			}
 			else
 			{

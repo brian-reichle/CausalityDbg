@@ -1,11 +1,10 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System.Diagnostics;
-using CausalityDbg.Core;
 
-namespace CausalityDbg.Main
+namespace CausalityDbg.DataStore
 {
 	[DebuggerDisplay("Scope ({ID})")]
-	sealed class Scope : IEventScope
+	public sealed class Scope : IEventScope
 	{
 		public Scope(Band band, Event trigger, DataItem item, int id, long fromTimestamp)
 		{
@@ -31,7 +30,7 @@ namespace CausalityDbg.Main
 			ToTimestamp = null;
 		}
 
-		public void Close(long toTimestamp)
+		internal void Close(long toTimestamp)
 		{
 			ToTimestamp = toTimestamp;
 		}
