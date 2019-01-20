@@ -4,21 +4,16 @@ using System.Windows.Markup;
 
 namespace CausalityDbg.Main
 {
-	[ContentProperty("EnumType")]
 	[MarkupExtensionReturnType(typeof(Array))]
 	sealed class EnumValueList : MarkupExtension
 	{
-		public EnumValueList()
-		{
-		}
-
 		public EnumValueList(Type enumType)
 		{
 			EnumType = enumType;
 		}
 
 		[ConstructorArgument("enumType")]
-		public Type EnumType { get; set; }
+		public Type EnumType { get; }
 
 		public override object ProvideValue(IServiceProvider serviceProvider)
 		{
