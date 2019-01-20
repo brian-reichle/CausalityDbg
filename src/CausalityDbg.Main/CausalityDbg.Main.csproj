@@ -98,6 +98,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\CategoryMarker.cs" />
     <Compile Include="Controls\WheelScrollViewer.cs" />
     <Compile Include="ExceptionReporter.cs" />
     <Compile Include="Extensions\CommitRequest.cs" />
@@ -134,10 +135,8 @@
     <Compile Include="Controls\TimelineControlScale.cs" />
     <Compile Include="Controls\TimelineControlView.cs" />
     <Compile Include="Controls\ToolContextMenu.cs" />
-    <Compile Include="Converters\BGColorConverter.cs" />
     <Compile Include="Converters\EnumRadioConverter.cs" />
     <Compile Include="Converters\NotificationColorConverter.cs" />
-    <Compile Include="Converters\FGColorConverter.cs" />
     <Compile Include="Converters\StackTraceProcessor.cs" />
     <Compile Include="Converters\LabelAndCountConverter.cs" />
     <Compile Include="Converters\TimestampConverter.cs" />

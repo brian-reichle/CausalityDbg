@@ -5,12 +5,31 @@
 	xmlns:local="clr-namespace:CausalityDbg.Main"
 	xmlns:data="clr-namespace:CausalityDbg.DataStore;assembly=CausalityDbg.DataStore"
 	>
+	<Geometry x:Key="Marker">M0,0l5,5l-5,5z</Geometry>
 
 	<Style x:Key="ToolTipBorderStyle" TargetType="{x:Type Border}">
 		<Setter Property="Background" Value="LightYellow" />
 		<Setter Property="BorderBrush" Value="Black" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Padding" Value="1" />
+	</Style>
+
+	<Style TargetType="{x:Type local:CategoryMarker}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:CategoryMarker}">
+					<Path
+						Data="{StaticResource Marker}"
+						StrokeThickness="1"
+						Fill="{TemplateBinding Fill}"
+						Stroke="{TemplateBinding Stroke}"
+						Margin="1"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Center"
+						/>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
 	</Style>
 
 	<Style TargetType="{x:Type local:ProcessDragSelector}">
