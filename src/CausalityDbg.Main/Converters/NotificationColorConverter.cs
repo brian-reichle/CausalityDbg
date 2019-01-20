@@ -10,6 +10,12 @@ namespace CausalityDbg.Main
 	[ValueConversion(typeof(TrackerNotificationLevel?), typeof(Brush))]
 	sealed class NotificationColorConverter : IValueConverter
 	{
+		public static NotificationColorConverter Default { get; } = new NotificationColorConverter();
+
+		NotificationColorConverter()
+		{
+		}
+
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			var level = value as TrackerNotificationLevel?;

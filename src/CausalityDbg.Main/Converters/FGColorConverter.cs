@@ -10,6 +10,12 @@ namespace CausalityDbg.Main
 	[ValueConversion(typeof(ConfigCategory), typeof(Brush))]
 	sealed class FGColorConverter : IValueConverter
 	{
+		public static FGColorConverter Default { get; } = new FGColorConverter();
+
+		FGColorConverter()
+		{
+		}
+
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (value is ConfigCategory category)

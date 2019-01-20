@@ -7,11 +7,6 @@
 	StartupUri="Windows/Main/MainWindow.xaml"
 	>
 	<Application.Resources>
-		<local:FGColorConverter x:Key="FGColorConverter" />
-		<local:BGColorConverter x:Key="BGColorConverter" />
-		<local:NotificationColorConverter x:Key="NotificationColorConverter" />
-		<local:LabelAndCountConverter x:Key="LabelAndCountConverter" />
-
 		<local:EnumRadioConverter x:Key="TraceModeConverter" UnsetValue="{x:Static local:TraceMode.None}" />
 
 		<Style x:Key="ThinTabItemStyle" TargetType="{x:Type TabItem}">

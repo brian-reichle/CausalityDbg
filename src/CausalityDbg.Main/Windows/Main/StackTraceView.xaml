@@ -37,8 +37,8 @@
 			<Path
 				Data="{StaticResource Marker}"
 				StrokeThickness="1"
-				Fill="{Binding Converter={StaticResource BGColorConverter}}"
-				Stroke="{Binding Converter={StaticResource FGColorConverter}}"
+				Fill="{Binding Converter={x:Static local:BGColorConverter.Default}}"
+				Stroke="{Binding Converter={x:Static local:FGColorConverter.Default}}"
 				Margin="1"
 				VerticalAlignment="Center"
 				HorizontalAlignment="Center"

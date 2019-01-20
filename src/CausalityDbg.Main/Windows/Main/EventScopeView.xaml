@@ -124,8 +124,6 @@
 					/>
 			</Grid>
 		</DataTemplate>
-
-		<local:StackTraceProcessor x:Key="StackTraceProcessor" />
 	</UserControl.Resources>
 
 	<DockPanel>
@@ -135,6 +133,6 @@
 			Focusable="False"
 			/>
 
-		<local:StackTraceView DataContext="{Binding Converter={StaticResource StackTraceProcessor}}" />
+		<local:StackTraceView DataContext="{Binding Converter={x:Static local:StackTraceProcessor.Default}}" />
 	</DockPanel>
 </UserControl>

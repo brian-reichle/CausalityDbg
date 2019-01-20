@@ -114,7 +114,7 @@
 					<local:EventScopeView DataContext="{Binding Selected}" />
 				</TabItem>
 
-				<TabItem Header="{Binding Notifications.Count, Converter={StaticResource LabelAndCountConverter}, ConverterParameter='Notifications'}">
+				<TabItem Header="{Binding Notifications.Count, Converter={x:Static local:LabelAndCountConverter.Default}, ConverterParameter='Notifications'}">
 					<local:NotificationsView DataContext="{Binding Notifications}" />
 				</TabItem>
 			</TabControl>

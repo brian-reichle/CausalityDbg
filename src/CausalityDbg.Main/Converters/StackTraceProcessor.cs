@@ -9,6 +9,12 @@ namespace CausalityDbg.Main
 	[ValueConversion(typeof(IEventScope), typeof(TraceWrapper))]
 	sealed class StackTraceProcessor : IValueConverter
 	{
+		public static StackTraceProcessor Default { get; } = new StackTraceProcessor();
+
+		StackTraceProcessor()
+		{
+		}
+
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 			=> value is IEventScope current ? new TraceWrapper(current) : null;
 

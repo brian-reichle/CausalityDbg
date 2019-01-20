@@ -10,6 +10,12 @@ namespace CausalityDbg.Main
 	[ValueConversion(typeof(ConfigCategory), typeof(Brush))]
 	sealed class BGColorConverter : IValueConverter
 	{
+		public static BGColorConverter Default { get; } = new BGColorConverter();
+
+		BGColorConverter()
+		{
+		}
+
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (value is ConfigCategory category)

@@ -11,7 +11,7 @@
 				<Border>
 					<TextBlock
 						Text="{Binding Text}"
-						Foreground="{Binding Level, Converter={StaticResource NotificationColorConverter}}"
+						Foreground="{Binding Level, Converter={x:Static local:NotificationColorConverter.Default}}"
 						ToolTip="{Binding Module}"
 						/>
 				</Border>
