@@ -8,7 +8,8 @@ using NUnit.Framework;
 
 namespace CausalityDbg.Tests
 {
-	class SignatureReaderTest
+	[TestFixture]
+	public class SignatureReaderTest
 	{
 		[TestCaseSource(nameof(MethodSignatures))]
 		public void CheckSig(string name)

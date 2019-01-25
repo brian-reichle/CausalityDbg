@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace CausalityDbg.Tests
 {
 	[TestFixture]
-	class TimelineMappingsTest
+	public class TimelineMappingsTest
 	{
 		[Test]
 		public void Empty()

@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace CausalityDbg.Tests
 {
 	[TestFixture]
-	class MetaIDStringFormatterTest
+	public class MetaIDStringFormatterTest
 	{
 		[TestCaseSource(nameof(MethodFormatSource))]
 		public string FormatMethod(MetaFunction function)

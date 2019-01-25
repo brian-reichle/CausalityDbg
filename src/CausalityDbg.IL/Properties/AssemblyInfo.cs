@@ -5,4 +5,3 @@ using System.Runtime.InteropServices;
 [assembly: Guid("8a53c14b-6f88-466d-af32-6d434469e555")]
 
 [assembly: InternalsVisibleTo("CausalityDbg.Tests")]
-[assembly: InternalsVisibleTo("CausalityDbg.Tests.Dynamic")]

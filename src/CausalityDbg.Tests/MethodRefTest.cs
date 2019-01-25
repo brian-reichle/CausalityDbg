@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace CausalityDbg.Tests
 {
 	[TestFixture]
-	class MethodRefTest
+	public class MethodRefTest
 	{
 		[TestCase("NameOnly", "NameOnly", null)]
 		[TestCase("NoParams()", "NoParams", new string[] { })]
@@ -24,6 +24,7 @@ namespace CausalityDbg.Tests
 			Assert.That(method.ArgTypes.Select(x => x.ByRef), Has.All.EqualTo(false));
 		}
 
+		[Test]
 		public void ParseByRef()
 		{
 			var method = MethodRef.Parse("Method(Arg1, Arg2&, Arg3)");

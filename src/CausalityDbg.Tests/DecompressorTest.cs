@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace CausalityDbg.Tests
 {
 	[TestFixture]
-	sealed class DecompressorTest
+	public sealed class DecompressorTest
 	{
 		[TestCase("03", 0x03)]
 		[TestCase("7F", 0x7F)]

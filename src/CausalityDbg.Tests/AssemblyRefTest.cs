@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace CausalityDbg.Tests
 {
 	[TestFixture]
-	class AssemblyRefTest
+	public class AssemblyRefTest
 	{
 		[TestCaseSource(nameof(AssemblyReferences))]
 		public void Parse(string name)

@@ -7,13 +7,8 @@ namespace CausalityDbg.Tests
 {
 	[TestFixture(true)]
 	[TestFixture(false)]
-	class CorExceptionClauseHelperTest
+	public class CorExceptionClauseHelperTest
 	{
-		public CorExceptionClauseHelperTest(bool isFat)
-		{
-			_blob = isFat ? ConstructFatCollection() : ConstructShortCollection();
-		}
-
 		[Test]
 		public void IsExceptionData()
 		{
@@ -76,6 +71,11 @@ namespace CausalityDbg.Tests
 		}
 
 		#region Implementation
+
+		public CorExceptionClauseHelperTest(bool isFat)
+		{
+			_blob = isFat ? ConstructFatCollection() : ConstructShortCollection();
+		}
 
 		readonly byte[] _blob;
 

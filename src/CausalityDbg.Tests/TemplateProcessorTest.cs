@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace CausalityDbg.Tests
 {
 	[TestFixture]
-	class TemplateProcessorTest
+	public class TemplateProcessorTest
 	{
 		[TestCase(null, ExpectedResult = null)]
 		[TestCase("", ExpectedResult = "")]

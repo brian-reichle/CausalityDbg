@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace CausalityDbg.Tests
 {
 	[TestFixture]
-	class MetaFormatterTest
+	public class MetaFormatterTest
 	{
 		[TestCase(0, ExpectedResult = "Function()")]
 		[TestCase(1, ExpectedResult = "Function<Dummy.Type1>()")]

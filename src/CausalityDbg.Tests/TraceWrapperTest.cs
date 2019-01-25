@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace CausalityDbg.Tests
 {
 	[TestFixture]
-	class TraceWrapperTest
+	public class TraceWrapperTest
 	{
 		[Test]
 		public void Populate1()
