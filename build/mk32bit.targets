@@ -20,7 +20,7 @@
 			<Output TaskParameter="FrameworkSdkVersion40Path" PropertyName="SdkPath" />
 		</GetFrameworkSdkPath>
 		<PropertyGroup>
-			<CorFlags>$(SdkPath)bin\NETFX 4.6 Tools\CorFlags.exe</CorFlags>
+			<CorFlags>$(SdkPath)bin\NETFX 4.7.2 Tools\CorFlags.exe</CorFlags>
 		</PropertyGroup>
 		<Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TargetPathX86)" />
 		<Copy SourceFiles="$(TargetPath).config" DestinationFiles="$(TargetPathX86).config" />
