@@ -23,6 +23,7 @@
 			<CorFlags>$(SdkPath)bin\NETFX 4.6 Tools\CorFlags.exe</CorFlags>
 		</PropertyGroup>
 		<Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TargetPathX86)" />
+		<Copy SourceFiles="$(TargetPath).config" DestinationFiles="$(TargetPathX86).config" />
 		<Exec Command="&quot;$(CorFlags)&quot; &quot;$(TargetPathX86)&quot; /32bit+" />
 	</Target>
 </Project>
