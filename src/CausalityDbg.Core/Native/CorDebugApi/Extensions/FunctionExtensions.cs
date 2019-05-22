@@ -17,13 +17,13 @@ namespace CausalityDbg.Core.CorDebugApi
 
 			import.GetMethodProps(
 				function.GetToken(),
-				out var classTok,
+				out var _,
 				null,
 				0,
-				out var nameSize,
+				out var _,
 				IntPtr.Zero,
-				out var blobPtr,
-				out var blobSize,
+				out var _,
+				out var _,
 				out var rva,
 				IntPtr.Zero);
 
@@ -106,14 +106,14 @@ namespace CausalityDbg.Core.CorDebugApi
 		{
 			import.GetMethodProps(
 				token,
-				out var classToken,
+				out var _,
 				null,
 				0,
-				out var nameSize,
+				out var _,
 				IntPtr.Zero,
 				out var blobPtr,
-				out var blobSize,
-				out var rva,
+				out var _,
+				out var _,
 				IntPtr.Zero);
 
 			var preamble = Marshal.ReadByte(blobPtr);

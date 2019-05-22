@@ -234,9 +234,8 @@ namespace CausalityDbg.IL
 			var byRefIndex = modifiers.Count;
 
 			var byRef = false;
-			SigType type = null;
-
 			var elementType = (CorElementType)blob[index];
+			SigType type;
 
 			if (elementType == CorElementType.ELEMENT_TYPE_TYPEDBYREF)
 			{

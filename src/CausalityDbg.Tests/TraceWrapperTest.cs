@@ -103,61 +103,6 @@ namespace CausalityDbg.Tests
 			return builder.ToString();
 		}
 
-		static string FormatTrace(TraceData trace)
-		{
-			var builder = new StringBuilder();
-			var indexWidth = (trace.TotalDepth - 1).ToString(CultureInfo.InvariantCulture).Length;
-			var colStarts = GetColumnStarts(trace);
-
-			for (var r = trace.TotalDepth; r > 0; r--)
-			{
-				var sol = builder.Length;
-				builder.Append(trace.TotalDepth - r);
-				builder.Append(' ', Math.Max(0, sol + indexWidth - builder.Length));
-				builder.Append(": ");
-
-				sol = builder.Length;
-
-				for (var t = trace; t != null && t.TotalDepth >= r; t = t.ContainingTrace)
-				{
-					var i = t.TotalDepth - r;
-					builder.Append(' ', Math.Max(0, sol + colStarts[t] - builder.Length));
-					builder.Append(i >= t.Frames.Length ? "." : FrameText(t.Frames[i]));
-				}
-
-				builder.AppendLine();
-			}
-
-			return builder.ToString();
-		}
-
-		static Dictionary<TraceData, int> GetColumnStarts(TraceData trace)
-		{
-			var starts = new Dictionary<TraceData, int>();
-			var pos = 0;
-
-			for (var t = trace; t != null; t = t.ContainingTrace)
-			{
-				starts.Add(t, pos);
-
-				var width = 1;
-
-				for (var i = 0; i < t.Frames.Length; i++)
-				{
-					var len = FrameText(t.Frames[i]).Length;
-
-					if (len > width)
-					{
-						width = len;
-					}
-				}
-
-				pos += width + 1;
-			}
-
-			return starts;
-		}
-
 		static string FrameText(FrameData frame)
 		{
 			var iFrame = (FrameInternalData)frame;

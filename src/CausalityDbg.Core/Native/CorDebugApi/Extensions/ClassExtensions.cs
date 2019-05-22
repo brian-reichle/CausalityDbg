@@ -18,8 +18,8 @@ namespace CausalityDbg.Core.CorDebugApi
 				cl.GetToken(),
 				null,
 				0,
-				out var size,
-				out var att,
+				out var _,
+				out var _,
 				out var bToken);
 
 			if (bToken.IsNil)
@@ -267,7 +267,7 @@ namespace CausalityDbg.Core.CorDebugApi
 				buffer.Length,
 				out var size,
 				out var att,
-				out var parent);
+				out var _);
 
 			size--;
 

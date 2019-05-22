@@ -10,10 +10,9 @@ namespace CausalityDbg.Core.CorDebugApi
 		public static ICorDebugClass ResolvePrimitiveClassRef(this ICorDebugAppDomain appDomain, CorElementType type)
 		{
 			var assEnum = appDomain.EnumerateAssemblies();
-			ICorDebugAssembly ass = null;
 			var expectedName = "mscorlib.dll";
 
-			while (assEnum.Next(1, out ass))
+			while (assEnum.Next(1, out var ass))
 			{
 				var assName = ass.GetName();
 
@@ -21,8 +20,6 @@ namespace CausalityDbg.Core.CorDebugApi
 				{
 					return ass.FindClass(type.GetFullName());
 				}
-
-				ass = null;
 			}
 
 			return null;

@@ -22,7 +22,6 @@ namespace CausalityDbg.Tests
 			var type1 = module.NewType("Dummy.Type1");
 			var type2 = module.NewType("Dummy.Type2");
 			var type3 = module.NewType("Dummy.Type3");
-			var type4 = module.NewType("Dummy.Type4");
 
 			var gType1 = module.NewType("Dummy.Type`1", 1);
 			var gType2 = module.NewType("Dummy.Type`2", 2);

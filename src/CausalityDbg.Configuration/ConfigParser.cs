@@ -220,22 +220,6 @@ namespace CausalityDbg.Configuration
 			return result.MoveToImmutable();
 		}
 
-		static ImmutableArray<ConfigCategory> CreateDefaultCategorySet()
-		{
-			const int count = (int)ConfigCategoryType.Custom;
-			var systemTriggers = ImmutableArray.CreateBuilder<ConfigCategory>(count);
-
-			for (var i = 0; i < systemTriggers.Count; i++)
-			{
-				if (systemTriggers[i] == null)
-				{
-					systemTriggers[i] = new ConfigCategory((ConfigCategoryType)i, 0x000000, 0xDDDDDD);
-				}
-			}
-
-			return systemTriggers.MoveToImmutable();
-		}
-
 		static void LoadMethods(XmlReader reader, ConfigHookType type, ClassLookup lookup, IDictionary<string, ConfigCategory> categories)
 		{
 			var category = categories[reader.GetAttribute("category")];

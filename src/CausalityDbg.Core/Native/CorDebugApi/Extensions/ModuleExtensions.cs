@@ -99,8 +99,7 @@ namespace CausalityDbg.Core.CorDebugApi
 		public static ICorDebugClass FindClass(this ICorDebugModule module, MetaDataToken scopeToken, string className)
 		{
 			var import = module.GetMetaDataImport();
-			var cToken = MetaDataToken.Nil;
-			var hr = import.FindTypeDefByName(className, scopeToken, out cToken);
+			var hr = import.FindTypeDefByName(className, scopeToken, out var cToken);
 
 			if (hr == (int)HResults.CLDB_E_RECORD_NOTFOUND)
 			{
@@ -247,10 +246,10 @@ namespace CausalityDbg.Core.CorDebugApi
 				mdExportedType,
 				null,
 				0,
-				out var size,
+				out var _,
 				out var implementation,
-				out var hint,
-				out var att);
+				out var _,
+				out var _);
 
 			if (hr < 0)
 			{
@@ -274,7 +273,7 @@ namespace CausalityDbg.Core.CorDebugApi
 
 			import.GetTypeRefProps(
 				typeRefToken,
-				out scope,
+				out var _,
 				null,
 				0,
 				out var size);

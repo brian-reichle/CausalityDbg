@@ -131,7 +131,7 @@ namespace CausalityDbg.Core
 				_file = file;
 				_accessor = file.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
 
-				if (ReadInitialOffsets(_accessor, out _headerOffset, out _optionalHeaderOffset, out _sectionTableOffset))
+				if (ReadInitialOffsets(_accessor, out _optionalHeaderOffset, out _sectionTableOffset))
 				{
 					IsValid = true;
 					_numberOfSections = _accessor.ReadInt16(PEHEADER_NumberOfSections);
@@ -173,11 +173,10 @@ namespace CausalityDbg.Core
 
 			public bool IsValid { get; }
 
-			static bool ReadInitialOffsets(MemoryMappedViewAccessor accessor, out int headerOffset, out int optionalHeaderOffset, out int sectionTableOffset)
+			static bool ReadInitialOffsets(MemoryMappedViewAccessor accessor, out int optionalHeaderOffset, out int sectionTableOffset)
 			{
 				if (accessor.ReadInt16(0) != MZ)
 				{
-					headerOffset = 0;
 					optionalHeaderOffset = 0;
 					sectionTableOffset = 0;
 					return false;
@@ -187,13 +186,12 @@ namespace CausalityDbg.Core
 
 				if (accessor.ReadInt32(tmp) != PE)
 				{
-					headerOffset = 0;
 					optionalHeaderOffset = 0;
 					sectionTableOffset = 0;
 					return false;
 				}
 
-				headerOffset = tmp + 4;
+				var headerOffset = tmp + 4;
 				optionalHeaderOffset = headerOffset + PEHEADER_Size;
 				sectionTableOffset = accessor.ReadInt16(headerOffset + PEHEADER_OptionalHeaderSize) + optionalHeaderOffset;
 				return true;
@@ -228,7 +226,6 @@ namespace CausalityDbg.Core
 				return false;
 			}
 
-			readonly int _headerOffset;
 			readonly int _optionalHeaderOffset;
 			readonly int _sectionTableOffset;
 			readonly int _numberOfSections;

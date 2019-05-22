@@ -78,7 +78,6 @@ namespace CausalityDbg.Core
 			catch (Exception ex)
 			{
 				debugger.Terminate();
-				debugger = null;
 
 				if (ex is COMException comEx &&
 					comEx.ErrorCode == (int)HResults.CORDBG_E_DEBUGGER_ALREADY_ATTACHED)

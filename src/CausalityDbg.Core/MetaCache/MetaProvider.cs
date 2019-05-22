@@ -240,8 +240,8 @@ namespace CausalityDbg.Core
 					null,
 					0,
 					out var size,
-					out var att,
-					out var baseToken);
+					out var _,
+					out var _);
 
 				var buffer = ArrayPool<char>.Shared.Rent(size);
 
@@ -250,8 +250,8 @@ namespace CausalityDbg.Core
 					buffer,
 					size,
 					out size,
-					out att,
-					out baseToken);
+					out var att,
+					out var _);
 
 				var name = new string(buffer, 0, size - 1);
 				ArrayPool<char>.Shared.Return(buffer);
@@ -280,28 +280,28 @@ namespace CausalityDbg.Core
 
 				import.GetMethodProps(
 					token,
-					out var declaringType,
+					out var _,
 					null,
 					0,
 					out var size,
 					IntPtr.Zero,
-					out var sigBlob,
-					out var sigLen,
-					out var rva,
+					out var _,
+					out var _,
+					out var _,
 					IntPtr.Zero);
 
 				var buffer = ArrayPool<char>.Shared.Rent(size);
 
 				import.GetMethodProps(
 					token,
-					out declaringType,
+					out var declaringType,
 					buffer,
 					size,
 					out size,
 					IntPtr.Zero,
-					out sigBlob,
-					out sigLen,
-					out rva,
+					out var sigBlob,
+					out var sigLen,
+					out var _,
 					IntPtr.Zero);
 
 				var name = new string(buffer, 0, size - 1);

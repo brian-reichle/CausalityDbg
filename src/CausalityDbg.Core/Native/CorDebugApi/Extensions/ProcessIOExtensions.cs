@@ -19,7 +19,7 @@ namespace CausalityDbg.Core.CorDebugApi
 
 			fixed (byte* resultPtr = &buffer[offset])
 			{
-				process.ReadMemory(address, size, (IntPtr)resultPtr, out var read);
+				process.ReadMemory(address, size, (IntPtr)resultPtr, out var _);
 			}
 		}
 
@@ -28,7 +28,7 @@ namespace CausalityDbg.Core.CorDebugApi
 		{
 			T value = default;
 
-			process.ReadMemory(address, sizeof(T), (IntPtr)(&value), out var read);
+			process.ReadMemory(address, sizeof(T), (IntPtr)(&value), out var _);
 
 			return value;
 		}
