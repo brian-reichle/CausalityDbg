@@ -152,11 +152,11 @@ namespace CausalityDbg.Configuration
 				}
 				else if (c >= 'A' && c <= 'F')
 				{
-					return (uint)10 + c - 'A';
+					return 10u + c - 'A';
 				}
 				else if (c >= 'a' && c <= 'f')
 				{
-					return (uint)10 + c - 'a';
+					return 10u + c - 'a';
 				}
 				else
 				{

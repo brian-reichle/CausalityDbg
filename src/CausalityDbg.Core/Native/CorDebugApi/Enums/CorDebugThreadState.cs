@@ -11,6 +11,6 @@ namespace CausalityDbg.Core.CorDebugApi
 		/// <summary>
 		/// The thread cannot run.
 		/// </summary>
-		THREAD_SUSPEND
+		THREAD_SUSPEND,
 	}
 }

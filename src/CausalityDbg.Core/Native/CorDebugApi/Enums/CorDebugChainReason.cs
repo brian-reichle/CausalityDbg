@@ -66,6 +66,6 @@ namespace CausalityDbg.Core.CorDebugApi
 		/// <summary>
 		/// The chain was initiated by a function evaluation.
 		/// </summary>
-		CHAIN_FUNC_EVAL = 0x800
+		CHAIN_FUNC_EVAL = 0x800,
 	}
 }
