@@ -419,7 +419,7 @@ namespace CausalityDbg.Core
 				}
 			}
 
-			bool ExtractFromClause(byte[] clauses, int ip, bool isFilter, out bool isTerminal, out int start, out int end, out ConfigCategory category)
+			bool ExtractFromClause(ReadOnlySpan<byte> clauses, int ip, bool isFilter, out bool isTerminal, out int start, out int end, out ConfigCategory category)
 			{
 				isTerminal = false;
 
