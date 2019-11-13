@@ -9,8 +9,7 @@ namespace CausalityDbg.Core.MetaDataApi
 	{
 		public static int CountGenericParams(this IMetaDataImport import, MetaDataToken token)
 		{
-			var import2 = import as IMetaDataImport2;
-			return import2 == null ? 0 : import2.CountGenericParams(token);
+			return import is IMetaDataImport2 import2 ? import2.CountGenericParams(token) : 0;
 		}
 
 		public static int CountGenericParams(this IMetaDataImport2 import, MetaDataToken token)
