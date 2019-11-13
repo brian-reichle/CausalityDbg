@@ -1,4 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,6 +19,11 @@ namespace CausalityDbg.Metadata
 
 		public void AppendFunction(MetaFunction function)
 		{
+			if (function == null)
+			{
+				throw new ArgumentNullException(nameof(function));
+			}
+
 			_builder.Append("M:");
 
 			if (function.DeclaringType != null)

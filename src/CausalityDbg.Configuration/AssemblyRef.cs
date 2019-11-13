@@ -14,6 +14,11 @@ namespace CausalityDbg.Configuration
 
 		public static AssemblyRef Parse(string fullyQualifiedName)
 		{
+			if (fullyQualifiedName == null)
+			{
+				throw new ArgumentNullException(nameof(fullyQualifiedName));
+			}
+
 			var match = _regex.Match(fullyQualifiedName);
 
 			if (!match.Success) throw new ArgumentException("Invalid assembly reference format", nameof(fullyQualifiedName));

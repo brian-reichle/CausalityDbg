@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace CausalityDbg.Core
 {
+#pragma warning disable SA1401 // Fields should be private
 	static partial class NativeMethods
 	{
 		[StructLayout(LayoutKind.Sequential, Pack = 8)]
@@ -36,4 +37,5 @@ namespace CausalityDbg.Core
 			public int dwThreadId;
 		}
 	}
+#pragma warning restore SA1401 // Fields should be private
 }

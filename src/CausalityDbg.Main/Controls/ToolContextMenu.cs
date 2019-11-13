@@ -13,7 +13,7 @@ namespace CausalityDbg.Main
 	sealed class ToolContextMenu : ContextMenu
 	{
 		public static readonly DependencyProperty FrameProperty = DependencyProperty.Register(
-			"Frame",
+			nameof(Frame),
 			typeof(FrameILData),
 			typeof(ToolContextMenu),
 			new FrameworkPropertyMetadata(null));

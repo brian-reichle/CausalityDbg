@@ -1,4 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,11 @@ namespace CausalityDbg.Main
 
 		public FrameDetailsView(FrameILData frame, ISourceProvider provider)
 		{
+			if (frame == null)
+			{
+				throw new ArgumentNullException(nameof(frame));
+			}
+
 			InitializeComponent();
 
 			AddFullWidthRow("Module", NewTextField(frame.ModuleName));
