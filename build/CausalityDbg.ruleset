@@ -142,6 +142,7 @@
   </Rules>
   <Rules AnalyzerId="Microsoft.NetCore.Analyzers" RuleNamespace="Microsoft.NetCore.Analyzers">
     <Rule Id="CA1813" Action="Warning" />
+    <Rule Id="CA1303" Action="None" />
   </Rules>
   <Rules AnalyzerId="Microsoft.NetCore.CSharp.Analyzers" RuleNamespace="Microsoft.NetCore.CSharp.Analyzers">
     <Rule Id="CA1309" Action="Warning" />

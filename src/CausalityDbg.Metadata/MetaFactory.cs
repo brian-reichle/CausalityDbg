@@ -1,4 +1,5 @@
 // Copyright (c) Brian Reichle.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using CausalityDbg.IL;
@@ -32,13 +33,27 @@ namespace CausalityDbg.Metadata
 			=> new MetaType(module, null, name, genTypeArgs);
 
 		public static MetaType CreateType(this MetaType declaringType, string name, int genTypeArgs)
-			=> new MetaType(declaringType.Module, declaringType, name, genTypeArgs);
+		{
+			if (declaringType == null)
+			{
+				throw new ArgumentNullException(nameof(declaringType));
+			}
+
+			return new MetaType(declaringType.Module, declaringType, name, genTypeArgs);
+		}
 
 		public static MetaFunction CreateFunction(this MetaModule module, MetaDataToken token, string name, int genTypeArgs, CallingConventions callingConvention, ImmutableArray<MetaParameter> parameters)
 			=> new MetaFunction(module, null, token, name, genTypeArgs, callingConvention, parameters);
 
 		public static MetaFunction CreateFunction(this MetaType declaringType, MetaDataToken token, string name, int genTypeArgs, CallingConventions callingConvention, ImmutableArray<MetaParameter> parameters)
-			=> new MetaFunction(declaringType.Module, declaringType, token, name, genTypeArgs, callingConvention, parameters);
+		{
+			if (declaringType == null)
+			{
+				throw new ArgumentNullException(nameof(declaringType));
+			}
+
+			return new MetaFunction(declaringType.Module, declaringType, token, name, genTypeArgs, callingConvention, parameters);
+		}
 
 		public static MetaParameter ToParam(this MetaCompound parameterType, string name)
 			=> new MetaParameter(name, parameterType);

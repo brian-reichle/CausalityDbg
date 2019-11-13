@@ -62,6 +62,11 @@ namespace CausalityDbg.Tests
 
 		static byte[] BlobFromHex(string hex)
 		{
+			if (hex == null)
+			{
+				throw new ArgumentNullException(nameof(hex));
+			}
+
 			var result = new byte[hex.Length >> 1];
 
 			for (var i = 0; i < result.Length; i++)
