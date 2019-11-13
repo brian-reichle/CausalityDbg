@@ -5,6 +5,7 @@ using Microsoft.Win32.SafeHandles;
 
 namespace CausalityDbg.Core
 {
+#pragma warning disable SA1401 // Fields should be private
 	static partial class NativeMethods
 	{
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 8)]
@@ -116,4 +117,5 @@ namespace CausalityDbg.Core
 			public SafeFileHandle hStdError;
 		}
 	}
+#pragma warning restore SA1401 // Fields should be private
 }
