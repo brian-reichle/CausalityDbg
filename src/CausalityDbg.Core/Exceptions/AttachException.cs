@@ -69,6 +69,6 @@ namespace CausalityDbg.Core
 		}
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		AttachErrorType _errorType;
+		readonly AttachErrorType _errorType;
 	}
 }

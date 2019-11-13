@@ -32,11 +32,18 @@ namespace CausalityDbg.Main
 			if (values == null || values.Length != 2 || values[0] == null) return DefaultValue;
 
 			var rawTimestamp = (long)values[0];
-			var provider = values[1] as IDataProvider;
-			if (provider == null) return "Missing Provider";
+
+			if (!(values[1] is IDataProvider provider))
+			{
+				return "Missing Provider";
+			}
 
 			var timestamp = GetTimestamp(provider, rawTimestamp);
-			if (timestamp == null) return "Unmapped Value";
+
+			if (timestamp == null)
+			{
+				return "Unmapped Value";
+			}
 
 			return ((timestamp.Value - GetInitalOffset(provider)) / (double)Stopwatch.Frequency)
 				.ToString(_formatString, CultureInfo.InvariantCulture);

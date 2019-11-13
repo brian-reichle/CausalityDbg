@@ -175,16 +175,15 @@ namespace CausalityDbg.Main
 
 		static void WriteExceptionSpecificDetails(XmlWriter writer, Exception ex)
 		{
-			Win32Exception win32Ex;
-			ExternalException exEx;
+			switch (ex)
+			{
+				case Win32Exception win32Ex:
+					WriteWin32ExceptionSpecificDetails(writer, win32Ex);
+					break;
 
-			if ((win32Ex = ex as Win32Exception) != null)
-			{
-				WriteWin32ExceptionSpecificDetails(writer, win32Ex);
-			}
-			else if ((exEx = ex as ExternalException) != null)
-			{
-				WriteExternalExceptionSpecificDetails(writer, exEx);
+				case ExternalException exEx:
+					WriteExternalExceptionSpecificDetails(writer, exEx);
+					break;
 			}
 		}
 
