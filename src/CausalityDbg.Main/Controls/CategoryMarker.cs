@@ -8,13 +8,13 @@ namespace CausalityDbg.Main
 	class CategoryMarker : Control
 	{
 		public static readonly DependencyProperty CategoryProperty = DependencyProperty.Register(
-			"Category",
+			nameof(Category),
 			typeof(ConfigCategory),
 			typeof(CategoryMarker),
 			new PropertyMetadata(null, OnCategoryChanged));
 
 		static readonly DependencyPropertyKey FillPropertyKey = DependencyProperty.RegisterReadOnly(
-			"Fill",
+			nameof(Fill),
 			typeof(Brush),
 			typeof(CategoryMarker),
 			new PropertyMetadata(null));
@@ -22,7 +22,7 @@ namespace CausalityDbg.Main
 		public static readonly DependencyProperty FillProperty = FillPropertyKey.DependencyProperty;
 
 		static readonly DependencyPropertyKey StrokePropertyKey = DependencyProperty.RegisterReadOnly(
-			"Stroke",
+			nameof(Stroke),
 			typeof(Brush),
 			typeof(CategoryMarker),
 			new PropertyMetadata(null));

@@ -114,6 +114,7 @@
     <Rule Id="WPF0071" Action="Warning" />
     <Rule Id="WPF0073" Action="Warning" />
     <Rule Id="WPF0080" Action="Warning" />
+    <Rule Id="WPF0108" Action="None" />
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
     <Rule Id="CA1008" Action="Warning" />
