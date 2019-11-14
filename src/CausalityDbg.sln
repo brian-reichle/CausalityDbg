@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29318.209
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.Core", "CausalityDbg.Core\CausalityDbg.Core.csproj", "{82680D43-F86C-43F2-9748-DEE06B2DB23E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CausalityDbg.Main", "CausalityDbg.Main\CausalityDbg.Main.csproj", "{946ED607-1746-4DA7-8203-6A36FB356A0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.Main", "CausalityDbg.Main\CausalityDbg.Main.csproj", "{946ED607-1746-4DA7-8203-6A36FB356A0F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.Tests", "CausalityDbg.Tests\CausalityDbg.Tests.csproj", "{294E7A28-D02D-41C4-96E8-BD0A3D3F3489}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.Source", "CausalityDbg.Source\CausalityDbg.Source.csproj", "{228B86C2-EACE-4726-A86B-6C7BF5BDD71B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.DataStore", "CausalityDbg.DataStore\CausalityDbg.DataStore.csproj", "{8312E644-D32A-4435-9EBD-F6C204306F37}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CausalityDbg.Main.x86", "CausalityDbg.Main\CausalityDbg.Main.x86.csproj", "{FD57579C-F09D-4C14-83A5-3F15BDC84993}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{8312E644-D32A-4435-9EBD-F6C204306F37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8312E644-D32A-4435-9EBD-F6C204306F37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8312E644-D32A-4435-9EBD-F6C204306F37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD57579C-F09D-4C14-83A5-3F15BDC84993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD57579C-F09D-4C14-83A5-3F15BDC84993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD57579C-F09D-4C14-83A5-3F15BDC84993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD57579C-F09D-4C14-83A5-3F15BDC84993}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
