@@ -12,7 +12,7 @@ CS1591 - Missing XML comment.
 -->
 		<WarningsNotAsErrors>612,618,1030</WarningsNotAsErrors>
 		<NoWarn>1591</NoWarn>
-		<OutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(MSBuildProjectName)\</OutputPath>
+		<OutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)\</OutputPath>
 		<BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
 		<CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)build\CausalityDbg.ruleset</CodeAnalysisRuleSet>
 		<FileAlignment>512</FileAlignment>

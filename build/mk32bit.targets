@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetName>$(AssemblyName)</TargetName>
 		<TargetFileNameX86>$(TargetName).x86.exe</TargetFileNameX86>
-		<TargetPathX86>$(OutputPath)$(TargetfileNameX86)</TargetPathX86>
+		<TargetPathX86>$(OutputPath)$(TargetFramework)\$(TargetfileNameX86)</TargetPathX86>
 	</PropertyGroup>
 
 	<Target Name="Mk32BitClean" BeforeTargets="Clean">
