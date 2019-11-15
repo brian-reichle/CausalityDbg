@@ -137,11 +137,9 @@ namespace CausalityDbg.Tests
 
 		static string GetResource(string name)
 		{
-			using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
-			using (var reader = new StreamReader(stream))
-			{
-				return reader.ReadToEnd();
-			}
+			using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
+			using var reader = new StreamReader(stream);
+			return reader.ReadToEnd();
 		}
 	}
 }

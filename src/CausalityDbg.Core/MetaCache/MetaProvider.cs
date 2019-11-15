@@ -421,21 +421,12 @@ namespace CausalityDbg.Core
 
 			public MetaCompound Visit(SigTypeGen element, ICorDebugModule module)
 			{
-				bool method;
-
-				switch (element.ElementType)
+				var method = element.ElementType switch
 				{
-					case CorElementType.ELEMENT_TYPE_MVAR:
-						method = true;
-						break;
-
-					case CorElementType.ELEMENT_TYPE_VAR:
-						method = false;
-						break;
-
-					default:
-						throw new TypeResolutionException();
-				}
+					CorElementType.ELEMENT_TYPE_MVAR => true,
+					CorElementType.ELEMENT_TYPE_VAR => false,
+					_ => throw new TypeResolutionException(),
+				};
 
 				return MetaFactory.CreateTypeArg(method, (int)element.Index);
 			}

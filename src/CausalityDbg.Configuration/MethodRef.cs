@@ -10,38 +10,36 @@ namespace CausalityDbg.Configuration
 	{
 		public static MethodRef Parse(string text)
 		{
-			using (var enumerator = GetScanner(text).GetEnumerator())
+			using var enumerator = GetScanner(text).GetEnumerator();
+			enumerator.MoveNext();
+
+			var name = ReadToken(enumerator, TokenType.Text);
+
+			if (enumerator.Current.Type == TokenType.OpenParen)
 			{
-				enumerator.MoveNext();
+				ReadToken(enumerator, TokenType.OpenParen);
 
-				var name = ReadToken(enumerator, TokenType.Text);
+				var arguments = ImmutableArray.CreateBuilder<ArgumentType>();
 
-				if (enumerator.Current.Type == TokenType.OpenParen)
+				if (enumerator.Current.Type == TokenType.Text)
 				{
-					ReadToken(enumerator, TokenType.OpenParen);
+					arguments.Add(ReadTypeRef(enumerator));
 
-					var arguments = ImmutableArray.CreateBuilder<ArgumentType>();
-
-					if (enumerator.Current.Type == TokenType.Text)
+					while (enumerator.Current.Type == TokenType.Comma)
 					{
+						ReadToken(enumerator, TokenType.Comma);
 						arguments.Add(ReadTypeRef(enumerator));
-
-						while (enumerator.Current.Type == TokenType.Comma)
-						{
-							ReadToken(enumerator, TokenType.Comma);
-							arguments.Add(ReadTypeRef(enumerator));
-						}
 					}
+				}
 
-					ReadToken(enumerator, TokenType.CloseParen);
-					ReadToken(enumerator, TokenType.EOF);
-					return new MethodRef(text, name, true, arguments.ToImmutable());
-				}
-				else
-				{
-					ReadToken(enumerator, TokenType.EOF);
-					return new MethodRef(text, name, false, ImmutableArray<ArgumentType>.Empty);
-				}
+				ReadToken(enumerator, TokenType.CloseParen);
+				ReadToken(enumerator, TokenType.EOF);
+				return new MethodRef(text, name, true, arguments.ToImmutable());
+			}
+			else
+			{
+				ReadToken(enumerator, TokenType.EOF);
+				return new MethodRef(text, name, false, ImmutableArray<ArgumentType>.Empty);
 			}
 		}
 

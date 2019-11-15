@@ -64,10 +64,8 @@ namespace CausalityDbg.Main
 			{
 				var filename = Path.Combine(ErrorLogPathName, string.Format(CultureInfo.InvariantCulture, "{0:yyyyMMddhhmmss}.xml", timestamp));
 
-				using (var stream = CreateNew(filename))
-				{
-					WriteError(stream, timestamp, stackTrace, ex);
-				}
+				using var stream = CreateNew(filename);
+				WriteError(stream, timestamp, stackTrace, ex);
 			}
 		}
 
@@ -81,10 +79,8 @@ namespace CausalityDbg.Main
 				NamespaceHandling = NamespaceHandling.OmitDuplicates,
 			};
 
-			using (var writer = XmlWriter.Create(stream, settings))
-			{
-				WriteError(writer, timestamp, stackTrace, ex);
-			}
+			using var writer = XmlWriter.Create(stream, settings);
+			WriteError(writer, timestamp, stackTrace, ex);
 		}
 
 		static void WriteError(XmlWriter writer, DateTimeOffset timestamp, StackTrace stackTrace, Exception ex)

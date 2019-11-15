@@ -12,10 +12,8 @@ namespace CausalityDbg.Core
 	{
 		public static int GetCurrentPID()
 		{
-			using (var process = Process.GetCurrentProcess())
-			{
-				return process.Id;
-			}
+			using var process = Process.GetCurrentProcess();
+			return process.Id;
 		}
 
 		public static ICorDebug CreateDebuggingInterfaceForProcess(int pid)
@@ -26,19 +24,18 @@ namespace CausalityDbg.Core
 				ProcessAccessOptions.PROCESS_DUP_HANDLE |
 				ProcessAccessOptions.SYNCHRONIZE;
 
-			using (var ph = NativeMethods.OpenProcess(access, false, pid))
-			{
-				if (ph.IsInvalid)
-				{
-					var inner = new Win32Exception(Marshal.GetLastWin32Error());
-					throw new AttachException(AttachErrorType.ProcessNotFound, inner);
-				}
+			using var ph = NativeMethods.OpenProcess(access, false, pid);
 
-				var host = CLRCreateMetaHost();
-				var runtimes = host.EnumerateLoadedRuntimes(ph);
-				var runtime = GetFirstSupportedRuntime(runtimes);
-				return runtime.GetCorDebug();
+			if (ph.IsInvalid)
+			{
+				var inner = new Win32Exception(Marshal.GetLastWin32Error());
+				throw new AttachException(AttachErrorType.ProcessNotFound, inner);
 			}
+
+			var host = CLRCreateMetaHost();
+			var runtimes = host.EnumerateLoadedRuntimes(ph);
+			var runtime = GetFirstSupportedRuntime(runtimes);
+			return runtime.GetCorDebug();
 		}
 
 		public static ICorDebug CreateDebuggingInterfaceForProcess(string process, string version)

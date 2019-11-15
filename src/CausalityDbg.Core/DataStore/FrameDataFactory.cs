@@ -73,17 +73,12 @@ namespace CausalityDbg.Core
 
 		FrameData GetFrame(ICorDebugFrame frame)
 		{
-			switch (frame)
+			return frame switch
 			{
-				case ICorDebugILFrame ilFrame:
-					return GetFrame(ilFrame);
-
-				case ICorDebugInternalFrame internalFrame:
-					return GetFrame(internalFrame);
-
-				default:
-					return _frameTypeUnknown;
-			}
+				ICorDebugILFrame ilFrame => GetFrame(ilFrame),
+				ICorDebugInternalFrame internalFrame => GetFrame(internalFrame),
+				_ => _frameTypeUnknown,
+			};
 		}
 
 		FrameILData GetFrame(ICorDebugILFrame ilFrame)
@@ -110,29 +105,16 @@ namespace CausalityDbg.Core
 
 		static FrameInternalData GetFrame(ICorDebugInternalFrame internalFrame)
 		{
-			switch (internalFrame.GetFrameType())
+			return internalFrame.GetFrameType() switch
 			{
-				case CorDebugInternalFrameType.STUBFRAME_APPDOMAIN_TRANSITION:
-					return _frameAppDomainTransition;
-
-				case CorDebugInternalFrameType.STUBFRAME_INTERNALCALL:
-					return _frameInternalCall;
-
-				case CorDebugInternalFrameType.STUBFRAME_LIGHTWEIGHT_FUNCTION:
-					return _frameLightWeightFunction;
-
-				case CorDebugInternalFrameType.STUBFRAME_M2U:
-					return _frameM2U;
-
-				case CorDebugInternalFrameType.STUBFRAME_U2M:
-					return _frameU2M;
-
-				case CorDebugInternalFrameType.STUBFRAME_NONE:
-					return _frameNone;
-
-				default:
-					return _frameInternalUnknown;
-			}
+				CorDebugInternalFrameType.STUBFRAME_APPDOMAIN_TRANSITION => _frameAppDomainTransition,
+				CorDebugInternalFrameType.STUBFRAME_INTERNALCALL => _frameInternalCall,
+				CorDebugInternalFrameType.STUBFRAME_LIGHTWEIGHT_FUNCTION => _frameLightWeightFunction,
+				CorDebugInternalFrameType.STUBFRAME_M2U => _frameM2U,
+				CorDebugInternalFrameType.STUBFRAME_U2M => _frameU2M,
+				CorDebugInternalFrameType.STUBFRAME_NONE => _frameNone,
+				_ => _frameInternalUnknown,
+			};
 		}
 
 		static bool IsDebuggeeInitiated(CorDebugChainReason reason)

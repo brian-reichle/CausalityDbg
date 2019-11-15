@@ -7,28 +7,28 @@ namespace CausalityDbg.Core
 	{
 		public static string GetFullName(this CorElementType type)
 		{
-			switch (type)
+			return type switch
 			{
-				case CorElementType.ELEMENT_TYPE_BOOLEAN: return "System.Boolean";
-				case CorElementType.ELEMENT_TYPE_CHAR: return "System.Char";
-				case CorElementType.ELEMENT_TYPE_I1: return "System.SByte";
-				case CorElementType.ELEMENT_TYPE_U1: return "System.Byte";
-				case CorElementType.ELEMENT_TYPE_I2: return "System.Int16";
-				case CorElementType.ELEMENT_TYPE_U2: return "System.UInt16";
-				case CorElementType.ELEMENT_TYPE_I4: return "System.Int32";
-				case CorElementType.ELEMENT_TYPE_U4: return "System.UInt32";
-				case CorElementType.ELEMENT_TYPE_I8: return "System.Int64";
-				case CorElementType.ELEMENT_TYPE_U8: return "System.UInt64";
-				case CorElementType.ELEMENT_TYPE_R4: return "System.Single";
-				case CorElementType.ELEMENT_TYPE_R8: return "System.Double";
-				case CorElementType.ELEMENT_TYPE_I: return "System.IntPtr";
-				case CorElementType.ELEMENT_TYPE_U: return "System.UIntPtr";
-				case CorElementType.ELEMENT_TYPE_OBJECT: return "System.Object";
-				case CorElementType.ELEMENT_TYPE_STRING: return "System.String";
-				case CorElementType.ELEMENT_TYPE_VOID: return "System.Void";
-				case CorElementType.ELEMENT_TYPE_TYPEDBYREF: return "System.TypedReference";
-				default: throw new TypeResolutionException();
-			}
+				CorElementType.ELEMENT_TYPE_BOOLEAN => "System.Boolean",
+				CorElementType.ELEMENT_TYPE_CHAR => "System.Char",
+				CorElementType.ELEMENT_TYPE_I1 => "System.SByte",
+				CorElementType.ELEMENT_TYPE_U1 => "System.Byte",
+				CorElementType.ELEMENT_TYPE_I2 => "System.Int16",
+				CorElementType.ELEMENT_TYPE_U2 => "System.UInt16",
+				CorElementType.ELEMENT_TYPE_I4 => "System.Int32",
+				CorElementType.ELEMENT_TYPE_U4 => "System.UInt32",
+				CorElementType.ELEMENT_TYPE_I8 => "System.Int64",
+				CorElementType.ELEMENT_TYPE_U8 => "System.UInt64",
+				CorElementType.ELEMENT_TYPE_R4 => "System.Single",
+				CorElementType.ELEMENT_TYPE_R8 => "System.Double",
+				CorElementType.ELEMENT_TYPE_I => "System.IntPtr",
+				CorElementType.ELEMENT_TYPE_U => "System.UIntPtr",
+				CorElementType.ELEMENT_TYPE_OBJECT => "System.Object",
+				CorElementType.ELEMENT_TYPE_STRING => "System.String",
+				CorElementType.ELEMENT_TYPE_VOID => "System.Void",
+				CorElementType.ELEMENT_TYPE_TYPEDBYREF => "System.TypedReference",
+				_ => throw new TypeResolutionException(),
+			};
 		}
 	}
 }

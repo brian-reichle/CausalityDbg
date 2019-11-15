@@ -33,12 +33,12 @@ namespace CausalityDbg.Main
 
 		static Brush GetBrush(TrackerNotificationLevel value1)
 		{
-			switch (value1)
+			return value1 switch
 			{
-				case TrackerNotificationLevel.Error: return Brushes.Red;
-				case TrackerNotificationLevel.Warning: return Brushes.Goldenrod;
-				default: return null;
-			}
+				TrackerNotificationLevel.Error => Brushes.Red,
+				TrackerNotificationLevel.Warning => Brushes.Goldenrod,
+				_ => null,
+			};
 		}
 	}
 }

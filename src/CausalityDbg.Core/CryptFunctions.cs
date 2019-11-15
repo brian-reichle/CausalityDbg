@@ -21,10 +21,8 @@ namespace CausalityDbg.Core
 			{
 				CryptHashData(hash, publicKey, publicKeySize);
 
-				using (var buffer = GetHash(hash))
-				{
-					result = buffer.Read<long>(buffer.ByteLength - sizeof(long));
-				}
+				using var buffer = GetHash(hash);
+				result = buffer.Read<long>(buffer.ByteLength - sizeof(long));
 			}
 
 			return result;
