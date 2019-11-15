@@ -4,9 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
     <UseWpf>true</UseWpf>
-    <AssemblyName>CausalityDbg</AssemblyName>
+    <AssemblyName>CausalityDbg.x86</AssemblyName>
     <RootNamespace>CausalityDbg.Main</RootNamespace>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
 
   <ItemGroup>
