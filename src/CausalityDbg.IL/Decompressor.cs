@@ -109,26 +109,13 @@ namespace CausalityDbg.IL
 		{
 			var val = ReadCompressedUInt(blob, ref index);
 
-			TokenType type;
-
-			switch (val & 0x03)
+			var type = (val & 0x03) switch
 			{
-				case 0:
-					type = TokenType.TypeDef;
-					break;
-
-				case 1:
-					type = TokenType.TypeRef;
-					break;
-
-				case 2:
-					type = TokenType.TypeSpec;
-					break;
-
-				default:
-					throw new InvalidSignatureException();
-			}
-
+				0 => TokenType.TypeDef,
+				1 => TokenType.TypeRef,
+				2 => TokenType.TypeSpec,
+				_ => throw new InvalidSignatureException(),
+			};
 			return new MetaDataToken(unchecked((uint)type) | val >> 2);
 		}
 	}

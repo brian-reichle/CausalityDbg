@@ -38,19 +38,15 @@ namespace CausalityDbg.Main
 
 		static void Save(Settings settings)
 		{
-			using (var settingRoot = Registry.CurrentUser.CreateSubKey(KeyBase, RegistryKeyPermissionCheck.ReadWriteSubTree))
+			using var settingRoot = Registry.CurrentUser.CreateSubKey(KeyBase, RegistryKeyPermissionCheck.ReadWriteSubTree);
+			DeleteAllExistingTools(settingRoot);
+
+			settingRoot.SetValue("ToolCount", settings.Tools.Length, RegistryValueKind.DWord);
+
+			for (var i = 0; i < settings.Tools.Length; i++)
 			{
-				DeleteAllExistingTools(settingRoot);
-
-				settingRoot.SetValue("ToolCount", settings.Tools.Length, RegistryValueKind.DWord);
-
-				for (var i = 0; i < settings.Tools.Length; i++)
-				{
-					using (var toolRoot = settingRoot.CreateSubKey("Tool" + i, RegistryKeyPermissionCheck.ReadWriteSubTree))
-					{
-						WriteTool(toolRoot, settings.Tools[i]);
-					}
-				}
+				using var toolRoot = settingRoot.CreateSubKey("Tool" + i, RegistryKeyPermissionCheck.ReadWriteSubTree);
+				WriteTool(toolRoot, settings.Tools[i]);
 			}
 		}
 
@@ -69,15 +65,13 @@ namespace CausalityDbg.Main
 
 		static void SaveLaunch(SettingsLaunch model)
 		{
-			using (var settingRoot = Registry.CurrentUser.CreateSubKey(KeyBase, RegistryKeyPermissionCheck.ReadWriteSubTree))
-			using (var launchRoot = settingRoot.CreateSubKey("Launch", RegistryKeyPermissionCheck.ReadWriteSubTree))
-			{
-				launchRoot.SetValue("Process", model.Process ?? string.Empty, RegistryValueKind.String);
-				launchRoot.SetValue("Directory", model.Directory ?? string.Empty, RegistryValueKind.String);
-				launchRoot.SetValue("Arguments", model.Arguments ?? string.Empty, RegistryValueKind.String);
-				launchRoot.SetValue("RTVersion", model.RuntimeVersion ?? string.Empty, RegistryValueKind.String);
-				launchRoot.SetValue("ZapDisable", (int)model.Mode, RegistryValueKind.DWord);
-			}
+			using var settingRoot = Registry.CurrentUser.CreateSubKey(KeyBase, RegistryKeyPermissionCheck.ReadWriteSubTree);
+			using var launchRoot = settingRoot.CreateSubKey("Launch", RegistryKeyPermissionCheck.ReadWriteSubTree);
+			launchRoot.SetValue("Process", model.Process ?? string.Empty, RegistryValueKind.String);
+			launchRoot.SetValue("Directory", model.Directory ?? string.Empty, RegistryValueKind.String);
+			launchRoot.SetValue("Arguments", model.Arguments ?? string.Empty, RegistryValueKind.String);
+			launchRoot.SetValue("RTVersion", model.RuntimeVersion ?? string.Empty, RegistryValueKind.String);
+			launchRoot.SetValue("ZapDisable", (int)model.Mode, RegistryValueKind.DWord);
 		}
 
 		static SettingsLaunch LoadLaunch()
@@ -86,17 +80,16 @@ namespace CausalityDbg.Main
 			{
 				if (settingRoot != null)
 				{
-					using (var launchRoot = settingRoot.OpenSubKey("Launch", RegistryKeyPermissionCheck.ReadSubTree))
+					using var launchRoot = settingRoot.OpenSubKey("Launch", RegistryKeyPermissionCheck.ReadSubTree);
+
+					if (launchRoot != null)
 					{
-						if (launchRoot != null)
-						{
-							var process = (string)launchRoot.GetValue("Process", string.Empty);
-							var directory = (string)launchRoot.GetValue("Directory", string.Empty);
-							var arguments = (string)launchRoot.GetValue("Arguments", string.Empty);
-							var version = (string)launchRoot.GetValue("RTVersion", string.Empty);
-							var mode = (NGenMode)launchRoot.GetValue("ZapDisable", (int)NGenMode.Standard);
-							return new SettingsLaunch(process, directory, arguments, version, mode);
-						}
+						var process = (string)launchRoot.GetValue("Process", string.Empty);
+						var directory = (string)launchRoot.GetValue("Directory", string.Empty);
+						var arguments = (string)launchRoot.GetValue("Arguments", string.Empty);
+						var version = (string)launchRoot.GetValue("RTVersion", string.Empty);
+						var mode = (NGenMode)launchRoot.GetValue("ZapDisable", (int)NGenMode.Standard);
+						return new SettingsLaunch(process, directory, arguments, version, mode);
 					}
 				}
 			}
@@ -118,12 +111,11 @@ namespace CausalityDbg.Main
 
 			for (var i = 0; i < count; i++)
 			{
-				using (var toolRoot = settingRoot.OpenSubKey("Tool" + i, RegistryKeyPermissionCheck.ReadSubTree))
+				using var toolRoot = settingRoot.OpenSubKey("Tool" + i, RegistryKeyPermissionCheck.ReadSubTree);
+
+				if (toolRoot != null)
 				{
-					if (toolRoot != null)
-					{
-						builder[i] = ReadTool(toolRoot);
-					}
+					builder[i] = ReadTool(toolRoot);
 				}
 			}
 

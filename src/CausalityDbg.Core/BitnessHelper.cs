@@ -23,16 +23,15 @@ namespace CausalityDbg.Core
 				ProcessAccessOptions.PROCESS_DUP_HANDLE |
 				ProcessAccessOptions.SYNCHRONIZE;
 
-			using (var ph = NativeMethods.OpenProcess(access, false, pid))
-			{
-				if (ph.IsInvalid)
-				{
-					var inner = new Win32Exception(Marshal.GetLastWin32Error());
-					throw new AttachException(AttachErrorType.ProcessNotFound, inner);
-				}
+			using var ph = NativeMethods.OpenProcess(access, false, pid);
 
-				return !IsWow64Process(ph.DangerousGetHandle());
+			if (ph.IsInvalid)
+			{
+				var inner = new Win32Exception(Marshal.GetLastWin32Error());
+				throw new AttachException(AttachErrorType.ProcessNotFound, inner);
 			}
+
+			return !IsWow64Process(ph.DangerousGetHandle());
 		}
 
 		public static bool IsExecutable64Bit(string path)
@@ -82,15 +81,14 @@ namespace CausalityDbg.Core
 				0,
 				MemoryMappedFileAccess.Read);
 
-			using (var reader = new CilReader(file))
-			{
-				if (!reader.IsValid)
-				{
-					return MachineType.Invalid;
-				}
+			using var reader = new CilReader(file);
 
-				return reader.GetMachineType();
+			if (!reader.IsValid)
+			{
+				return MachineType.Invalid;
 			}
+
+			return reader.GetMachineType();
 		}
 
 		enum MachineType

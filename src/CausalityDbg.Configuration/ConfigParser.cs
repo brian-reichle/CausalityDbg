@@ -13,10 +13,8 @@ namespace CausalityDbg.Configuration
 
 		public static Config Load(string path)
 		{
-			using (var file = new StreamReader(path))
-			{
-				return ConfigParser.Load(file);
-			}
+			using var file = new StreamReader(path);
+			return ConfigParser.Load(file);
 		}
 
 		static Config Load(TextReader reader)
@@ -31,18 +29,16 @@ namespace CausalityDbg.Configuration
 
 			try
 			{
-				using (var xmlReader = XmlReader.Create(reader, settings))
-				{
-					xmlReader.MoveToContent();
+				using var xmlReader = XmlReader.Create(reader, settings);
+				xmlReader.MoveToContent();
 
-					if (xmlReader.LocalName == "config" && xmlReader.NamespaceURI == Namespace)
-					{
-						return ConfigParser.LoadConfig(xmlReader);
-					}
-					else
-					{
-						throw new ConfigFormatException("Invalid root eleemnt");
-					}
+				if (xmlReader.LocalName == "config" && xmlReader.NamespaceURI == Namespace)
+				{
+					return ConfigParser.LoadConfig(xmlReader);
+				}
+				else
+				{
+					throw new ConfigFormatException("Invalid root eleemnt");
 				}
 			}
 			catch (XmlException ex)

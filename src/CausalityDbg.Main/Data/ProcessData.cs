@@ -10,10 +10,8 @@ namespace CausalityDbg.Main
 		{
 			try
 			{
-				using (var process = Process.GetProcessById(pid))
-				{
-					return new ProcessData(pid, process.ProcessName);
-				}
+				using var process = Process.GetProcessById(pid);
+				return new ProcessData(pid, process.ProcessName);
 			}
 			catch (ArgumentException)
 			{

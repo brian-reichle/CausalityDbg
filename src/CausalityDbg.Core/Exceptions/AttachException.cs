@@ -53,19 +53,19 @@ namespace CausalityDbg.Core
 
 		static string DefaultMessage(AttachErrorType errorType)
 		{
-			switch (errorType)
+			return errorType switch
 			{
-				case AttachErrorType.AlreadyAttached: return "Another debugger is already attached to the specified process.";
-				case AttachErrorType.AttachToSelf: return "Cannot attch to self.";
-				case AttachErrorType.FrameworkNotLoaded: return "The target process has not loaded the CLR.";
-				case AttachErrorType.ProcessNotFound: return "Process not found.";
-				case AttachErrorType.UnsupportedCLRVersion: return "The target process has loaded an unsupported version of the CLR.";
-				case AttachErrorType.MissingCLRVersion: return "The selected version of the CLR isn't installed.";
-				case AttachErrorType.FileNotFound: return "The target process executable could not be found.";
-				case AttachErrorType.DirectoryNotFound: return "The target directory could not be found.";
-				case AttachErrorType.IncompatiblePlatforms: return "Cannot debug a process running on an incompatible platform.";
-				default: return string.Empty;
-			}
+				AttachErrorType.AlreadyAttached => "Another debugger is already attached to the specified process.",
+				AttachErrorType.AttachToSelf => "Cannot attch to self.",
+				AttachErrorType.FrameworkNotLoaded => "The target process has not loaded the CLR.",
+				AttachErrorType.ProcessNotFound => "Process not found.",
+				AttachErrorType.UnsupportedCLRVersion => "The target process has loaded an unsupported version of the CLR.",
+				AttachErrorType.MissingCLRVersion => "The selected version of the CLR isn't installed.",
+				AttachErrorType.FileNotFound => "The target process executable could not be found.",
+				AttachErrorType.DirectoryNotFound => "The target directory could not be found.",
+				AttachErrorType.IncompatiblePlatforms => "Cannot debug a process running on an incompatible platform.",
+				_ => string.Empty,
+			};
 		}
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]

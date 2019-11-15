@@ -12,17 +12,15 @@ namespace CausalityDbg.Main
 	{
 		public static Process Launch(this SettingsExternalTool tool, FrameILData frame, ISourceProvider provider)
 		{
-			return tool.Launch(x =>
-			{
-				switch (x)
+			return tool.Launch(
+				x => x switch
 				{
-					case "AssemblyLocation": return frame.ModuleLocation;
-					case "IDString": return frame.IDString;
-					case "Source": return provider.GetSourceSection(frame)?.File;
-					case "Line": return provider.GetSourceSection(frame)?.FromLine.ToString(CultureInfo.InvariantCulture);
-					default: return null;
-				}
-			});
+					"AssemblyLocation" => frame.ModuleLocation,
+					"IDString" => frame.IDString,
+					"Source" => provider.GetSourceSection(frame)?.File,
+					"Line" => provider.GetSourceSection(frame)?.FromLine.ToString(CultureInfo.InvariantCulture),
+					_ => null,
+				});
 		}
 
 		public static Process Launch(this SettingsExternalTool tool, Func<string, string> macroProcessor)

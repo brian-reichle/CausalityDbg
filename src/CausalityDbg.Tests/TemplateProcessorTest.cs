@@ -18,16 +18,15 @@ namespace CausalityDbg.Tests
 		[TestCase("[{3}]", ExpectedResult = "[]")]
 		public string Format(string template)
 		{
-			return TemplateProcessor.ProcessTemplate(template, (x) =>
-			{
-				switch (x)
+			return TemplateProcessor.ProcessTemplate(
+				template,
+				x => x switch
 				{
-					case "0": return "Zero";
-					case "1": return "One";
-					case "2": return "Two";
-					default: return null;
-				}
-			});
+					"0" => "Zero",
+					"1" => "One",
+					"2" => "Two",
+					_ => null,
+				});
 		}
 
 		[TestCase("", ExpectedResult = new string[] { })]
