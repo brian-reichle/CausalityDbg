@@ -16,7 +16,7 @@ CS1591 - Missing XML comment.
 		<BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
 		<CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)build\CausalityDbg.ruleset</CodeAnalysisRuleSet>
 		<FileAlignment>512</FileAlignment>
-		<LangVersion>7.3</LangVersion>
+		<LangVersion>8.0</LangVersion>
 		<Authors>Brian Reichle</Authors>
 		<Version>0.1.0</Version>
 		<Product>CausalityDbg</Product>
